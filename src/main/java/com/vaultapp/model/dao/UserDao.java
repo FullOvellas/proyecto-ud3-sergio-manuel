@@ -11,9 +11,7 @@ public class UserDao implements Dao<User> {
 
     public static UserDao instance;
 
-    static {
-        instance = new UserDao(JpaUtil.getEntityManager());
-    }
+    static { instance = new UserDao(JpaUtil.getEntityManager()); }
 
     private UserDao(EntityManager entityManager) {
         em = entityManager;

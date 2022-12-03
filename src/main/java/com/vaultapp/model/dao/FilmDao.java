@@ -9,7 +9,7 @@ import java.util.List;
 public class FilmDao implements Dao<Film>{
     private EntityManager em;
 
-    public static FilmDao instance;
+    private static FilmDao instance;
 
     static {
         instance = new FilmDao(JpaUtil.getEntityManager());
@@ -18,6 +18,8 @@ public class FilmDao implements Dao<Film>{
     private FilmDao(EntityManager entityManager) {
         em = entityManager;
     }
+
+    public static FilmDao getInstance() { return instance; }
 
     @Override
     public void create(Film film) {

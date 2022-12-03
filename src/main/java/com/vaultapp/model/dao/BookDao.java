@@ -9,7 +9,7 @@ import java.util.List;
 public class BookDao implements Dao<Book> {
     private EntityManager em;
 
-    public static BookDao instance;
+    private static BookDao instance;
 
     static {
         instance = new BookDao(JpaUtil.getEntityManager());
@@ -18,6 +18,8 @@ public class BookDao implements Dao<Book> {
     private BookDao(EntityManager entityManager) {
         this.em = entityManager;
     }
+
+    public static BookDao getInstance() { return instance; }
 
     @Override
     public void create(Book book) {
