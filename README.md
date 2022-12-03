@@ -1,6 +1,6 @@
 # Proyecto UD3 - Hibernate
 
-***## Participantes
+## Participantes
 
 - Manuel Pérez Landín
 - Sergio Alonso Pazo
