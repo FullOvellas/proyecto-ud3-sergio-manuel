@@ -1,6 +1,7 @@
 package com.vaultapp.model.dao;
 
 import com.vaultapp.model.entities.Book;
+import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -8,7 +9,13 @@ import java.util.List;
 public class BookDao implements Dao<Book> {
     private EntityManager em;
 
-    public BookDao(EntityManager entityManager) {
+    public static BookDao instance;
+
+    static {
+        instance = new BookDao(JpaUtil.getEntityManager());
+    }
+
+    private BookDao(EntityManager entityManager) {
         this.em = entityManager;
     }
 

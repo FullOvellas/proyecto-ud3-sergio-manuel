@@ -1,6 +1,7 @@
 package com.vaultapp.model.dao;
 
 import com.vaultapp.model.entities.User;
+import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -8,7 +9,13 @@ import java.util.List;
 public class UserDao implements Dao<User> {
     private EntityManager em;
 
-    public UserDao(EntityManager entityManager) {
+    public static UserDao instance;
+
+    static {
+        instance = new UserDao(JpaUtil.getEntityManager());
+    }
+
+    private UserDao(EntityManager entityManager) {
         em = entityManager;
     }
 
