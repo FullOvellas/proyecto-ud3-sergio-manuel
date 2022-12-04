@@ -17,7 +17,7 @@ public class UserDao implements Dao<User> {
         em = entityManager;
     }
 
-    public UserDao getInstance() { return instance; }
+    public static UserDao getInstance() { return instance; }
 
     @Override
     public void create(User user) {
