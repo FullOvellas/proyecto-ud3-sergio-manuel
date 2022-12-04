@@ -9,7 +9,7 @@ public class BookController {
     private BookCliView bookCliView;
 
     public BookController(EntityManager entityManager) {
-        bookRepository = new BookRepository(entityManager);
+        bookRepository = BookRepository.getInstance();
         bookCliView = new BookCliView();
     }
 }
