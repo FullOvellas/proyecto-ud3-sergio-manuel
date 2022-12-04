@@ -13,6 +13,9 @@ import jakarta.persistence.Persistence;
  */
 public class JpaUtil {
     private static final EntityManagerFactory entityManagerrFactory = buildEntityManagerFactory();
+    private static final EntityManager em;
+
+    static { em = entityManagerrFactory.createEntityManager(); }
 
     private static EntityManagerFactory buildEntityManagerFactory() {
         return Persistence.createEntityManagerFactory("manuel_home_unit");
@@ -24,6 +27,6 @@ public class JpaUtil {
      * @return the EntityManager instance.
      */
     public static EntityManager getEntityManager() {
-        return entityManagerrFactory.createEntityManager();
+        return em;
     }
 }

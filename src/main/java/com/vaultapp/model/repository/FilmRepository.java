@@ -3,6 +3,7 @@ package com.vaultapp.model.repository;
 import com.vaultapp.model.dao.Dao;
 import com.vaultapp.model.dao.FilmDao;
 import com.vaultapp.model.entities.Film;
+import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -10,12 +11,16 @@ import java.util.List;
 public class FilmRepository implements Repository<Film>{
     private EntityManager em;
     private Dao<Film> filmDao;
+    private static FilmRepository instance;
 
-    public FilmRepository(EntityManager entityManager) {
+    static { instance = new FilmRepository(JpaUtil.getEntityManager()); }
+
+    private FilmRepository(EntityManager entityManager) {
         em = entityManager;
         filmDao = FilmDao.getInstance();
     }
 
+    public static FilmRepository getInstance() { return instance; }
 
     @Override
     public void add(Film film) {
