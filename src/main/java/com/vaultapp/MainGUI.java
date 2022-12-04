@@ -6,13 +6,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Main class.
- * Contains the main method.
+ * Launches the application in graphic mode.
  * **Provisional class name.
  */
 public class MainGUI extends Application {
     private static Scene main;
-
 
     public static void startApp() {
         Application.launch(MainGUI.class);
