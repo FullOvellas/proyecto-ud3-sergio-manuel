@@ -13,7 +13,7 @@ public class UserRepository implements Repository<User> {
 
     public UserRepository(EntityManager entityManager) {
         em = entityManager;
-        userDao = UserDao.;
+        userDao = UserDao.getInstance();
     }
 
     @Override
