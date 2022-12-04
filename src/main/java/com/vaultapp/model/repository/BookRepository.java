@@ -13,7 +13,7 @@ public class BookRepository implements Repository<Book> {
 
     public BookRepository(EntityManager entityManager) {
         em = entityManager;
-        bookDao = new BookDao(em);
+        bookDao = BookDao.getInstance();
     }
 
     @Override

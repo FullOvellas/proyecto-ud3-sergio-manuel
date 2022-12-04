@@ -13,7 +13,7 @@ public class FilmRepository implements Repository<Film>{
 
     public FilmRepository(EntityManager entityManager) {
         em = entityManager;
-        filmDao = new FilmDao(entityManager);
+        filmDao = FilmDao.getInstance();
     }
 
 
