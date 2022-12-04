@@ -1,6 +1,7 @@
 package com.vaultapp.model.dao;
 
 import com.vaultapp.model.entities.Film;
+import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -8,9 +9,17 @@ import java.util.List;
 public class FilmDao implements Dao<Film>{
     private EntityManager em;
 
-    public FilmDao(EntityManager entityManager) {
+    private static FilmDao instance;
+
+    static {
+        instance = new FilmDao(JpaUtil.getEntityManager());
+    }
+
+    private FilmDao(EntityManager entityManager) {
         em = entityManager;
     }
+
+    public static FilmDao getInstance() { return instance; }
 
     @Override
     public void create(Film film) {
