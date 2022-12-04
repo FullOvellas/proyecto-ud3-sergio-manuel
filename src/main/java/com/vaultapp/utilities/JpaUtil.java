@@ -29,4 +29,16 @@ public class JpaUtil {
     public static EntityManager getEntityManager() {
         return em;
     }
+
+    /**
+     * Close the EntityManager instance at the end of the program.
+     * Method <code>close()</code> must be the last one.
+     */
+    public static void close() {
+        try {
+            em.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
