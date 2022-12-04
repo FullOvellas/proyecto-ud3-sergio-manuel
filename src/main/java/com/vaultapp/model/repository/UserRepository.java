@@ -3,6 +3,7 @@ package com.vaultapp.model.repository;
 import com.vaultapp.model.dao.Dao;
 import com.vaultapp.model.dao.UserDao;
 import com.vaultapp.model.entities.User;
+import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -10,10 +11,13 @@ import java.util.List;
 public class UserRepository implements Repository<User> {
     private EntityManager em;
     private Dao<User> userDao;
+    private static UserRepository instance;
 
-    public UserRepository(EntityManager entityManager) {
+    static { instance = new UserRepository(JpaUtil.getEntityManager()); }
+
+    private UserRepository(EntityManager entityManager) {
         em = entityManager;
-        userDao = new UserDao(em);
+        userDao = UserDao.getInstance();
     }
 
     @Override

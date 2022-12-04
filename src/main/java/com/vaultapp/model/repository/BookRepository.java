@@ -3,6 +3,7 @@ package com.vaultapp.model.repository;
 import com.vaultapp.model.dao.BookDao;
 import com.vaultapp.model.dao.Dao;
 import com.vaultapp.model.entities.Book;
+import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -10,11 +11,16 @@ import java.util.List;
 public class BookRepository implements Repository<Book> {
     private EntityManager em;
     private Dao<Book> bookDao;
+    private static BookRepository instance;
 
-    public BookRepository(EntityManager entityManager) {
+    static { instance = new BookRepository(JpaUtil.getEntityManager()); }
+
+    private BookRepository(EntityManager entityManager) {
         em = entityManager;
-        bookDao = new BookDao(em);
+        bookDao = BookDao.getInstance();
     }
+
+    public static BookRepository getInstance() { return instance; }
 
     @Override
     public void add(Book book) {
