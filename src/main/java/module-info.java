@@ -4,4 +4,5 @@ module proyecto.ud3.sergio.y.manuel {
     requires jakarta.persistence;
     requires atlantafx.base;
 
+    exports com.vaultapp to javafx.graphics, javafx.fxml;
 }
