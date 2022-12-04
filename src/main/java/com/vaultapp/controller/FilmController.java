@@ -9,7 +9,7 @@ public class FilmController {
     private FilmCliView filmCliView;
 
     public FilmController(EntityManager entityManager) {
-        filmRepository = new FilmRepository(entityManager);
+        filmRepository = FilmRepository.getInstance();
         filmCliView = new FilmCliView();
     }
 }
