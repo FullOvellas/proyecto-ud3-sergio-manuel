@@ -9,13 +9,15 @@ import java.util.List;
 public class UserDao implements Dao<User> {
     private EntityManager em;
 
-    public static UserDao instance;
+    private static UserDao instance;
 
     static { instance = new UserDao(JpaUtil.getEntityManager()); }
 
     private UserDao(EntityManager entityManager) {
         em = entityManager;
     }
+
+    public UserDao getInstance() { return instance; }
 
     @Override
     public void create(User user) {
