@@ -2,7 +2,7 @@
 
 ## Participantes
 
-- Manuel Pérez Landín
+- Manuel Landín Gómez
 - Sergio Alonso Pazo
 
 ## APIs utilizadas
