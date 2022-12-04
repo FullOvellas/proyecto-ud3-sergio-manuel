@@ -9,7 +9,7 @@ public class UserController {
     private UserCliView userCliView;
 
     public UserController(EntityManager entityManager) {
-        userRepo = new UserRepository(entityManager);
+        userRepo = UserRepository.getInstance();
         userCliView = new UserCliView();
     }
 }

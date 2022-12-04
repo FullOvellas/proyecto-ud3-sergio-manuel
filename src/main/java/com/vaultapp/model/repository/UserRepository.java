@@ -20,6 +20,10 @@ public class UserRepository implements Repository<User> {
         userDao = UserDao.getInstance();
     }
 
+    public static UserRepository getInstance() {
+        return instance;
+    }
+
     @Override
     public void add(User user) {
         try {
