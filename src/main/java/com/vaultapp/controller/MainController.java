@@ -1,5 +1,9 @@
 package com.vaultapp.controller;
 
+import com.vaultapp.model.entities.Book;
+import com.vaultapp.model.entities.BookVault;
+import com.vaultapp.model.entities.User;
+import com.vaultapp.model.entities.Vault;
 import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
@@ -10,21 +14,27 @@ import jakarta.persistence.EntityManager;
  * @author Sergio Alonso Pazo
  */
 public class MainController {
-    private EntityManager em;
     private UserController userController;
     private FilmController filmController;
     private BookController bookController;
 
 
     public MainController() {
-        this.em = JpaUtil.getEntityManager();
-        this.userController = new UserController(em);
-        this.filmController = new FilmController(em);
-        this.bookController = new BookController(em);
+        this.userController = new UserController();
+        this.filmController = new FilmController();
+        this.bookController = new BookController();
         // LÓGICA DE NEGOCIO
 
 
+        User u = new User();
+        Book b = new Book();
+        BookVault v = new BookVault();
+        v.addElement(b);
+        u.addVault(v);
+        userController.getUserRepo().add(u);
+        userController.getUserRepo().getAsList().forEach(System.out::println);
+
         // FIN DE PROGRAMA
-        em.close();
+        JpaUtil.close();
     }
 }

@@ -2,11 +2,12 @@ package com.vaultapp.model.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "filmvaults")
-public class FilmVault extends Vault {
+public class FilmVault extends Vault<Film> {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -15,19 +16,22 @@ public class FilmVault extends Vault {
             inverseJoinColumns = @JoinColumn(name = "film_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"filmvault_id", "film_id"})
     )
-    private List<Book> books;
+    private List<Film> films;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
 
-
-    public List<Book> getBooks() {
-        return books;
+    public FilmVault() {
+        films = new ArrayList<>();
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public List<Film> getBooks() {
+        return films;
+    }
+
+    public void setBooks(List<Film> films) {
+        this.films = films;
     }
 
     public User getOwner() {
@@ -36,5 +40,17 @@ public class FilmVault extends Vault {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public void addElement(Film film) {
+        films.add(film);
+    }
+
+    @Override
+    public String toString() {
+        return "FilmVault{" +
+                "films=" + films +
+                '}';
     }
 }

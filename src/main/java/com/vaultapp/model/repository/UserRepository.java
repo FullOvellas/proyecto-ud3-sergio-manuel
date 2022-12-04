@@ -38,7 +38,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public List<User> getAsList() {
-        return null;
+        return userDao.read();
     }
 
     @Override

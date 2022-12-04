@@ -1,5 +1,7 @@
 package com.vaultapp;
 
+import com.vaultapp.controller.MainController;
+
 public class VaultApp {
 
     public static void main(String[] args) {
@@ -11,7 +13,7 @@ public class VaultApp {
                 "--gui: aplicación con cliente gráfico";
 
         if (args.length == 0) {
-            // MainGUI.startApp();
+            new MainController();
         } else if (args.length == 1 && args[0].equals("--cli")) {
             // MainCLI.startApp();
         } else if (args.length == 1 && args[0].equals("--gui")) {
