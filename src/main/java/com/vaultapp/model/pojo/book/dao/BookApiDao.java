@@ -1,10 +1,10 @@
-package com.vaultapp.model.pojos.books.dao;
+package com.vaultapp.model.pojo.book.dao;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.pojos.books.DocsItem;
-import com.vaultapp.model.pojos.books.Response;
+import com.vaultapp.model.pojo.book.DocsItem;
+import com.vaultapp.model.pojo.book.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,6 +14,16 @@ public class BookApiDao {
 
     private String src = "http://openlibrary.org/search.json?title=%s";
     private String coverSrc = "https://covers.openlibrary.org/b/isbn/%s-L.jpg";
+
+    private static BookApiDao instance;
+
+    static {
+        instance = new BookApiDao();
+    }
+
+    public static BookApiDao getInstance() {
+        return instance;
+    }
 
     public List<Book> read(String title) {
         List<Book> books = new ArrayList<>();

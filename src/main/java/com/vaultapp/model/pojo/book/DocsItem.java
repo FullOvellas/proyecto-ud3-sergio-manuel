@@ -1,4 +1,4 @@
-package com.vaultapp.model.pojos.books;
+package com.vaultapp.model.pojo.book;
 
 import java.util.List;
 

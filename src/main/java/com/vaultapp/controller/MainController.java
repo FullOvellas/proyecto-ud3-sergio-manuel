@@ -1,17 +1,9 @@
 package com.vaultapp.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.entities.BookVault;
-import com.vaultapp.model.entities.User;
-import com.vaultapp.model.entities.Vault;
-import com.vaultapp.model.pojos.books.Response;
-import com.vaultapp.model.pojos.books.dao.BookApiDao;
+import com.vaultapp.model.pojo.book.dao.BookApiDao;
 import com.vaultapp.utilities.JpaUtil;
-import jakarta.persistence.EntityManager;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 /**
