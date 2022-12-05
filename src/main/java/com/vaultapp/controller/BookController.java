@@ -1,18 +1,18 @@
 package com.vaultapp.controller;
 
-import com.vaultapp.model.repository.BookRepository;
+import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.view.cli.BookCliView;
 
 public class BookController {
-    private BookRepository bookRepository;
+    private BookDbRepository bookRepository;
     private BookCliView bookCliView;
 
     public BookController() {
-        bookRepository = BookRepository.getInstance();
+        bookRepository = BookDbRepository.getInstance();
         bookCliView = new BookCliView();
     }
 
-    public BookRepository getBookRepository() {
+    public BookDbRepository getBookRepository() {
         return bookRepository;
     }
 
