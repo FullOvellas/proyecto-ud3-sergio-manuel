@@ -11,9 +11,25 @@ public class FilmResultPage {
     @JsonProperty("page")
     private int pageNumber;
     @JsonProperty("results")
-    private List<Film> pageFilms;
+    private List<ApiFilm> pageFilms;
     @JsonProperty("total_pages")
     private int totalPages;
     @JsonProperty("total_results")
     private int totalResults;
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public List<ApiFilm> getPageFilms() {
+        return pageFilms;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public int getTotalResults() {
+        return totalResults;
+    }
 }
