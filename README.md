@@ -33,6 +33,7 @@ La aplicación podrá ser lanzada en dos modos: CLI y GUI.
 
 - Open Library: API REST aberta relacionada con Internet Archive. Proporciona datos relativos a libros publicados.
 - The Movie Data Base (TMDB): API REST que proporciona datos sobre películas e series.
+    API key: 19ccdf01a305d5f5c3485958c90ef5d6
 
 ## Estructura
 
