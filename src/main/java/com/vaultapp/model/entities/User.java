@@ -13,6 +13,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+    private String password;
+
     @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name= "vault_id")
     private List<FilmVault> filmVaults;
@@ -24,6 +28,33 @@ public class User {
     public User() {
         filmVaults = new ArrayList<>();
         bookVaults = new ArrayList<>();
+    }
+
+    public User(String name) {
+        this();
+        this.name = name;
+    }
+
+    public User(String name, String password) {
+        this();
+        this.name = name;
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
@@ -83,6 +114,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
