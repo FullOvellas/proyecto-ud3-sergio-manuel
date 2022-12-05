@@ -2,9 +2,7 @@ package com.vaultapp.model.entities;
 
 import jakarta.persistence.*;
 
-import javax.print.DocFlavor;
 import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
