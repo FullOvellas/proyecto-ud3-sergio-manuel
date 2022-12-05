@@ -1,11 +1,10 @@
 package com.vaultapp.controller;
 
 import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.entities.BookVault;
-import com.vaultapp.model.entities.User;
-import com.vaultapp.model.entities.Vault;
+import com.vaultapp.model.pojo.book.dao.BookApiDao;
 import com.vaultapp.utilities.JpaUtil;
-import jakarta.persistence.EntityManager;
+
+import java.util.List;
 
 /**
  * Defines the logic of the program.
@@ -25,14 +24,10 @@ public class MainController {
         this.bookController = new BookController();
         // LÓGICA DE NEGOCIO
 
+        BookApiDao bad = new BookApiDao();
+        List<Book> b = bad.read("eragon");
+        b.forEach(System.out::println);
 
-        User u = new User();
-        Book b = new Book();
-        BookVault v = new BookVault();
-        v.addElement(b);
-        u.addVault(v);
-        userController.getUserRepo().add(u);
-        userController.getUserRepo().getAsList().forEach(System.out::println);
 
         // FIN DE PROGRAMA
         JpaUtil.close();

@@ -2,6 +2,9 @@ package com.vaultapp.model.entities;
 
 import jakarta.persistence.*;
 
+import javax.print.DocFlavor;
+import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,8 +14,67 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
+    private String author;
+
+    private String publishYear;
+
+    private String isbn;
+
+    private URL cover;
+
+
+    public Book() {
+    }
+
+    public Book(String title, String author, String publishYear, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.publishYear = publishYear;
+        this.isbn = isbn;
+        this.cover = cover;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public URL getCover() {
+        return cover;
+    }
+
+    public void setCover(URL cover) {
+        this.cover = cover;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getPublishYear() {
+        return publishYear;
+    }
+
+    public void setPublishYear(String publishYear) {
+        this.publishYear = publishYear;
+    }
 
     public Long getId() {
         return id;
@@ -22,13 +84,6 @@ public class Book {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -43,11 +98,16 @@ public class Book {
         return Objects.hash(id);
     }
 
+
     @Override
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publishYear='" + publishYear + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", cover='" + cover + '\'' +
                 '}';
     }
 }
