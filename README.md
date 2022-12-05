@@ -29,10 +29,12 @@ La aplicación podrá ser lanzada en dos modos: CLI y GUI.
 
 
 
-## APIs utilizadas
+## APIs utilizadas 
+### Open Library Search API
+API REST aberta que proporciona datos relativos a libros publicados.
 
-- Open Library: API REST aberta relacionada con Internet Archive. Proporciona datos relativos a libros publicados.
-
+### Open Library Covers API
+API REST aberta que proporciona acceso a las portadas de libros y las fotos de autor disponibles en el repositorio de portadas de la biblioteca abierta.
 ### The Movie Data Base (TMDB)
 
 API REST que proporciona datos sobre películas e series.  
