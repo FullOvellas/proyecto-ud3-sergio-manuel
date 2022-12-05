@@ -37,6 +37,10 @@ public class Film {
         this.tagline = tagline;
     }
 
+    public Film() {
+        
+    }
+
     public Long getId() {
         return id;
     }
