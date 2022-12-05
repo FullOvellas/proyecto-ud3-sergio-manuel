@@ -32,8 +32,19 @@ La aplicación podrá ser lanzada en dos modos: CLI y GUI.
 ## APIs utilizadas
 
 - Open Library: API REST aberta relacionada con Internet Archive. Proporciona datos relativos a libros publicados.
-- The Movie Data Base (TMDB): API REST que proporciona datos sobre películas e series.
-    API key: 19ccdf01a305d5f5c3485958c90ef5d6
+
+### The Movie Data Base (TMDB)
+API REST que proporciona datos sobre películas e series.  
+API key: 19ccdf01a305d5f5c3485958c90ef5d6
+
+#### Endpoints
+
+- **/search/movie**
+  **Formato da query**: `https://api.themoviedb.org/3/search/movie?api_key=<api_key>&query=<query>`
+  Poden engadirse filtros de busca opcionais.
+- **/movie/**  
+  **Formato da query**: `https://api.themoviedb.org/3/movie/<movie_id>?api_key=<api_key>`
+  Devolve un único obxecto `Film` segundo o _movie\_id_ empregado.
 
 ## Estructura
 
