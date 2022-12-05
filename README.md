@@ -31,8 +31,8 @@ La aplicación podrá ser lanzada en dos modos: CLI y GUI.
 
 ## APIs utilizadas
 
-- Open Library: API REST relacionada con Internet Archive. Proporciona datos relativos a libros publicados.
-- \<API de películas\>
+- Open Library: API REST aberta relacionada con Internet Archive. Proporciona datos relativos a libros publicados.
+- The Movie Data Base (TMDB): API REST que proporciona datos sobre películas e series.
 
 ## Estructura
 
