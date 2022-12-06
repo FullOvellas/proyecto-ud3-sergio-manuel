@@ -5,11 +5,23 @@ import com.vaultapp.model.entities.Book;
 import java.util.List;
 
 public class BookCliView {
-    public void viewUser(Book book) {
-        System.out.println("Book: " + book);
+
+    public void viewBookFinder() {
+        String view = "Buscar libro:\n >";
+        System.out.print(view);
     }
 
-    public void viewAllUsers(List<Book> books) {
-        books.forEach(book -> System.out.println("Book: " + book));
+    public void viewListOfBooks(List<Book> books) {
+        String view = "=============\n" +
+                "Title: %s\n" +
+                "Author: %s\n" +
+                "ISBN: %s\n" +
+                "Publish Year: %s\n" +
+                "Cover: %s\n";
+        Book b;
+        for (int i = 0; i < 10; i++) {
+            b = books.get(i);
+            System.out.println(String.format(view, b.getTitle(), b.getAuthor(), b.getIsbn(), b.getPublishYear(), b.getCover()));
+        }
     }
 }

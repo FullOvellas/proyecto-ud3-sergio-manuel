@@ -2,9 +2,11 @@ package com.vaultapp.controller;
 
 import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.pojo.book.dao.BookApiDao;
+import com.vaultapp.model.repository.BookApiRepository;
 import com.vaultapp.utilities.JpaUtil;
 
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Defines the logic of the program.
@@ -17,19 +19,21 @@ public class MainController {
     private FilmController filmController;
     private BookController bookController;
 
-
     public MainController() {
         this.userController = new UserController();
         this.filmController = new FilmController();
         this.bookController = new BookController();
-        // LÓGICA DE NEGOCIO
-
-        BookApiDao bad = new BookApiDao();
-        List<Book> b = bad.read("eragon");
-        b.forEach(System.out::println);
-
-
-        // FIN DE PROGRAMA
+        mainLoop();
         JpaUtil.close();
     }
+
+    private void mainLoop() {
+        while(true) {
+
+        }
+    }
+
+
+
+
 }
