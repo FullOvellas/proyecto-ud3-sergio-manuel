@@ -1,6 +1,5 @@
 package com.vaultapp.model.repository;
 
-import com.vaultapp.model.entities.dao.Dao;
 import com.vaultapp.model.entities.dao.UserDao;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.utilities.JpaUtil;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public class UserRepository implements Repository<User> {
     private EntityManager em;
-    private Dao<User> userDao;
+    private UserDao userDao;
     private static UserRepository instance;
 
     static { instance = new UserRepository(JpaUtil.getEntityManager()); }
@@ -51,5 +50,9 @@ public class UserRepository implements Repository<User> {
             em.getTransaction().rollback();
             e.printStackTrace();
         }
+    }
+
+    public User find(String name) {
+        return userDao.find(name);
     }
 }

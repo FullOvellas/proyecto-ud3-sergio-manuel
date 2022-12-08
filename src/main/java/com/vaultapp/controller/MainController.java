@@ -1,12 +1,10 @@
 package com.vaultapp.controller;
 
-import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.pojo.book.dao.BookApiDao;
-import com.vaultapp.model.repository.BookApiRepository;
+import com.vaultapp.login.UserSession;
+import com.vaultapp.model.entities.User;
+import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.utilities.JpaUtil;
 
-import java.util.List;
-import java.util.Scanner;
 
 /**
  * Defines the logic of the program.
@@ -19,21 +17,20 @@ public class MainController {
     private FilmController filmController;
     private BookController bookController;
 
+
     public MainController() {
         this.userController = new UserController();
         this.filmController = new FilmController();
         this.bookController = new BookController();
-        mainLoop();
+        // LÓGICA DE NEGOCIO
+
+        User u = new User("Manuel");
+        UserRepository.getInstance().add(u);
+        System.out.println(UserSession.getInstance().login(u));
+        System.out.println(UserSession.getInstance().getLoggedUser());
+
+
+        // FIN DE PROGRAMA
         JpaUtil.close();
     }
-
-    private void mainLoop() {
-        while(true) {
-
-        }
-    }
-
-
-
-
 }
