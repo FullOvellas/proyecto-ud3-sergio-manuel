@@ -52,9 +52,30 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
   **Formato da query**: `https://api.themoviedb.org/3/movie/<movie_id>?api_key=<api_key>`
   Devolve un único obxecto `Film` segundo o _movie\_id_ empregado.
 
-## Estructura
+## Manual Técnico
 
 ### Clases
 
 ### Database schema
+
+## Manual de usuario
+
+### Comandos para CLI
+#### Comandos para la gestión de la sesión:
+- `login --user user --password password` Inica sesión de usuario.
+- `logout` Cierra sesión de usuario.
+- `status --user` Muestra información general sobre el usuario y sus vaults.
+
+#### Comandos para la gestion de vaults:
+- `show --book` Muestra las colecciones de vaults de libros del usuario en sesión.
+- `show --film` Muestra las colecciones de vaults de películas del usuario en sesión.
+- `create --name name --type type` Crea un vault de tipo libros/películas vacío con nombre.
+- `open --name name` Abre y muestra un vault por nombre.
+- `delete --name name --user user --password password` Borra un vault por nombre. 
+
+#### Comandos para gestión de libros y películas
+- `search --book --title title` Busca un libro por título en API Open Library.
+- `add --isbn isbn --vault name` Añade el libro de ISBN dado en el vault de nombre dado.
+- `delete --isbn isbn --vault name` Borra el libro de ISBN dado en el vault de nombre dado.
+
 
