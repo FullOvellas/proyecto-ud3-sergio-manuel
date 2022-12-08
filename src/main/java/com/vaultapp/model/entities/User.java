@@ -30,10 +30,6 @@ public class User {
         bookVaults = new ArrayList<>();
     }
 
-    public User(String name) {
-        this();
-        this.name = name;
-    }
 
     public User(String name, String password) {
         this();
