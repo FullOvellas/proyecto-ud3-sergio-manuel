@@ -1,4 +1,4 @@
-package com.vaultapp.model.dao.api;
+package com.vaultapp.model.pojo.film.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaultapp.model.entities.Film;

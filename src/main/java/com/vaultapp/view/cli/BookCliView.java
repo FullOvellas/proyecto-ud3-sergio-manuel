@@ -7,7 +7,7 @@ import java.util.List;
 public class BookCliView {
 
     public void viewBookFinder() {
-        String view = "Buscar libro:\n >";
+        String view = "Buscar libro:\n > ";
         System.out.print(view);
     }
 

@@ -22,15 +22,17 @@ public class MainController {
         this.userController = new UserController();
         this.filmController = new FilmController();
         this.bookController = new BookController();
-        // LÓGICA DE NEGOCIO
+        // BEGIN PROGRAM
 
-        User u = new User("Manuel");
-        UserRepository.getInstance().add(u);
-        System.out.println(UserSession.getInstance().login(u));
-        System.out.println(UserSession.getInstance().getLoggedUser());
+        var res = bookController.bookFinder();
 
 
-        // FIN DE PROGRAMA
+
+        //END PROGRAM
         JpaUtil.close();
     }
+
+
+
+
 }
