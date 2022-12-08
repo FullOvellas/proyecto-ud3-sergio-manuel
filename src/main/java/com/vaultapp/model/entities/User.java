@@ -1,5 +1,6 @@
 package com.vaultapp.model.entities;
 
+import com.vaultapp.utilities.Cipher;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String password;
@@ -34,7 +36,7 @@ public class User {
     public User(String name, String password) {
         this();
         this.name = name;
-        this.password = password;
+        this.password = Cipher.getInstance().encrypt(password);
     }
 
     public String getName() {
@@ -98,12 +100,12 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id);
+        return Objects.equals(name, user.name) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(name, password);
     }
 
     @Override

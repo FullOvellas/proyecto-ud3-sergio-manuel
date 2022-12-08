@@ -3,7 +3,9 @@ package com.vaultapp.controller;
 import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.repository.UserRepository;
+import com.vaultapp.utilities.Cipher;
 import com.vaultapp.utilities.JpaUtil;
+import com.vaultapp.view.cli.CommandControllerView;
 
 
 /**
@@ -24,8 +26,8 @@ public class MainController {
         this.bookController = new BookController();
         // BEGIN PROGRAM
 
-        var res = bookController.bookFinder();
-
+        CommandController c = new CommandController();
+        c.commandLoop();
 
 
         //END PROGRAM
