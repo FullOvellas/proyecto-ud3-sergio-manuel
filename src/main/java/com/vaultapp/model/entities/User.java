@@ -19,12 +19,12 @@ public class User {
 
     private String password;
 
-    @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name= "vault_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "vault_id")
     private List<FilmVault> filmVaults;
 
-    @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name= "vault_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "vault_id")
     private List<BookVault> bookVaults;
 
     public User() {
@@ -83,6 +83,7 @@ public class User {
      * Adds a vault for the user. Symmetrically defines an owner for the vault.
      * This method ensures the bidirectional class relation between <code>User</code> and
      * <code>Vault</code>.
+     *
      * @param vault
      */
     public void addVault(Vault vault) {
@@ -100,12 +101,13 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name) && Objects.equals(password, user.password);
+        return Objects.equals(name, user.name) && Objects.equals(Cipher.getInstance().decrypt(password),
+                Cipher.getInstance().decrypt(user.password));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, password);
+        return Objects.hash(name, Cipher.getInstance().decrypt(password));
     }
 
     @Override

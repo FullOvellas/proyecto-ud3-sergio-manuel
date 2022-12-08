@@ -3,6 +3,8 @@ package com.vaultapp.controller;
 
 import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.User;
+import com.vaultapp.model.repository.BookApiRepository;
+import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.view.cli.CommandControllerView;
 
 import java.util.*;
@@ -37,9 +39,10 @@ public class CommandController {
         this.view = new CommandControllerView();
         this.sc = new Scanner(System.in);
         exit = false;
+        this.commandLoop();
     }
 
-    public void commandLoop() {
+    private void commandLoop() {
         do {
             view.printPrompt();
             String input = sc.nextLine();
@@ -47,9 +50,7 @@ public class CommandController {
             if (parseInput != null) {
                 processParserCommand(parseInput);
             }
-
         } while (!exit);
-
     }
 
     /**
@@ -59,7 +60,7 @@ public class CommandController {
      * @param lineCommand
      * @return List structured with all input information or null if commands not found.
      */
-    public List<String> parser(String lineCommand) {
+    private List<String> parser(String lineCommand) {
         String action;
         List<String> args = new LinkedList<>();
         List<String> noArgs = new ArrayList<>();
@@ -68,16 +69,38 @@ public class CommandController {
         noArgs.add(splitLineCommand[0]);
         Arrays.stream(splitLineCommand).filter(s -> s.startsWith("--")).forEach(noArgs::add);
         if (!commands.containsAll(noArgs)) {
-            this.view.commandWarning();
+            this.view.commandNotFoundView();
             return null;
         }
-        Arrays.stream(splitLineCommand).filter(s -> !noArgs.contains(s)).forEach(args::add);
+        List<Integer> index = new ArrayList<>();
+        for (int i = 0; i < splitLineCommand.length; i++) {
+            if (splitLineCommand[i].contains("--")) {
+                index.add(i);
+            }
+        }
+        StringBuilder composeArgs = new StringBuilder();
+        for (int i : index) {
+            if (splitLineCommand.length <= i + 1) {
+                break;
+            } else {
+                for (int j = i + 1; j < splitLineCommand.length; j++) {
+                    if (splitLineCommand[j].contains("--")) {
+                        break;
+                    }
+                    composeArgs.append(splitLineCommand[j]).append(" ");
+                }
+                if (!composeArgs.toString().isBlank() && !composeArgs.toString().isEmpty()) {
+                    args.add(composeArgs.toString().strip());
+                }
+            }
+        }
+        //Arrays.stream(splitLineCommand).filter(s -> !noArgs.contains(s)).forEach(args::add);
         action = String.join("", noArgs);
         args.add(0, action);
         return args;
     }
 
-    public void processParserCommand(List<String> parserCommand) {
+    private void processParserCommand(List<String> parserCommand) {
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
@@ -88,7 +111,7 @@ public class CommandController {
             case "logout":
                 actionLogout();
                 break;
-            case "status--user":
+            case "status":
                 actionStatusUser();
                 break;
             case "show--book":
@@ -98,7 +121,7 @@ public class CommandController {
                 actionShowFilm();
                 break;
             case "create--name--type":
-                actionCreateNameType();
+                actionCreateNameType(parserCommand.get(1), parserCommand.get(2));
                 break;
             case "open--name":
                 actionOpenName();
@@ -107,13 +130,16 @@ public class CommandController {
                 actionDeleteName();
                 break;
             case "search--book--title":
-                actionSearchBookTitle();
+                actionSearchBookTitle(parserCommand.get(1));
                 break;
-            case "add-isbn--vault":
+            case "add--isbn--vault":
                 actionAddIsbnVault();
                 break;
             case "delete--isbn--vault":
                 actionDeleteIsbnVault();
+                break;
+            default:
+                view.commandNotFoundView();
         }
     }
 
@@ -127,7 +153,8 @@ public class CommandController {
     private void actionAddIsbnVault() {
     }
 
-    private void actionSearchBookTitle() {
+    private void actionSearchBookTitle(String title) {
+        view.listOfBooksView(BookApiRepository.getInstance().getAsList(title));
     }
 
     private void actionDeleteName() {
@@ -136,7 +163,10 @@ public class CommandController {
     private void actionOpenName() {
     }
 
-    private void actionCreateNameType() {
+    private void actionCreateNameType(String name, String type) {
+        if (type.equals("book")) {
+            
+        }
     }
 
     private void actionShowFilm() {
@@ -146,17 +176,25 @@ public class CommandController {
     }
 
     private void actionStatusUser() {
+        User u;
+        if ((u = UserSession.getInstance().getLoggedUser()) != null) {
+            view.statusView(u.getName());
+        } else {
+            view.noSesionView();
+        }
     }
 
     private void actionLogout() {
+        if (UserSession.getInstance().logout()) {
+            view.resetPrompt();
+        }
     }
 
     private void actionLogin(String name, String password) {
         if (!UserSession.getInstance().login(new User(name, password))) {
-            view.loginError();
+            view.loginErrorView();
         } else {
             view.modifyPrompt(name);
-
         }
     }
 

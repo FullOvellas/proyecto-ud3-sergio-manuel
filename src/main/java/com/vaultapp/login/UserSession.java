@@ -19,13 +19,18 @@ public class UserSession {
         User u = UserRepository.getInstance().find(user.getName());
         if (user.equals(u)) {
             loginUser = user;
+
             return true;
         }
         return false;
     }
 
-    public void logout() {
-        loginUser = null;
+    public boolean logout() {
+        if (loginUser != null) {
+            loginUser = null;
+            return true;
+        }
+        return false;
     }
 
     public User getLoggedUser(){

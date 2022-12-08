@@ -18,6 +18,7 @@ public class Book {
 
     private String publishYear;
 
+    @Column(unique = true)
     private String isbn;
 
     private URL cover;
@@ -31,7 +32,6 @@ public class Book {
         this.author = author;
         this.publishYear = publishYear;
         this.isbn = isbn;
-        this.cover = cover;
     }
 
     public String getIsbn() {

@@ -64,7 +64,7 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 #### Comandos para la gestión de la sesión:
 - `login --user user --password password` Inica sesión de usuario.
 - `logout` Cierra sesión de usuario.
-- `status --user` Muestra información general sobre el usuario y sus vaults.
+- `status` Muestra información general sobre el usuario y sus vaults.
 - `exit` Cierra sesión y sale del programa.
 
 #### Comandos para la gestion de vaults:
