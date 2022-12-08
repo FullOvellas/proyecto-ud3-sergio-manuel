@@ -4,7 +4,6 @@ package com.vaultapp.controller;
 import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.repository.BookApiRepository;
-import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.view.cli.CommandControllerView;
 
 import java.util.*;
@@ -91,6 +90,7 @@ public class CommandController {
                 }
                 if (!composeArgs.toString().isBlank() && !composeArgs.toString().isEmpty()) {
                     args.add(composeArgs.toString().strip());
+                    composeArgs.setLength(0);
                 }
             }
         }
@@ -101,6 +101,7 @@ public class CommandController {
     }
 
     private void processParserCommand(List<String> parserCommand) {
+        System.out.println(parserCommand);
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();

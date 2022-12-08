@@ -22,8 +22,21 @@ public class BookVault extends Vault<Book> {
     @JoinColumn(name = "user_id")
     private User owner;
 
+    private String name;
+
     public BookVault() {
         books = new ArrayList<>();
+    }
+
+    public BookVault(String name) {
+        this();
+        this.name = name;
+    }
+
+    public BookVault(String name, User owner) {
+        this();
+        this.owner = owner;
+        this.name = name;
     }
 
     public List<Book> getBooks() {
