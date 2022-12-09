@@ -23,13 +23,9 @@ public class MainController {
     public MainController() {
         // PERSISTENT DATA
         User u =new User("root", "root");
-
         BookVault v = new BookVault("Literatura");
-        Book b = new Book();
         u.addVault(v);
-        v.addElement(b);
         UserRepository.getInstance().add(u);
-
         UserSession.getInstance().login(u);
 
         // BEGIN CLI PROGRAM

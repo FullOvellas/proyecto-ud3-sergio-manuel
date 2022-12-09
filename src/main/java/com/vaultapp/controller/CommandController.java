@@ -6,6 +6,7 @@ import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.repository.BookApiRepository;
+import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.view.cli.CommandControllerView;
 
@@ -105,7 +106,6 @@ public class CommandController {
     }
 
     private void processParserCommand(List<String> parserCommand) {
-        System.out.println(parserCommand);
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
@@ -114,7 +114,6 @@ public class CommandController {
                 actionLogin(parserCommand.get(1), parserCommand.get(2));
                 return;
         }
-
         // Session is needed active to work
         if (!UserSession.getInstance().inSession()) {
             view.noSesionView();
@@ -130,10 +129,10 @@ public class CommandController {
                     actionCreateBookVault(parserCommand.get(1));
                     break;
                 case "open--bookvault--name":
-                    actionOpenName(parserCommand.get(1));
+                    actionOpenBookVault(parserCommand.get(1));
                     break;
                 case "delete--bookvault--name":
-                    actionDeleteName();
+                    actionDeleteBookVault();
                     break;
                 case "search--book--title":
                     actionSearchBookTitle(parserCommand.get(1));
@@ -158,17 +157,27 @@ public class CommandController {
     }
 
     private void actionAddIsbnVault(String isbn, String vaultName) {
-        Book b = BookApiRepository.getInstance().getByIsbn(isbn);
         var vaultList = UserSession.getInstance().getLoggedUser().getBookVaults().stream().filter(bv -> bv.getName().equals(vaultName)).collect(Collectors.toList());
+        // test if vaultList exists
         if (vaultList.size() == 0) {
             view.vaultNotFoundView();
             return;
         }
-        if (b == null) {
-            view.bookNotFoundView();
-            return;
+
+        // test if isbn exists in db
+        Book bdb = BookDbRepository.getInstance().findByIsbn(isbn);
+        if (bdb == null) {
+            // test if isbn exists in the api
+            Book b = BookApiRepository.getInstance().getByIsbn(isbn);
+            if (b == null) {
+                view.bookNotFoundView();
+                return;
+            }
+            vaultList.get(0).addElement(b);
+        } else {
+            vaultList.get(0).addElement(bdb);
         }
-        vaultList.get(0).addElement(b);
+        //update user status
         UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
     }
 
@@ -176,11 +185,16 @@ public class CommandController {
         view.listOfBooksView(BookApiRepository.getInstance().getAsListByTitle(title));
     }
 
-    private void actionDeleteName() {
+    private void actionDeleteBookVault() {
     }
 
-    private void actionOpenName(String vaultName) {
-
+    private void actionOpenBookVault(String vaultName) {
+        List<BookVault> bv = UserSession.getInstance().getLoggedUser().getBookVaults().stream().filter(v -> v.getName().equals(vaultName)).collect(Collectors.toList());
+        if (bv.size() < 1) {
+            view.vaultNotFoundView();
+            return;
+        }
+        view.listOfBooksView(bv.get(0).getBooks());
     }
 
     private void actionCreateBookVault(String name) {
@@ -191,13 +205,8 @@ public class CommandController {
         } else {
             view.vaultAlreadyExistsView();
         }
+        //update user status
         UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
-    }
-
-    private void actionShowFilm() {
-    }
-
-    private void actionShowBook() {
     }
 
     private void actionStatusUser() {

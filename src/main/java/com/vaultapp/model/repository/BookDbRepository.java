@@ -7,6 +7,7 @@ import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookDbRepository implements Repository<Book> {
     private EntityManager em;
@@ -37,6 +38,13 @@ public class BookDbRepository implements Repository<Book> {
     @Override
     public List<Book> getAsList() {
         return bookDao.read();
+    }
+
+    public Book findByIsbn(String isbn) {
+        if (getAsList().isEmpty() || getAsList() == null) {
+            return null;
+        }
+        return getAsList().stream().filter(s -> s.getIsbn().equals(isbn)).collect(Collectors.toList()).get(0);
     }
 
     @Override
