@@ -2,6 +2,8 @@ package com.vaultapp.controller;
 
 import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 
 /**
  * Defines the logic of the program.
@@ -27,4 +29,5 @@ public class MainController {
         // FIN DE PROGRAMA
         em.close();
     }
+
 }

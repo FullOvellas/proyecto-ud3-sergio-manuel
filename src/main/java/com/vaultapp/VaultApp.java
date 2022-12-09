@@ -15,7 +15,7 @@ public class VaultApp {
         } else if (args.length == 1 && args[0].equals("--cli")) {
             // MainCLI.startApp();
         } else if (args.length == 1 && args[0].equals("--gui")) {
-            // MainGUI.startApp();
+            MainGUI.startApp();
         } else {
             System.out.println(errMsg);
         }

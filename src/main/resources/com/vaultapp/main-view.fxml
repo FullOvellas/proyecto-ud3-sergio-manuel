@@ -6,9 +6,40 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.vaultapp.Main"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.shape.Rectangle?>
 
-</AnchorPane>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.vaultapp.controller.MainGUIController">
+    <BorderPane>
+        <left>
+            <VBox>
+                <Region fx:id="spacer" />
+            </VBox>
+        </left>
+        <center>
+            <TableView fx:id="tblItems" />
+        </center>
+        <!-- content -->
+    </BorderPane>
+    <BorderPane>
+        <left>
+            <Rectangle height="800" fx:id="rect" opacity="0" fill="#537297" visible="false"/>
+        </left>
+    </BorderPane>
+
+    <BorderPane>
+        <left>
+            <VBox fx:id="vbxSidebar"
+                  spacing="10"
+                  style="-fx-border-style: hidden solid hidden hidden; -fx-border-width: 1; -fx-border-color: #AAA">
+
+                <Button fx:id="btnSideMenu" onAction="#expandRectangle" />
+                <VBox fx:id="vaultControlsContainer" alignment="CENTER">
+                    <Button fx:id="btnFilmView" />
+                    <Button fx:id="btnBookView" />
+                </VBox>
+            </VBox>
+        </left>
+    </BorderPane>
+</StackPane>
