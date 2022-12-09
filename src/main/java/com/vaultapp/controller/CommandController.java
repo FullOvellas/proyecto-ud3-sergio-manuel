@@ -138,10 +138,10 @@ public class CommandController {
                     actionSearchBookTitle(parserCommand.get(1));
                     break;
                 case "add--book--isbn--vault":
-                    actionAddIsbnVault(parserCommand.get(1), parserCommand.get(2));
+                    actionAddBook(parserCommand.get(1), parserCommand.get(2));
                     break;
                 case "delete--book--isbn--vault":
-                    actionDeleteIsbnVault();
+                    actionDeleteBook(parserCommand.get(1), parserCommand.get(2));
                     break;
                 default:
                     view.commandNotFoundView();
@@ -153,17 +153,37 @@ public class CommandController {
         this.exit = true;
     }
 
-    private void actionDeleteIsbnVault() {
+    private void actionDeleteBook(String isbn, String vaultName) {
+        User u = UserSession.getInstance().getLoggedUser();
+        List<BookVault> bvs = u.getBookVaults();
+        for (BookVault bv : bvs) {
+            if (bv.getName().equals(vaultName)) {
+                Book b = bv.findByIsbn(isbn);
+                if (b != null) {
+                    bv.deleteElement(b);
+                    view.removeBookView();
+                    UserRepository.getInstance().add(u);
+                    return;
+                }
+                view.bookNotFoundView();
+                return;
+            }
+            view.vaultNotFoundView();
+            return;
+        }
     }
 
-    private void actionAddIsbnVault(String isbn, String vaultName) {
+    private void actionAddBook(String isbn, String vaultName) {
         var vaultList = UserSession.getInstance().getLoggedUser().getBookVaults().stream().filter(bv -> bv.getName().equals(vaultName)).collect(Collectors.toList());
         // test if vaultList exists
         if (vaultList.size() == 0) {
             view.vaultNotFoundView();
             return;
         }
-
+        if (vaultList.get(0).findByIsbn(isbn) != null) {
+            view.bookAlreadyExistsView();
+            return;
+        }
         // test if isbn exists in db
         Book bdb = BookDbRepository.getInstance().findByIsbn(isbn);
         if (bdb == null) {
@@ -177,6 +197,7 @@ public class CommandController {
         } else {
             vaultList.get(0).addElement(bdb);
         }
+        view.successfullyActionView();
         //update user status
         UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
     }
@@ -217,6 +238,7 @@ public class CommandController {
     private void actionLogout() {
         if (UserSession.getInstance().logout()) {
             view.resetPrompt();
+            view.logoutView();
         }
     }
 
@@ -225,8 +247,7 @@ public class CommandController {
             view.loginErrorView();
         } else {
             view.modifyPrompt(name);
+            view.welcomeView(name);
         }
     }
-
-
 }

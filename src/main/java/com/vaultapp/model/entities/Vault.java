@@ -23,6 +23,8 @@ public abstract class Vault<T> {
 
     public void addElement(T t){};
 
+    public void deleteElement(T t){};
+
     public Long getId() {
         return id;
     }

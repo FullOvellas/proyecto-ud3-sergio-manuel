@@ -48,6 +48,11 @@ public class FilmVault extends Vault<Film> {
     }
 
     @Override
+    public void deleteElement(Film film) {
+        films.remove(film);
+    }
+
+    @Override
     public String toString() {
         return "FilmVault{" +
                 "films=" + films +

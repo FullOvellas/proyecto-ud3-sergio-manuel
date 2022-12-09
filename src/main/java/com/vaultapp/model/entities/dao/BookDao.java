@@ -1,6 +1,7 @@
 package com.vaultapp.model.entities.dao;
 
 import com.vaultapp.model.entities.Book;
+import com.vaultapp.model.entities.User;
 import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
@@ -19,7 +20,9 @@ public class BookDao implements Dao<Book> {
         this.em = entityManager;
     }
 
-    public static BookDao getInstance() { return instance; }
+    public static BookDao getInstance() {
+        return instance;
+    }
 
     @Override
     public void create(Book book) {

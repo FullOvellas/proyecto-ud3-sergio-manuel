@@ -45,7 +45,7 @@ public class BookDbRepository implements Repository<Book> {
             return null;
         }
         List<Book> l = getAsList().stream().filter(s -> s.getIsbn().equals(isbn.trim())).collect(Collectors.toList());
-        if (l == null || l.isEmpty()) {
+        if (l.isEmpty()) {
             return null;
         }
         return l.get(0);

@@ -1,12 +1,6 @@
 package com.vaultapp.controller;
 
-import com.vaultapp.login.UserSession;
-import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.User;
-import com.vaultapp.model.entities.Vault;
-import com.vaultapp.model.repository.BookApiRepository;
-import com.vaultapp.model.repository.BookVaultDbRepository;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.utilities.JpaUtil;
 
@@ -22,7 +16,7 @@ public class MainController {
 
     public MainController() {
         // PERSISTENT DATA
-        User u =new User("root", "root");
+        User u = new User("root", "root");
         UserRepository.getInstance().add(u);
 
         // BEGIN CLI PROGRAM
@@ -30,8 +24,6 @@ public class MainController {
         //END PROGRAM
         JpaUtil.close();
     }
-
-
 
 
 }
