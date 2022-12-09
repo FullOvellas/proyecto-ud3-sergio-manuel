@@ -23,10 +23,7 @@ public class MainController {
     public MainController() {
         // PERSISTENT DATA
         User u =new User("root", "root");
-        BookVault v = new BookVault("Literatura");
-        u.addVault(v);
         UserRepository.getInstance().add(u);
-        UserSession.getInstance().login(u);
 
         // BEGIN CLI PROGRAM
         new CommandController();
