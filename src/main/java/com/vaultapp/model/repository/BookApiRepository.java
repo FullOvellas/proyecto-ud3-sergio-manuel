@@ -22,7 +22,21 @@ public class BookApiRepository {
      * @param title of the book.
      * @return list of books.
      */
-    public List<Book> getAsList(String title) {
-        return BookApiDao.getInstance().read(title);
+    public List<Book> getAsListByTitle(String title) {
+        return BookApiDao.getInstance().readByTitle(title);
+    }
+
+
+    /**
+     * Gets the list of books in relation of the provided isbn.
+     * @param isbn of the book.
+     * @return list of books.
+     */
+    public Book getByIsbn(String isbn) {
+        List<Book> lb = BookApiDao.getInstance().readByIsbn(isbn);
+        if (lb.size() == 0) {
+            return null;
+        }
+        return lb.get(0);
     }
 }

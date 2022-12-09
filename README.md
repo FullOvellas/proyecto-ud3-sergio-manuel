@@ -64,14 +64,12 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 #### Comandos para la gestión de la sesión:
 - `login --user user --password password` Inica sesión de usuario.
 - `logout` Cierra sesión de usuario.
-- `status` Muestra información general sobre el usuario y sus vaults.
+- `status` Muestra información general sobre el usuario y sus colecciones de vaults.
 - `exit` Cierra sesión y sale del programa.
 
 #### Comandos para la gestion de vaults:
-- `show --book` Muestra las colecciones de vaults de libros del usuario en sesión.
-- `show --film` Muestra las colecciones de vaults de películas del usuario en sesión.
 - `create --name name --type type` Crea un vault de tipo libros/películas vacío con nombre.
-- `open --name name` Abre y muestra un vault por nombre.
+- `open --name name` Abre y muestra un vault por nombre. El vault debe existis previamente en una colección del usuario.
 - `delete --name name` Borra un vault por nombre. 
 
 #### Comandos para gestión de libros y películas

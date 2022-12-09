@@ -1,21 +1,29 @@
 package com.vaultapp.view.cli;
 
 import com.vaultapp.model.entities.Book;
+import com.vaultapp.model.entities.BookVault;
+import com.vaultapp.model.entities.Film;
+import com.vaultapp.model.entities.FilmVault;
 
 import java.util.List;
 
 public class CommandControllerView {
     private String[] prompt = {"", "> "};
-    private final String COMMAND_NOT_FOUND = "Command not found";
+    private final String COMMAND_NOT_FOUND = "Command not found.";
     private final String LOGIN_ERROR = "Incorrect user or password. Please, try again.";
     private final String NO_SESION = "You must login before.";
-    private final String VAUL_ALREADY_EXISTS = "This vault already exists. Try another name.";
-    private final String SUCCESSFULLY_ACTION = "Action done successfully";
+    private final String VAULT_ALREADY_EXISTS = "This vault already exists. Try another name.";
+    private final String VAULT_NOT_FOUND = "Vault not found. Try another vault name.";
+    private final String BOOK_NOT_FOUND = "Book not found. The ISBN may be wrong. Please, try again.";
+    private final String SUCCESSFULLY_ACTION = "Action done successfully.";
     private String status =
             "\n============================\n" +
                     "Username: %s\n" +
-                    "Password: ********\n" +
-                    "\n============================\n";
+                    "---------------------\n" +
+                    "BookVaults: %s\n" +
+                    "FilmVaults: %s\n" +
+                    "---------------------\n" +
+                    "============================\n";
 
 
     public void modifyPrompt(String arg) {
@@ -38,12 +46,12 @@ public class CommandControllerView {
         System.out.println(LOGIN_ERROR);
     }
 
-    public void statusView(String name) {
-        System.out.println(String.format(status, name));
+    public void statusView(String name, List<BookVault> bookVaults, List<FilmVault> filmVaults) {
+        System.out.println(String.format(status, name, bookVaults, filmVaults));
     }
 
     public void vaultAlreadyExistsView() {
-        System.out.println(VAUL_ALREADY_EXISTS);
+        System.out.println(VAULT_ALREADY_EXISTS);
     }
 
     public void successfullyActionView() {
@@ -53,6 +61,16 @@ public class CommandControllerView {
     public void noSesionView() {
         System.out.println(NO_SESION);
     }
+
+    public void bookNotFoundView() {
+        System.out.println(BOOK_NOT_FOUND);
+    }
+
+    public void vaultNotFoundView() {
+        System.out.println(VAULT_NOT_FOUND);
+    }
+
+
 
     public void listOfBooksView(List<Book> books) {
         String view = "=============\n" +

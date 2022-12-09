@@ -2,15 +2,15 @@ package com.vaultapp.controller;
 
 
 import com.vaultapp.login.UserSession;
+import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.User;
-import com.vaultapp.model.entities.Vault;
 import com.vaultapp.model.repository.BookApiRepository;
-import com.vaultapp.model.repository.BookVaultDbRepository;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.view.cli.CommandControllerView;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommandController {
     private CommandControllerView view;
@@ -145,7 +145,7 @@ public class CommandController {
                     actionSearchBookTitle(parserCommand.get(1));
                     break;
                 case "add--isbn--vault":
-                    actionAddIsbnVault();
+                    actionAddIsbnVault(parserCommand.get(1), parserCommand.get(2));
                     break;
                 case "delete--isbn--vault":
                     actionDeleteIsbnVault();
@@ -163,11 +163,23 @@ public class CommandController {
     private void actionDeleteIsbnVault() {
     }
 
-    private void actionAddIsbnVault() {
+    private void actionAddIsbnVault(String isbn, String vaultName) {
+        Book b = BookApiRepository.getInstance().getByIsbn(isbn);
+        var vaultList = UserSession.getInstance().getLoggedUser().getBookVaults().stream().filter(bv -> bv.getName().equals(vaultName)).collect(Collectors.toList());
+        if (vaultList.size() == 0) {
+            view.vaultNotFoundView();
+            return;
+        }
+        if (b == null) {
+            view.bookNotFoundView();
+            return;
+        }
+        vaultList.get(0).addElement(b);
+        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
     }
 
     private void actionSearchBookTitle(String title) {
-        view.listOfBooksView(BookApiRepository.getInstance().getAsList(title));
+        view.listOfBooksView(BookApiRepository.getInstance().getAsListByTitle(title));
     }
 
     private void actionDeleteName() {
@@ -197,7 +209,7 @@ public class CommandController {
 
     private void actionStatusUser() {
         User u = UserSession.getInstance().getLoggedUser();
-        view.statusView(u.getName());
+        view.statusView(u.getName(), u.getBookVaults(), u.getFilmVaults());
     }
 
     private void actionLogout() {

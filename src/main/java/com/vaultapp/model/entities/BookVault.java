@@ -61,4 +61,9 @@ public class BookVault extends Vault<Book> {
     public void addElement(Book book) {
         books.add(book);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

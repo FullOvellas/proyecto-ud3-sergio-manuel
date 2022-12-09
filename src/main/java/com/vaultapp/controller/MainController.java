@@ -1,9 +1,11 @@
 package com.vaultapp.controller;
 
+import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.entities.Vault;
+import com.vaultapp.model.repository.BookApiRepository;
 import com.vaultapp.model.repository.BookVaultDbRepository;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.utilities.JpaUtil;
@@ -26,8 +28,9 @@ public class MainController {
         Book b = new Book();
         u.addVault(v);
         v.addElement(b);
-
         UserRepository.getInstance().add(u);
+
+        UserSession.getInstance().login(u);
 
         // BEGIN CLI PROGRAM
         new CommandController();
