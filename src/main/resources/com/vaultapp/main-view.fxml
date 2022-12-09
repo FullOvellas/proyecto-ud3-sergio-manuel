@@ -10,8 +10,16 @@
 
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.vaultapp.controller.MainGUIController">
-    <BorderPane>
+           fx:controller="com.vaultapp.controller.MainGUIController" fx:id="root">
+    <BorderPane fx:id="userContent">
+        <!-- user content -->
+        <top>
+            <HBox>
+                <Region fx:id="titleSpacer" />
+                <Label fx:id="title" />
+            </HBox>
+
+        </top>
         <left>
             <VBox>
                 <Region fx:id="spacer" />
@@ -20,8 +28,10 @@
         <center>
             <TableView fx:id="tblItems" />
         </center>
-        <!-- content -->
     </BorderPane>
+
+    <Rectangle fx:id="layer" fill="black" opacity="0.0" width="100000" height="100000"/>
+
     <BorderPane>
         <left>
             <Rectangle height="800" fx:id="rect" opacity="0" fill="#537297" visible="false"/>
@@ -36,8 +46,8 @@
 
                 <Button fx:id="btnSideMenu" onAction="#expandRectangle" />
                 <VBox fx:id="vaultControlsContainer" alignment="CENTER">
-                    <Button fx:id="btnFilmView" />
-                    <Button fx:id="btnBookView" />
+                    <Button fx:id="btnFilmView" onAction="#switchToFilmVault"/>
+                    <Button fx:id="btnBookView" onAction="#switchToBookVault"/>
                 </VBox>
             </VBox>
         </left>

@@ -1,7 +1,5 @@
 package com.vaultapp.controller;
 
-import atlantafx.base.controls.Spacer;
-import atlantafx.base.theme.Styles;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.entities.VaultItem;
 import com.vaultapp.model.repository.FilmRepository;
@@ -17,13 +15,17 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.time.LocalDate;
 
 import static atlantafx.base.theme.Styles.*;
 
@@ -44,7 +46,14 @@ public class MainGUIController {
     @FXML
     public Region spacer;
     @FXML
+    public Label title;
+    @FXML
+    public Region titleSpacer;
+    public Rectangle layer;
+    @FXML
     private Rectangle rect;
+    @FXML
+    StackPane root;
     private final Interpolator slide = Interpolator.SPLINE(0, 0, 0.1, 1);
     private final String SIDEBAR_BORDER = "-fx-border-style: hidden solid hidden hidden";
     private final String HIDDEN_BORDER = "-fx-border-style: hidden";
@@ -72,11 +81,12 @@ public class MainGUIController {
 
             Timeline timeline = new Timeline();
             timeline.setCycleCount(1);
-            KeyValue kv = new KeyValue(rect.widthProperty(), 250, slide);
+            KeyValue kv = new KeyValue(rect.widthProperty(), 184, slide);
             KeyValue kv2 = new KeyValue(rect.opacityProperty(), 1, slide);
             KeyValue filmBtnGrow = new KeyValue(btnFilmView.minWidthProperty(), 170, slide);
             KeyValue bookBtnGrow = new KeyValue(btnBookView.minWidthProperty(), 170, slide);
-            KeyFrame kf = new KeyFrame(Duration.millis(150d), kv, kv2, filmBtnGrow, bookBtnGrow);
+            KeyValue layerOpacity = new KeyValue(layer.opacityProperty(), 0.7);
+            KeyFrame kf = new KeyFrame(Duration.millis(150d), kv, kv2, filmBtnGrow, bookBtnGrow, layerOpacity);
             timeline.setOnFinished(e -> {
                 btnFilmView.setText("view film vault");
                 btnBookView.setText("view book vault");
@@ -105,7 +115,8 @@ public class MainGUIController {
             KeyValue kv2 = new KeyValue(rect.opacityProperty(), 0, slide);
             KeyValue filmBtnShrink = new KeyValue(btnFilmView.minWidthProperty(), btnDefWidth);
             KeyValue bookBtnShrink = new KeyValue(btnBookView.minWidthProperty(), btnDefWidth);
-            KeyFrame kf = new KeyFrame(Duration.millis(150.0), kv, kv2, filmBtnShrink, bookBtnShrink);
+            KeyValue layerOpacity = new KeyValue(layer.opacityProperty(), 0d);
+            KeyFrame kf = new KeyFrame(Duration.millis(150.0), kv, kv2, filmBtnShrink, bookBtnShrink, layerOpacity);
             timeline.getKeyFrames().add(kf);
             timeline.setOnFinished(e -> {
                 rect.setVisible(false);
@@ -117,6 +128,8 @@ public class MainGUIController {
     }
 
     public void initialize() {
+        title.setText(filmsSelected ? "Your film vault" : "Your book vault");
+        title.getStyleClass().add(TITLE_1);
         vbxSidebar.setPadding(new Insets(0, 3, 0, 2));
         btnSideMenu.setGraphic(new FontIcon("bi-list"));
         btnSideMenu.getStyleClass().add(LARGE);
@@ -128,12 +141,59 @@ public class MainGUIController {
         btnDefWidth = btnFilmView.getWidth();
         expandedPadding = new Insets(10d, 15d, 10d, 5d);
         spacer.minWidthProperty().setValue(58);
+        titleSpacer.minWidthProperty().setValue(62);
+
 
         if (filmsSelected) {
-            ObservableList<Film> films = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
+
+            ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
+            tblItems.setItems(films);
+            TableColumn<Film, String> titleCol = new TableColumn<>("Title");
+            titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+            TableColumn<Film, LocalDate> releaseCol = new TableColumn<>("Release");
+            releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+            TableColumn<Film, String> statusCol = new TableColumn<>("Status");
+            statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         }
 
     }
 
+    public void switchToFilmVault(ActionEvent actionEvent) {
+
+        if (filmsSelected) {
+            expandRectangle(actionEvent);
+        } else {
+
+            ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
+            tblItems.setItems(films);
+            TableColumn<Film, String> titleCol = new TableColumn<>("Title");
+            titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+            TableColumn<Film, LocalDate> releaseCol = new TableColumn<>("Release");
+            releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+            TableColumn<Film, String> statusCol = new TableColumn<>("Status");
+            statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        }
+
+    }
+
+    public void switchToBookVault(ActionEvent actionEvent) {
+
+        if (!filmsSelected) {
+            expandRectangle(actionEvent);
+        } else {
+
+            /*
+            ObservableList<VaultItem> books = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
+            tblItems.setItems(films);
+            TableColumn<Film, String> titleCol = new TableColumn<>("Title");
+            titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+            TableColumn<Film, LocalDate> releaseCol = new TableColumn<>("Release");
+            releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+            TableColumn<Film, String> statusCol = new TableColumn<>("Status");
+            statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+            */
+        }
+    }
 }

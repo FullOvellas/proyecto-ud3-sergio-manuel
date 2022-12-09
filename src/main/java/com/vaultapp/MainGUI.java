@@ -24,7 +24,7 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
-        main = new Scene(fxmlLoader.load(), 800, 800);
+        main = new Scene(fxmlLoader.load(), 1200, 800);
         primaryStage.setTitle("Vaulted");
         primaryStage.setScene(main);
         primaryStage.show();

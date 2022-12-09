@@ -2,9 +2,12 @@ package com.vaultapp;
 
 import com.vaultapp.controller.MainController;
 
+import java.util.Locale;
+
 public class VaultApp {
 
     public static void main(String[] args) {
+        Locale.setDefault(Locale.US);
 
         String errMsg = "ERROR: argumentos no válidos\n\t" +
                 "Uso: java -jar com.vaultapp.VaultApp.jar [modo]\n" +
