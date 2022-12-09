@@ -20,14 +20,17 @@ public class MainController {
 
     public MainController() {
         // PERSISTENT DATA
-        User u =new User("manuel", "1234");
-        BookVault v = new BookVault("Literatura", u);
-        v.addElement(new Book());
+        User u =new User("root", "root");
+
+        BookVault v = new BookVault("Literatura");
+        Book b = new Book();
+        u.addVault(v);
+        v.addElement(b);
+
         UserRepository.getInstance().add(u);
-        BookVaultDbRepository.getInstance().add(v);
 
         // BEGIN CLI PROGRAM
-        //new CommandController();
+        new CommandController();
         //END PROGRAM
         JpaUtil.close();
     }

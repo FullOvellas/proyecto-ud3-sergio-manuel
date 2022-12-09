@@ -2,8 +2,12 @@ package com.vaultapp.controller;
 
 
 import com.vaultapp.login.UserSession;
+import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.User;
+import com.vaultapp.model.entities.Vault;
 import com.vaultapp.model.repository.BookApiRepository;
+import com.vaultapp.model.repository.BookVaultDbRepository;
+import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.view.cli.CommandControllerView;
 
 import java.util.*;
@@ -105,42 +109,50 @@ public class CommandController {
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
-                break;
+                return;
             case "login--user--password":
                 actionLogin(parserCommand.get(1), parserCommand.get(2));
-                break;
-            case "logout":
-                actionLogout();
-                break;
-            case "status":
-                actionStatusUser();
-                break;
-            case "show--book":
-                actionShowBook();
-                break;
-            case "show--film":
-                actionShowFilm();
-                break;
-            case "create--name--type":
-                actionCreateNameType(parserCommand.get(1), parserCommand.get(2));
-                break;
-            case "open--name":
-                actionOpenName();
-                break;
-            case "delete--name":
-                actionDeleteName();
-                break;
-            case "search--book--title":
-                actionSearchBookTitle(parserCommand.get(1));
-                break;
-            case "add--isbn--vault":
-                actionAddIsbnVault();
-                break;
-            case "delete--isbn--vault":
-                actionDeleteIsbnVault();
-                break;
-            default:
-                view.commandNotFoundView();
+                return;
+        }
+
+        // Session is needed active to work
+        if (!UserSession.getInstance().inSession()) {
+            view.noSesionView();
+        } else {
+            switch (parserCommand.get(0)) {
+                case "logout":
+                    actionLogout();
+                    break;
+                case "status":
+                    actionStatusUser();
+                    break;
+                case "show--book":
+                    actionShowBook();
+                    break;
+                case "show--film":
+                    actionShowFilm();
+                    break;
+                case "create--name--type":
+                    actionCreateNameType(parserCommand.get(1), parserCommand.get(2));
+                    break;
+                case "open--name":
+                    actionOpenName();
+                    break;
+                case "delete--name":
+                    actionDeleteName();
+                    break;
+                case "search--book--title":
+                    actionSearchBookTitle(parserCommand.get(1));
+                    break;
+                case "add--isbn--vault":
+                    actionAddIsbnVault();
+                    break;
+                case "delete--isbn--vault":
+                    actionDeleteIsbnVault();
+                    break;
+                default:
+                    view.commandNotFoundView();
+            }
         }
     }
 
@@ -166,7 +178,14 @@ public class CommandController {
 
     private void actionCreateNameType(String name, String type) {
         if (type.equals("book")) {
-            
+            BookVault v = new BookVault(name);
+            if (!UserSession.getInstance().getLoggedUser().getBookVaults().contains(v)) {
+                UserSession.getInstance().getLoggedUser().addVault(v);
+                view.successfullyActionView();
+            } else {
+                view.vaultAlreadyExistsView();
+            }
+            UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
         }
     }
 
@@ -177,12 +196,8 @@ public class CommandController {
     }
 
     private void actionStatusUser() {
-        User u;
-        if ((u = UserSession.getInstance().getLoggedUser()) != null) {
-            view.statusView(u.getName());
-        } else {
-            view.noSesionView();
-        }
+        User u = UserSession.getInstance().getLoggedUser();
+        view.statusView(u.getName());
     }
 
     private void actionLogout() {

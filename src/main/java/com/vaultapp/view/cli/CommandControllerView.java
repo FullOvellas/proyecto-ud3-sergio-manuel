@@ -9,6 +9,8 @@ public class CommandControllerView {
     private final String COMMAND_NOT_FOUND = "Command not found";
     private final String LOGIN_ERROR = "Incorrect user or password. Please, try again.";
     private final String NO_SESION = "You must login before.";
+    private final String VAUL_ALREADY_EXISTS = "This vault already exists. Try another name.";
+    private final String SUCCESSFULLY_ACTION = "Action done successfully";
     private String status =
             "\n============================\n" +
                     "Username: %s\n" +
@@ -40,6 +42,14 @@ public class CommandControllerView {
         System.out.println(String.format(status, name));
     }
 
+    public void vaultAlreadyExistsView() {
+        System.out.println(VAUL_ALREADY_EXISTS);
+    }
+
+    public void successfullyActionView() {
+        System.out.println(SUCCESSFULLY_ACTION);
+    }
+
     public void noSesionView() {
         System.out.println(NO_SESION);
     }
@@ -51,9 +61,7 @@ public class CommandControllerView {
                 "ISBN: %s\n" +
                 "Publish Year: %s\n" +
                 "Cover: %s\n";
-        Book b;
-        for (int i = 0; i < 10; i++) {
-            b = books.get(i);
+        for (Book b : books) {
             System.out.println(String.format(view, b.getTitle(), b.getAuthor(), b.getIsbn(), b.getPublishYear(), b.getCover()));
         }
     }

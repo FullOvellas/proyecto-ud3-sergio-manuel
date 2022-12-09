@@ -1,6 +1,5 @@
 package com.vaultapp.model.repository;
 
-import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.dao.BookVaultDao;
 import com.vaultapp.model.entities.dao.Dao;
@@ -24,10 +23,10 @@ public class BookVaultDbRepository implements Repository<BookVault> {
     public static BookVaultDbRepository getInstance() { return instance; }
 
     @Override
-    public void add(BookVault book) {
+    public void add(BookVault bookVault) {
         try {
             em.getTransaction().begin();
-            bookVaultDao.create(book);
+            bookVaultDao.create(bookVault);
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();

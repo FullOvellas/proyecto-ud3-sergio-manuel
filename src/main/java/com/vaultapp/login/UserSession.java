@@ -18,8 +18,7 @@ public class UserSession {
     public boolean login(User user) {
         User u = UserRepository.getInstance().find(user.getName());
         if (user.equals(u)) {
-            loginUser = user;
-
+            loginUser = u;
             return true;
         }
         return false;
@@ -37,4 +36,7 @@ public class UserSession {
         return loginUser;
     }
 
+    public boolean inSession() {
+        return loginUser != null;
+    }
 }

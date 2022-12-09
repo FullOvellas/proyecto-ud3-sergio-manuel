@@ -88,14 +88,13 @@ public class Book {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id);
+        return Objects.equals(isbn, book.isbn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(isbn);
     }
-
 
     @Override
     public String toString() {
