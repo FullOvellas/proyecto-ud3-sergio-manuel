@@ -68,7 +68,7 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 - `exit` Cierra sesión y sale del programa.
 
 #### Comandos para la gestion de vaults:
-- `create --name name --type type` Crea un vault de tipo libros/películas vacío con nombre.
+- `create --bookvault --name name` Crea un vault de libros vacío con nombre.
 - `open --name name` Abre y muestra un vault por nombre. El vault debe existis previamente en una colección del usuario.
 - `delete --name name` Borra un vault por nombre. 
 
