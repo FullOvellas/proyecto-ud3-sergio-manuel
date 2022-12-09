@@ -1,9 +1,13 @@
 package com.vaultapp.controller;
 
+import com.vaultapp.model.entities.Book;
+import com.vaultapp.model.pojo.book.dao.BookApiDao;
 import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
+import java.util.List;
 
 /**
  * Defines the logic of the program.
@@ -12,22 +16,24 @@ import javafx.fxml.FXML;
  * @author Sergio Alonso Pazo
  */
 public class MainController {
-    private EntityManager em;
     private UserController userController;
     private FilmController filmController;
     private BookController bookController;
 
 
     public MainController() {
-        this.em = JpaUtil.getEntityManager();
-        this.userController = new UserController(em);
-        this.filmController = new FilmController(em);
-        this.bookController = new BookController(em);
+        this.userController = new UserController();
+        this.filmController = new FilmController();
+        this.bookController = new BookController();
         // LÓGICA DE NEGOCIO
+
+        BookApiDao bad = new BookApiDao();
+        List<Book> b = bad.read("eragon");
+        b.forEach(System.out::println);
 
 
         // FIN DE PROGRAMA
-        em.close();
+        JpaUtil.close();
     }
 
 }

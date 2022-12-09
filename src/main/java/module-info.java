@@ -6,6 +6,7 @@ module proyecto.ud3.sergio.y.manuel {
     requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.bootstrapicons;
+    requires com.fasterxml.jackson.databind;
 
     exports com.vaultapp to javafx.graphics, javafx.fxml;
     exports com.vaultapp.controller to javafx.fxml;

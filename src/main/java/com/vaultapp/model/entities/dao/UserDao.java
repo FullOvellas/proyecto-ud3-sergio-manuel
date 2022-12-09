@@ -1,4 +1,4 @@
-package com.vaultapp.model.dao;
+package com.vaultapp.model.entities.dao;
 
 import com.vaultapp.model.entities.User;
 import com.vaultapp.utilities.JpaUtil;

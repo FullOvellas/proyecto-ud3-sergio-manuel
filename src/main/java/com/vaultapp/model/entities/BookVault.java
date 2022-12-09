@@ -2,11 +2,12 @@ package com.vaultapp.model.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "bookvaults")
-public class BookVault extends Vault {
+public class BookVault extends Vault<Book> {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -21,6 +22,9 @@ public class BookVault extends Vault {
     @JoinColumn(name = "user_id")
     private User owner;
 
+    public BookVault() {
+        books = new ArrayList<>();
+    }
 
     public List<Book> getBooks() {
         return books;
@@ -36,5 +40,10 @@ public class BookVault extends Vault {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public void addElement(Book book) {
+        books.add(book);
     }
 }

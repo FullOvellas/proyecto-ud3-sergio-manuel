@@ -1,7 +1,7 @@
 package com.vaultapp.model.repository;
 
-import com.vaultapp.model.dao.Dao;
-import com.vaultapp.model.dao.UserDao;
+import com.vaultapp.model.entities.dao.Dao;
+import com.vaultapp.model.entities.dao.UserDao;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
@@ -38,7 +38,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public List<User> getAsList() {
-        return null;
+        return userDao.read();
     }
 
     @Override

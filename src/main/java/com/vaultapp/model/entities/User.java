@@ -2,6 +2,7 @@ package com.vaultapp.model.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +20,11 @@ public class User {
     @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name= "vault_id")
     private List<BookVault> bookVaults;
+
+    public User() {
+        filmVaults = new ArrayList<>();
+        bookVaults = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -44,6 +50,22 @@ public class User {
         this.bookVaults = bookVaults;
     }
 
+    /**
+     * Adds a vault for the user. Symmetrically defines an owner for the vault.
+     * This method ensures the bidirectional class relation between <code>User</code> and
+     * <code>Vault</code>.
+     * @param vault
+     */
+    public void addVault(Vault vault) {
+        if (vault instanceof FilmVault) {
+            filmVaults.add((FilmVault) vault);
+            ((FilmVault) vault).setOwner(this);
+        } else if (vault instanceof BookVault) {
+            bookVaults.add((BookVault) vault);
+            ((BookVault) vault).setOwner(this);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,5 +77,12 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                '}';
     }
 }
