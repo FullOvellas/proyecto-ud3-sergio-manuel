@@ -17,7 +17,7 @@ public class CommandController {
     private final Scanner sc;
     private boolean exit;
 
-    private final Set<String> commands = Set.of(
+    private final Set<String> reservedWords = Set.of(
             "login",
             "logout",
             "status",
@@ -31,10 +31,10 @@ public class CommandController {
             "--password",
             "--book",
             "--film",
+            "--bookvault",
             "--name",
             "--title",
             "--isbn",
-            "--type",
             "--vault"
     );
 
@@ -71,7 +71,7 @@ public class CommandController {
 
         noArgs.add(splitLineCommand[0]);
         Arrays.stream(splitLineCommand).filter(s -> s.startsWith("--")).forEach(noArgs::add);
-        if (!commands.containsAll(noArgs)) {
+        if (!reservedWords.containsAll(noArgs)) {
             this.view.commandNotFoundView();
             return null;
         }
@@ -126,28 +126,22 @@ public class CommandController {
                 case "status":
                     actionStatusUser();
                     break;
-                case "show--book":
-                    actionShowBook();
+                case "create--bookvault--name":
+                    actionCreateBookVault(parserCommand.get(1));
                     break;
-                case "show--film":
-                    actionShowFilm();
+                case "open--bookvault--name":
+                    actionOpenName(parserCommand.get(1));
                     break;
-                case "create--name--type":
-                    actionCreateNameType(parserCommand.get(1), parserCommand.get(2));
-                    break;
-                case "open--name":
-                    actionOpenName();
-                    break;
-                case "delete--name":
+                case "delete--bookvault--name":
                     actionDeleteName();
                     break;
                 case "search--book--title":
                     actionSearchBookTitle(parserCommand.get(1));
                     break;
-                case "add--isbn--vault":
+                case "add--book--isbn--vault":
                     actionAddIsbnVault(parserCommand.get(1), parserCommand.get(2));
                     break;
-                case "delete--isbn--vault":
+                case "delete--book--isbn--vault":
                     actionDeleteIsbnVault();
                     break;
                 default:
@@ -185,20 +179,19 @@ public class CommandController {
     private void actionDeleteName() {
     }
 
-    private void actionOpenName() {
+    private void actionOpenName(String vaultName) {
+
     }
 
-    private void actionCreateNameType(String name, String type) {
-        if (type.equals("book")) {
-            BookVault v = new BookVault(name);
-            if (!UserSession.getInstance().getLoggedUser().getBookVaults().contains(v)) {
-                UserSession.getInstance().getLoggedUser().addVault(v);
-                view.successfullyActionView();
-            } else {
-                view.vaultAlreadyExistsView();
-            }
-            UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
+    private void actionCreateBookVault(String name) {
+        BookVault v = new BookVault(name);
+        if (!UserSession.getInstance().getLoggedUser().getBookVaults().contains(v)) {
+            UserSession.getInstance().getLoggedUser().addVault(v);
+            view.successfullyActionView();
+        } else {
+            view.vaultAlreadyExistsView();
         }
+        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
     }
 
     private void actionShowFilm() {

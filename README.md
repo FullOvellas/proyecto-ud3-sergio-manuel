@@ -69,12 +69,12 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 
 #### Comandos para la gestion de vaults:
 - `create --bookvault --name name` Crea un vault de libros vacío con nombre.
-- `open --name name` Abre y muestra un vault por nombre. El vault debe existis previamente en una colección del usuario.
-- `delete --name name` Borra un vault por nombre. 
+- `open --bookvault --name name` Abre y muestra un vault por nombre. El vault debe existis previamente en una colección del usuario.
+- `delete --bookvault --name name` Borra un vault por nombre. 
 
 #### Comandos para gestión de libros y películas
 - `search --book --title title` Busca un libro por título en API Open Library.
-- `add --isbn isbn --vault name` Añade el libro de ISBN dado en el vault de nombre dado.
-- `delete --isbn isbn --vault name` Borra el libro de ISBN dado en el vault de nombre dado.
+- `add --book --isbn isbn --vault name` Añade el libro de ISBN dado en el vault de nombre dado.
+- `delete --book --isbn isbn --vault name` Borra el libro de ISBN dado en el vault de nombre dado.
 
 
