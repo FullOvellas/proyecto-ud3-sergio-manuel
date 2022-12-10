@@ -3,7 +3,7 @@ package com.vaultapp.model.pojo.film;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ApiFilm {
+public class FilmDetail{
 
 	@JsonProperty("original_language")
 	private String originalLanguage;

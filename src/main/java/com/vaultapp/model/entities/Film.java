@@ -21,18 +21,18 @@ public class Film extends VaultItem {
     private String overview;
     private String originalTitle;
     @ElementCollection
-    private List<String> productionCompany;
+    private List<String> productionCompanies;
     private LocalDate releaseDate;
     private String tagline;
 
-    public Film(int tmdbId, String title, String posterPath, List<String> genres, String overview, String originalTitle, List<String> productionCompany, LocalDate releaseDate, String tagline) {
+    public Film(int tmdbId, String title, String posterPath, List<String> genres, String overview, String originalTitle, List<String> productionCompanies, LocalDate releaseDate, String tagline) {
         this.tmdbId = tmdbId;
         this.title = title;
         this.posterPath = posterPath;
         this.genres = genres;
         this.overview = overview;
         this.originalTitle = originalTitle;
-        this.productionCompany = productionCompany;
+        this.productionCompanies = productionCompanies;
         this.releaseDate = releaseDate;
         this.tagline = tagline;
     }
@@ -47,6 +47,42 @@ public class Film extends VaultItem {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getTmdbId() {
+        return tmdbId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
+
+    public List<String> getProductionCompanies() {
+        return productionCompanies;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public String getTagline() {
+        return tagline;
     }
 
     @Override

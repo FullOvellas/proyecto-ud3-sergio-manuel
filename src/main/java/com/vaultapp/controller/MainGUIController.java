@@ -2,6 +2,7 @@ package com.vaultapp.controller;
 
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.entities.VaultItem;
+import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.model.repository.FilmRepository;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -10,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,6 +20,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -51,9 +56,25 @@ public class MainGUIController {
     public Region titleSpacer;
     public Rectangle layer;
     @FXML
-    private Rectangle rect;
+    public BorderPane controlsLayer;
     @FXML
-    StackPane root;
+    public BorderPane userContent;
+    @FXML
+    public ImageView itemImage;
+    @FXML
+    public Label detailField1;
+    @FXML
+    public Label detailField2;
+    @FXML
+    public Label detailField3;
+    @FXML
+    public Label detailField4;
+    @FXML
+    public VBox detailView;
+    @FXML
+    public VBox itemInfo;
+    @FXML
+    private Rectangle rect;
     private final Interpolator slide = Interpolator.SPLINE(0, 0, 0.1, 1);
     private final String SIDEBAR_BORDER = "-fx-border-style: hidden solid hidden hidden";
     private final String HIDDEN_BORDER = "-fx-border-style: hidden";
@@ -128,6 +149,15 @@ public class MainGUIController {
     }
 
     public void initialize() {
+
+        // Control flow
+        EventHandler<MouseEvent> enableControls = e -> controlsLayer.setMouseTransparent(false);
+        EventHandler<MouseEvent> disableControls = e -> controlsLayer.setMouseTransparent(true);
+        detailView.setOnMouseEntered(disableControls);
+        vbxSidebar.setOnMouseExited(disableControls);
+        tblItems.setOnMouseExited(enableControls);
+
+        // Element initialization
         title.setText(filmsSelected ? "Your film vault" : "Your book vault");
         title.getStyleClass().add(TITLE_1);
         vbxSidebar.setPadding(new Insets(0, 3, 0, 2));
@@ -142,18 +172,24 @@ public class MainGUIController {
         expandedPadding = new Insets(10d, 15d, 10d, 5d);
         spacer.minWidthProperty().setValue(58);
         titleSpacer.minWidthProperty().setValue(62);
-
+        tblItems.getStyleClass().add(STRIPED);
+        detailView.setPadding(new Insets(5d));
+        detailView.setMaxWidth(300d);
+        itemImage.setFitHeight(300);
+        itemImage.setFitWidth(200);
+        itemInfo.autosize();
 
         if (filmsSelected) {
 
             ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
             tblItems.setItems(films);
-            TableColumn<Film, String> titleCol = new TableColumn<>("Title");
+            TableColumn<VaultItem, String> titleCol = new TableColumn<>("Title");
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            TableColumn<Film, LocalDate> releaseCol = new TableColumn<>("Release");
+            TableColumn<VaultItem, LocalDate> releaseCol = new TableColumn<>("Release");
             releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
-            TableColumn<Film, String> statusCol = new TableColumn<>("Status");
-            statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+            //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
+            //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+            tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
 
         }
 
@@ -165,14 +201,19 @@ public class MainGUIController {
             expandRectangle(actionEvent);
         } else {
 
+            filmsSelected = true;
+            title.setText("Your film vault");
+
             ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
             tblItems.setItems(films);
             TableColumn<Film, String> titleCol = new TableColumn<>("Title");
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            TableColumn<Film, LocalDate> releaseCol = new TableColumn<>("Release");
+            TableColumn<Film, LocalDate> releaseCol = new TableColumn<>("Year");
             releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
             TableColumn<Film, String> statusCol = new TableColumn<>("Status");
             statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+            expandRectangle(actionEvent);
 
         }
 
@@ -181,19 +222,46 @@ public class MainGUIController {
     public void switchToBookVault(ActionEvent actionEvent) {
 
         if (!filmsSelected) {
+
             expandRectangle(actionEvent);
+
         } else {
 
-            /*
-            ObservableList<VaultItem> books = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
-            tblItems.setItems(films);
+            layer.setMouseTransparent(true);
+            filmsSelected = false;
+            title.setText("Your book vault");
+
+            ObservableList<VaultItem> books = FXCollections.observableArrayList(BookDbRepository.getInstance().getAsList());
+            tblItems.setItems(books);
             TableColumn<Film, String> titleCol = new TableColumn<>("Title");
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            TableColumn<Film, LocalDate> releaseCol = new TableColumn<>("Release");
-            releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+            TableColumn<Film, String> authorCol = new TableColumn<>("Author");
+            authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
+            TableColumn<Film, String> releaseCol = new TableColumn<>("Year");
+            releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishYear"));
             TableColumn<Film, String> statusCol = new TableColumn<>("Status");
             statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-            */
+            expandRectangle(actionEvent);
+
         }
+    }
+
+    public void refreshDetailView(MouseEvent mouseEvent) {
+
+        if (filmsSelected) {
+
+            Film f = (Film) tblItems.getSelectionModel().getSelectedItem();
+
+            itemImage.setImage(new Image(f.getPosterPath()));
+
+            detailField1.setText("Title: " + f.getTitle());
+            detailField2.setText("Genres: " + String.join(", ", f.getGenres()));
+            detailField3.setText("Overview: " + f.getOverview());
+            detailField4.setText("Tagline: " + f.getTagline());
+
+        } else {
+
+        }
+
     }
 }

@@ -1,7 +1,11 @@
 package com.vaultapp;
 
 import com.vaultapp.controller.MainController;
+import com.vaultapp.model.dao.api.FilmApiDao;
+import com.vaultapp.model.entities.Film;
+import com.vaultapp.model.repository.FilmRepository;
 
+import java.util.List;
 import java.util.Locale;
 
 public class VaultApp {
@@ -14,6 +18,15 @@ public class VaultApp {
                 "Modos:\n\t" +
                 "--cli: aplicación en línea de comandos\n\t" +
                 "--gui: aplicación con cliente gráfico";
+
+        List<Film> f = FilmApiDao.getInstance().searchByTitle("star", 1);
+        for (Film film : f) {
+            FilmRepository.getInstance().add(film);
+        }
+        f = FilmApiDao.getInstance().searchByTitle("Fight", 1);
+        for (Film film : f) {
+            FilmRepository.getInstance().add(film);
+        }
 
         if (args.length == 0) {
             new MainController();
