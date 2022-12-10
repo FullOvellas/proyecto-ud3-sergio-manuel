@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "bookvaults")
@@ -22,8 +23,23 @@ public class BookVault extends Vault<Book> {
     @JoinColumn(name = "user_id")
     private User owner;
 
+
     public BookVault() {
+        super();
         books = new ArrayList<>();
+    }
+
+    public BookVault(String name) {
+        super(name);
+        books = new ArrayList<>();
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Book> getBooks() {
@@ -44,6 +60,27 @@ public class BookVault extends Vault<Book> {
 
     @Override
     public void addElement(Book book) {
-        books.add(book);
+        if (!books.contains(book)) {
+            books.add(book);
+        }
+    }
+
+    @Override
+    public void deleteElement(Book book) {
+        books.remove(book);
+    }
+
+    public Book findByIsbn(String isbn) {
+        List<Book> lb = books.stream().filter(b -> b.getIsbn().equals(isbn)).collect(Collectors.toList());
+        if (lb.size() > 0) {
+            return lb.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

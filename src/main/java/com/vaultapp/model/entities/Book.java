@@ -18,6 +18,7 @@ public class Book {
 
     private String publishYear;
 
+    @Column(unique = true)
     private String isbn;
 
     private URL cover;
@@ -26,12 +27,15 @@ public class Book {
     public Book() {
     }
 
+    public Book(String isbn) {
+        this.isbn = isbn;
+    }
+
     public Book(String title, String author, String publishYear, String isbn) {
         this.title = title;
         this.author = author;
         this.publishYear = publishYear;
         this.isbn = isbn;
-        this.cover = cover;
     }
 
     public String getIsbn() {
@@ -88,14 +92,13 @@ public class Book {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id);
+        return Objects.equals(isbn, book.isbn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(isbn);
     }
-
 
     @Override
     public String toString() {

@@ -1,10 +1,13 @@
 package com.vaultapp.model.repository;
 
+import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.dao.UserDao;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public class UserRepository implements Repository<User> {

@@ -1,5 +1,6 @@
 package com.vaultapp.model.entities;
 
+import com.vaultapp.utilities.Cipher;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,16 +14,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String password;
 
-    @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name= "vault_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
     private List<FilmVault> filmVaults;
 
-    @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name= "vault_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
     private List<BookVault> bookVaults;
 
     public User() {
@@ -30,15 +30,11 @@ public class User {
         bookVaults = new ArrayList<>();
     }
 
-    public User(String name) {
-        this();
-        this.name = name;
-    }
 
     public User(String name, String password) {
         this();
         this.name = name;
-        this.password = password;
+        this.password = Cipher.getInstance().encrypt(password);
     }
 
     public String getName() {
@@ -85,6 +81,7 @@ public class User {
      * Adds a vault for the user. Symmetrically defines an owner for the vault.
      * This method ensures the bidirectional class relation between <code>User</code> and
      * <code>Vault</code>.
+     *
      * @param vault
      */
     public void addVault(Vault vault) {
@@ -102,12 +99,13 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id);
+        return Objects.equals(name, user.name) && Objects.equals(Cipher.getInstance().decrypt(password),
+                Cipher.getInstance().decrypt(user.password));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(name, Cipher.getInstance().decrypt(password));
     }
 
     @Override

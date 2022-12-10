@@ -1,6 +1,5 @@
 package com.vaultapp.controller;
 
-import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.utilities.JpaUtil;
@@ -13,26 +12,18 @@ import com.vaultapp.utilities.JpaUtil;
  * @author Sergio Alonso Pazo
  */
 public class MainController {
-    private UserController userController;
-    private FilmController filmController;
-    private BookController bookController;
 
 
     public MainController() {
-        this.userController = new UserController();
-        this.filmController = new FilmController();
-        this.bookController = new BookController();
-        // BEGIN PROGRAM
+        // PERSISTENT DATA
+        User u = new User("root", "root");
+        UserRepository.getInstance().add(u);
 
-        var res = bookController.bookFinder();
-
-
-
+        // BEGIN CLI PROGRAM
+        new CommandController();
         //END PROGRAM
         JpaUtil.close();
     }
-
-
 
 
 }

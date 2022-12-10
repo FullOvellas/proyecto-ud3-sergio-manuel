@@ -16,20 +16,27 @@ public class UserSession {
     }
 
     public boolean login(User user) {
-        boolean ctrl = false;
-        if (UserRepository.getInstance().find(user.getName()) != null) {
-            loginUser = user;
-            ctrl = true;
+        User u = UserRepository.getInstance().find(user.getName());
+        if (user.equals(u)) {
+            loginUser = u;
+            return true;
         }
-        return ctrl;
+        return false;
     }
 
-    public void logout() {
-        loginUser = null;
+    public boolean logout() {
+        if (loginUser != null) {
+            loginUser = null;
+            return true;
+        }
+        return false;
     }
 
     public User getLoggedUser(){
         return loginUser;
     }
 
+    public boolean inSession() {
+        return loginUser != null;
+    }
 }
