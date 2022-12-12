@@ -94,6 +94,14 @@ public class User {
         }
     }
 
+    public void removeVault(Vault vault) {
+        if (vault instanceof BookVault) {
+            bookVaults.remove((BookVault) vault);
+        } else if (vault instanceof FilmVault) {
+            filmVaults.remove((FilmVault) vault);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

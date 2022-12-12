@@ -2,9 +2,7 @@ package com.vaultapp.controller;
 
 
 import com.vaultapp.login.UserSession;
-import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.entities.BookVault;
-import com.vaultapp.model.entities.User;
+import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.BookApiRepository;
 import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.model.repository.UserRepository;
@@ -131,8 +129,8 @@ public class CommandController {
                 case "open--bookvault--name":
                     actionOpenBookVault(parserCommand.get(1));
                     break;
-                case "delete--bookvault--name":
-                    actionDeleteBookVault();
+                case "delete--vault--name":
+                    actionDeleteVault(parserCommand.get(1));
                     break;
                 case "search--book--title":
                     actionSearchBookTitle(parserCommand.get(1));
@@ -206,7 +204,21 @@ public class CommandController {
         view.listOfBooksView(BookApiRepository.getInstance().getAsListByTitle(title));
     }
 
-    private void actionDeleteBookVault() {
+    private void actionDeleteVault(String title) {
+        User u = UserSession.getInstance().getLoggedUser();
+        List<Vault> vaults = new LinkedList<>();
+        List<BookVault> bv = u.getBookVaults().stream().filter(v -> v.getName().equals(title)).collect(Collectors.toList());
+        List<FilmVault> fv = u.getFilmVaults().stream().filter(v -> v.getName().equals(title)).collect(Collectors.toList());
+        vaults.addAll(bv);
+        vaults.addAll(fv);
+
+        if (vaults.isEmpty()) {
+            view.vaultNotFoundView();
+        } else {
+            u.removeVault(vaults.get(0));
+            view.successfullyActionView();
+        }
+        UserRepository.getInstance().add(u);
     }
 
     private void actionOpenBookVault(String vaultName) {
