@@ -1,9 +1,9 @@
 package com.vaultapp.model.pojo.film.dao;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaultapp.model.entities.Film;
-import com.vaultapp.model.pojo.film.ApiFilm;
-import com.vaultapp.model.pojo.film.FilmResultPage;
+import com.vaultapp.model.pojo.film.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FilmApiDao {
 
@@ -27,17 +28,25 @@ public class FilmApiDao {
         instance = new FilmApiDao();
     }
 
+    private FilmApiDao() {
+
+        ObjectMapper om = new ObjectMapper();
+
+    }
+
     public static FilmApiDao getInstance() { return instance; }
+
 
     public List<Film> searchByTitle(String title, int page) {
         ObjectMapper objectMapper = new ObjectMapper();
-        String url = String.format(SEARCH_URL, API_KEY ,title, page);
+        String formattedTitle = String.join("+", title.split(" "));
+        String url = String.format(SEARCH_URL, API_KEY , formattedTitle, page);
         List<Film> films = new ArrayList<>();
 
         try {
-            FilmResultPage resultPage = objectMapper.readValue(new URL(URLEncoder.encode(url, StandardCharsets.UTF_8)), FilmResultPage.class);
-            List<ApiFilm> pageFilms = resultPage.getPageFilms();
-            for (ApiFilm a : pageFilms) {
+            Response resultPage = objectMapper.readValue(new URL(url), Response.class);
+            List<ResultsItem> pageFilms = resultPage.getResults();
+            for (ResultsItem a : pageFilms) {
                 films.add(parseApiFilm(a));
             }
         } catch (IOException e) {
@@ -47,19 +56,28 @@ public class FilmApiDao {
         return films;
     }
 
-    private Film parseApiFilm(ApiFilm apiFilm) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
-        int tmdbId = apiFilm.getId();
-        String title = apiFilm.getTitle();
-        String posterPath = apiFilm.getPosterPath();
+    private Film parseApiFilm(ResultsItem apiFilm) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US);
+        FilmDetail filmDetail = searchByTmdbId(apiFilm.getId());
+
+        int tmdbId = filmDetail.getId();
+        String title = filmDetail.getTitle();
+        String posterPath = String.format(POSTER_URL, apiFilm.getPosterPath());
         List<String> genres = new ArrayList<>();
-        apiFilm.getGenres().forEach(genresItem -> genres.add(genresItem.getName()));
-        String overview = apiFilm.getOverview();
-        String originalTitle = apiFilm.getOriginalTitle();
+        String overview = filmDetail.getOverview();
+        String originalTitle = filmDetail.getOriginalTitle();
         List<String> productionCompanies = new ArrayList<>();
-        apiFilm.getProductionCompanies().forEach(productionCompany -> productionCompanies.add(productionCompany.getName()));
-        LocalDate releaseDate = LocalDate.parse(apiFilm.getReleaseDate(), formatter);
-        String tagline = apiFilm.getTagline();
+        LocalDate releaseDate;
+        if (filmDetail.getReleaseDate().length() != 0) {
+            releaseDate = LocalDate.parse(filmDetail.getReleaseDate(), formatter);
+        } else {
+            releaseDate = null;
+        }
+        String tagline = filmDetail.getTagline();
+
+        filmDetail.getGenres().forEach(g -> genres.add(g.getName()));
+        filmDetail.getProductionCompanies().forEach(p -> productionCompanies.add(p.getName()));
 
         return new Film(tmdbId,
                 title,
@@ -70,22 +88,21 @@ public class FilmApiDao {
                 productionCompanies,
                 releaseDate,
                 tagline);
+
     }
 
-    public Film searchBytmdbId(int id) {
+    public FilmDetail searchByTmdbId(int id) {
         ObjectMapper objectMapper = new ObjectMapper();
-        ApiFilm film = null;
-        Film out;
-        String url = String.format(MOVIE_URL,id, API_KEY);
+        String url = String.format(MOVIE_URL, id, API_KEY);
+        FilmDetail film = null;
 
         try {
-            film = objectMapper.readValue(new URL(URLEncoder.encode(url, StandardCharsets.UTF_8)), ApiFilm.class);
-            out = parseApiFilm(film);
+            film = objectMapper.readValue(new URL(url), FilmDetail.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return out;
+        return film;
     }
 
 }

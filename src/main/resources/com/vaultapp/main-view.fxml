@@ -6,9 +6,62 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.vaultapp.Main"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.shape.Rectangle?>
 
-</AnchorPane>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.vaultapp.controller.MainGUIController">
+    <BorderPane fx:id="userContent">
+        <!-- user content -->
+        <top>
+            <HBox>
+                <Region fx:id="titleSpacer" />
+                <Label fx:id="title" />
+            </HBox>
+        </top>
+        <left>
+            <VBox>
+                <Region fx:id="spacer" />
+            </VBox>
+        </left>
+        <center>
+            <TableView fx:id="tblItems" onMouseClicked="#refreshDetailView"/>
+        </center>
+        <right>
+            <VBox fx:id="detailView" minWidth="300" alignment="TOP_CENTER" spacing="35">
+                <ImageView fx:id="itemImage"/>
+                <VBox fx:id="itemInfo" spacing="10">
+                    <Label fx:id="detailField1" wrapText="true" />
+                    <Label fx:id="detailField2" wrapText="true" />
+                    <Label fx:id="detailField3" wrapText="true" />
+                    <Label fx:id="detailField4" wrapText="true" />
+                </VBox>
+            </VBox>
+        </right>
+    </BorderPane>
+
+    <Rectangle fx:id="layer" mouseTransparent="true" fill="black" opacity="0.0" width="100000" height="100000"/>
+
+    <BorderPane mouseTransparent="true">
+        <left>
+            <Rectangle height="800" fx:id="rect" opacity="0" fill="#537297" visible="false"/>
+        </left>
+    </BorderPane>
+
+    <BorderPane fx:id="controlsLayer" mouseTransparent="true">
+        <left>
+            <VBox fx:id="vbxSidebar"
+                  spacing="10"
+                  style="-fx-border-style: hidden solid hidden hidden; -fx-border-width: 1; -fx-border-color: #AAA">
+
+                <Button fx:id="btnSideMenu" onAction="#expandRectangle" />
+                <VBox fx:id="vaultControlsContainer" alignment="CENTER">
+                    <Button fx:id="btnFilmView" onAction="#switchToFilmVault"/>
+                    <Button fx:id="btnBookView" onAction="#switchToBookVault"/>
+                </VBox>
+            </VBox>
+        </left>
+    </BorderPane>
+</StackPane>

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class Book extends VaultItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
