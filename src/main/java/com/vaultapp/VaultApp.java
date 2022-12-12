@@ -1,8 +1,9 @@
 package com.vaultapp;
 
 import com.vaultapp.controller.MainController;
-import com.vaultapp.model.dao.api.FilmApiDao;
+
 import com.vaultapp.model.entities.Film;
+import com.vaultapp.model.pojo.film.dao.FilmApiDao;
 import com.vaultapp.model.repository.FilmRepository;
 
 import java.util.List;
