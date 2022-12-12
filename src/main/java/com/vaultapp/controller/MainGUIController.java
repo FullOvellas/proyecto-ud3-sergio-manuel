@@ -1,9 +1,10 @@
 package com.vaultapp.controller;
 
-import com.vaultapp.model.entities.Film;
-import com.vaultapp.model.entities.VaultItem;
+import com.vaultapp.MainGUI;
+import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.model.repository.FilmRepository;
+import com.vaultapp.model.repository.UserRepository;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -13,8 +14,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -27,10 +30,15 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static atlantafx.base.theme.Styles.*;
 
@@ -84,6 +92,14 @@ public class MainGUIController {
     private Insets expandedPadding;
     private boolean expanded = false;
     private boolean filmsSelected = true; // true: view film vault, false: view book vault
+    private static Vault selectedVault;
+    private User activeUser;
+    private final boolean USE_BOOK_VAULTS = true;
+    private final boolean USE_FILM_VAULTS = false;
+
+    public static void setSelectedVault(Vault selectedVault) {
+        MainGUIController.selectedVault = selectedVault;
+    }
 
     public void expandRectangle(ActionEvent actionEvent) {
         if (!expanded) {
@@ -150,6 +166,16 @@ public class MainGUIController {
 
     public void initialize() {
 
+        //TODO: THIS IS FOR TESTING ////////////////////////
+        //
+        UserRepository.getInstance().add(new User("root", "root"));
+        activeUser = UserRepository.getInstance().find("root");
+        activeUser.addVault(new BookVault("testing"));
+        UserRepository.getInstance().add(activeUser);
+        selectedVault = new BookVault();
+        //
+        /////////////////////////////////////////////////////
+
         // Control flow
         EventHandler<MouseEvent> enableControls = e -> controlsLayer.setMouseTransparent(false);
         EventHandler<MouseEvent> disableControls = e -> controlsLayer.setMouseTransparent(true);
@@ -173,6 +199,7 @@ public class MainGUIController {
         spacer.minWidthProperty().setValue(58);
         titleSpacer.minWidthProperty().setValue(62);
         tblItems.getStyleClass().add(STRIPED);
+        tblItems.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         detailView.setPadding(new Insets(5d));
         detailView.setMaxWidth(300d);
         itemImage.setFitHeight(300);
@@ -192,6 +219,76 @@ public class MainGUIController {
             tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
 
         }
+
+    }
+
+    public void chooseVault(ActionEvent actionEvent) throws IOException {
+
+        List<Vault> vaults = actionEvent.getSource().equals(btnBookView) ?
+                new ArrayList<>(activeUser.getBookVaults()) :
+                new ArrayList<>(activeUser.getFilmVaults());
+        Vault oldVault = selectedVault;
+
+        ChooseVaultDialogController.setVaultList(vaults);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("chooseVaultDialog-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.initOwner(MainGUI.getMainStage());
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        if (!oldVault.equals(selectedVault)) {
+
+            if (selectedVault instanceof BookVault) {
+
+                swapToBookVault();
+
+            } else {
+
+                swapToFilmVault();
+
+            }
+
+        }
+
+    }
+
+    private void swapToFilmVault() {
+
+        tblItems.getItems().clear();
+        tblItems.getColumns().clear();
+        FilmVault vault = (FilmVault) selectedVault;
+
+        ObservableList<VaultItem> films = FXCollections.observableArrayList(vault.getBooks());
+        tblItems.setItems(films);
+        TableColumn<VaultItem, String> titleCol = new TableColumn<>("Title");
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        TableColumn<VaultItem, LocalDate> releaseCol = new TableColumn<>("Release");
+        releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+        //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
+        //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
+
+    }
+
+    private void swapToBookVault() {
+
+        tblItems.getItems().clear();
+        tblItems.getColumns().clear();
+        BookVault vault = (BookVault) selectedVault;
+
+        ObservableList<VaultItem> books = FXCollections.observableArrayList(vault.getBooks());
+        tblItems.setItems(books);
+        TableColumn<VaultItem, String> titleCol = new TableColumn<>("Title");
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        TableColumn<VaultItem, String> authorCol = new TableColumn<>("Author");
+        authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
+        TableColumn<VaultItem, LocalDate> releaseCol = new TableColumn<>("Release");
+        releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishYear"));
+        //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
+        //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
 
     }
 

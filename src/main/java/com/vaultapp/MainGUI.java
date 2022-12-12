@@ -7,7 +7,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * Launches the application in graphic mode.
@@ -15,6 +14,7 @@ import javafx.stage.StageStyle;
  */
 public class MainGUI extends Application {
     private static Scene main;
+    private static Stage mainStage;
 
     public static void startApp() {
         Application.launch(MainGUI.class);
@@ -23,10 +23,17 @@ public class MainGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+        mainStage = primaryStage;
+        // TODO: launch in login view
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
         main = new Scene(fxmlLoader.load(), 1200, 800);
         primaryStage.setTitle("Vaulted");
         primaryStage.setScene(main);
         primaryStage.show();
     }
+
+    public static Stage getMainStage() {
+        return mainStage;
+    }
+
 }
