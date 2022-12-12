@@ -64,4 +64,5 @@
             </VBox>
         </left>
     </BorderPane>
+    <Rectangle fx:id="topLayer" mouseTransparent="true" fill="black" opacity="0" width="10000" height="10000"/>
 </StackPane>

@@ -82,6 +82,8 @@ public class MainGUIController {
     @FXML
     public VBox itemInfo;
     @FXML
+    public Rectangle topLayer;
+    @FXML
     private Rectangle rect;
     private final Interpolator slide = Interpolator.SPLINE(0, 0, 0.1, 1);
     private final String SIDEBAR_BORDER = "-fx-border-style: hidden solid hidden hidden";
@@ -224,6 +226,8 @@ public class MainGUIController {
 
     public void chooseVault(ActionEvent actionEvent) throws IOException {
 
+        darkenAll();
+
         List<Vault> vaults = actionEvent.getSource().equals(btnBookView) ?
                 new ArrayList<>(activeUser.getBookVaults()) :
                 new ArrayList<>(activeUser.getFilmVaults());
@@ -237,6 +241,8 @@ public class MainGUIController {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setScene(scene);
         stage.showAndWait();
+
+        lightenAll();
 
         if (!oldVault.equals(selectedVault)) {
 
@@ -252,6 +258,26 @@ public class MainGUIController {
 
         }
 
+    }
+
+    private void lightenAll() {
+
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(1);
+        KeyValue kv = new KeyValue(topLayer.opacityProperty(), 0.0, slide);
+        KeyFrame kf = new KeyFrame(Duration.millis(150d), kv);
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
+
+    }
+
+    private void darkenAll() {
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(1);
+        KeyValue kv = new KeyValue(topLayer.opacityProperty(), 0.7, slide);
+        KeyFrame kf = new KeyFrame(Duration.millis(150d), kv);
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
     }
 
     private void swapToFilmVault() {
