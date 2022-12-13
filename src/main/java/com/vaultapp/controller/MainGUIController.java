@@ -82,6 +82,8 @@ public class MainGUIController {
     @FXML
     public VBox itemInfo;
     @FXML
+    public Button btnAddView;
+    @FXML
     private Rectangle rect;
     private final Interpolator slide = Interpolator.SPLINE(0, 0, 0.1, 1);
     private final String SIDEBAR_BORDER = "-fx-border-style: hidden solid hidden hidden";
@@ -99,6 +101,10 @@ public class MainGUIController {
 
     public static void setSelectedVault(Vault selectedVault) {
         MainGUIController.selectedVault = selectedVault;
+    }
+
+    public static Vault getSelectedVault() {
+        return selectedVault;
     }
 
     public void expandRectangle(ActionEvent actionEvent) {
@@ -189,11 +195,13 @@ public class MainGUIController {
         vbxSidebar.setPadding(new Insets(0, 3, 0, 2));
         btnSideMenu.setGraphic(new FontIcon("bi-list"));
         btnSideMenu.getStyleClass().add(LARGE);
-        FontIcon icon = new FontIcon("bi-book");
-        btnBookView.setGraphic(icon);
+        btnBookView.setGraphic(new FontIcon("bi-book"));
         btnBookView.getStyleClass().addAll(FONT_ICON, LARGE);
         btnFilmView.setGraphic(new FontIcon("bi-film"));
         btnFilmView.getStyleClass().addAll(FONT_ICON, LARGE);
+        btnAddView.setGraphic(new FontIcon("bi-plus"));
+        btnAddView.getStyleClass().addAll(FONT_ICON, LARGE);
+
         btnDefWidth = btnFilmView.getWidth();
         expandedPadding = new Insets(10d, 15d, 10d, 5d);
         spacer.minWidthProperty().setValue(58);
@@ -295,7 +303,9 @@ public class MainGUIController {
     public void switchToFilmVault(ActionEvent actionEvent) {
 
         if (filmsSelected) {
+
             expandRectangle(actionEvent);
+
         } else {
 
             filmsSelected = true;
@@ -359,6 +369,10 @@ public class MainGUIController {
         } else {
 
         }
+
+    }
+
+    public void onAddItemClick(ActionEvent actionEvent) {
 
     }
 }

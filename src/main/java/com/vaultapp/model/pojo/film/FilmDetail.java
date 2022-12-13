@@ -2,6 +2,7 @@ package com.vaultapp.model.pojo.film;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 
 public class FilmDetail{
 
