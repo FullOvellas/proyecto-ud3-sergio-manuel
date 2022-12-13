@@ -62,7 +62,7 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 
 ### Comandos para CLI
 #### Comandos para la gestión de la sesión:
-- `login --user user --password password` Inica sesión de usuario.
+- `login [--user|-u] user [--password|-p] password` Inica sesión de usuario.
 - `logout` Cierra sesión de usuario.
 - `status` Muestra información general sobre el usuario y sus colecciones de vaults.
 - `exit` Cierra sesión y sale del programa.
@@ -73,7 +73,7 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 - `delete --vault type --name name` Borra un vault por nombre `(type = "book"|"film")`. 
 
 #### Comandos para gestión de libros y películas
-- `search --book --title title` Busca un libro por título en API Open Library.
+- `search --book title` Busca un libro por título en API Open Library.
 - `add --book --isbn isbn --vault name` Añade el libro de ISBN dado en el vault de nombre dado.
 - `delete --book --isbn isbn --vault name` Borra el libro de ISBN dado en el vault de nombre dado.
 

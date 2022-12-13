@@ -27,7 +27,9 @@ public class CommandController {
             "add",
             "exit",
             "--user",
+            "-u",
             "--password",
+            "-p",
             "--book",
             "--film",
             "--bookvault",
@@ -69,14 +71,14 @@ public class CommandController {
         String[] splitLineCommand = lineCommand.split(" ");
 
         noArgs.add(splitLineCommand[0]);
-        Arrays.stream(splitLineCommand).filter(s -> s.startsWith("--")).forEach(noArgs::add);
+        Arrays.stream(splitLineCommand).filter(s -> s.startsWith("-")).forEach(noArgs::add);
         if (!reservedWords.containsAll(noArgs)) {
             this.view.commandNotFoundView();
             return null;
         }
         List<Integer> index = new ArrayList<>();
         for (int i = 0; i < splitLineCommand.length; i++) {
-            if (splitLineCommand[i].contains("--")) {
+            if (splitLineCommand[i].startsWith("-")) {
                 index.add(i);
             }
         }
@@ -86,7 +88,7 @@ public class CommandController {
                 break;
             } else {
                 for (int j = i + 1; j < splitLineCommand.length; j++) {
-                    if (splitLineCommand[j].contains("--")) {
+                    if (splitLineCommand[j].startsWith("-")) {
                         break;
                     }
                     composeArgs.append(splitLineCommand[j]).append(" ");
@@ -104,11 +106,13 @@ public class CommandController {
     }
 
     private void processParserCommand(List<String> parserCommand) {
+        System.out.println(parserCommand);
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
                 return;
             case "login--user--password":
+            case "login-u-p":
                 actionLogin(parserCommand.get(1), parserCommand.get(2));
                 return;
         }
@@ -132,7 +136,7 @@ public class CommandController {
                 case "delete--vault--name":
                     actionDeleteVault(parserCommand.get(1));
                     break;
-                case "search--book--title":
+                case "search--book":
                     actionSearchBookTitle(parserCommand.get(1));
                     break;
                 case "add--book--isbn--vault":

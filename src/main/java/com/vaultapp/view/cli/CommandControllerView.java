@@ -3,7 +3,6 @@ package com.vaultapp.view.cli;
 import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.FilmVault;
-import org.hibernate.sql.exec.spi.StandardEntityInstanceResolver;
 
 import java.util.List;
 

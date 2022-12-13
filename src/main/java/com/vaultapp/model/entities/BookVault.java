@@ -19,6 +19,9 @@ public class BookVault extends Vault<Book> {
     )
     private List<Book> books;
 
+    @Column(unique = true)
+    protected String name;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;

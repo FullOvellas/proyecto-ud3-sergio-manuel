@@ -18,6 +18,9 @@ public class FilmVault extends Vault<Film> {
     )
     private List<Film> films;
 
+    @Column(unique = true)
+    protected String name;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
