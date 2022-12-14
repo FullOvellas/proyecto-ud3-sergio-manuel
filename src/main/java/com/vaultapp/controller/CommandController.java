@@ -235,15 +235,16 @@ public class CommandController {
     }
 
     private void actionCreateBookVault(String name) {
+        User u = UserSession.getInstance().getLoggedUser();
         BookVault v = new BookVault(name);
-        if (!UserSession.getInstance().getLoggedUser().getBookVaults().contains(v)) {
-            UserSession.getInstance().getLoggedUser().addVault(v);
+        if (!u.getBookVaults().contains(v)) {
+            u.addVault(v);
             view.successfullyActionView();
         } else {
             view.vaultAlreadyExistsView();
         }
         //update user status
-        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
+        UserRepository.getInstance().add(u);
     }
 
     private void actionStatusUser() {
