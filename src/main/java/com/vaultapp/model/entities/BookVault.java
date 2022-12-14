@@ -19,8 +19,6 @@ public class BookVault extends Vault<Book> {
     )
     private List<Book> books;
 
-    @Column(unique = true)
-    protected String name;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -36,6 +34,7 @@ public class BookVault extends Vault<Book> {
         super(name);
         books = new ArrayList<>();
     }
+
 
     public String getName() {
         return this.name;
@@ -85,6 +84,7 @@ public class BookVault extends Vault<Book> {
 
     @Override
     public String toString() {
-        return name;
+        String str = name + "(" + books.size() + ")";
+        return str;
     }
 }

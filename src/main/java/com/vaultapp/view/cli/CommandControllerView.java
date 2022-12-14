@@ -2,6 +2,7 @@ package com.vaultapp.view.cli;
 
 import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.BookVault;
+import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.entities.FilmVault;
 
 import java.util.List;
@@ -102,6 +103,18 @@ public class CommandControllerView {
                 "Cover: %s\n";
         for (Book b : books) {
             System.out.println(String.format(view, b.getTitle(), b.getAuthor(), b.getIsbn(), b.getPublishYear(), b.getCover()));
+        }
+    }
+
+    public void listOfFilmsView(List<Film> films) {
+        String view = "=============\n" +
+                "Title: %s\n" +
+                "Genres: %s\n" +
+                "Id: %s\n" +
+                "Publish Year: %s\n" +
+                "Cover: %s\n";
+        for (Film f : films) {
+            System.out.println(String.format(view, f.getTitle(), f.getGenres(), f.getTmdbId(), f.getReleaseDate(), f.getPosterPath()));
         }
     }
 

@@ -98,4 +98,15 @@ public class Film extends VaultItem {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "Film{" +
+                "title='" + title + '\'' +
+
+                ", posterPath='" + posterPath + '\'' +
+                ", genres=" + genres +
+                ", releaseDate=" + releaseDate +
+                '}';
+    }
 }

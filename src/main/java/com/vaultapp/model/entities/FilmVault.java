@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "filmvaults")
@@ -18,8 +19,6 @@ public class FilmVault extends Vault<Film> {
     )
     private List<Film> films;
 
-    @Column(unique = true)
-    protected String name;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -29,11 +28,16 @@ public class FilmVault extends Vault<Film> {
         films = new ArrayList<>();
     }
 
-    public List<Film> getBooks() {
+    public FilmVault(String name) {
+        this();
+        this.name = name;
+    }
+
+    public List<Film> getFilms() {
         return films;
     }
 
-    public void setBooks(List<Film> films) {
+    public void setFilms(List<Film> films) {
         this.films = films;
     }
 
@@ -47,7 +51,9 @@ public class FilmVault extends Vault<Film> {
 
     @Override
     public void addElement(Film film) {
-        films.add(film);
+        if (!films.contains(film)) {
+            films.add(film);
+        }
     }
 
     @Override
@@ -55,10 +61,28 @@ public class FilmVault extends Vault<Film> {
         films.remove(film);
     }
 
+    public Film findByTmid(String tmid) {
+        List<Film> lf = films.stream().filter(f -> String.valueOf(f.getTmdbId()).equals(tmid)).collect(Collectors.toList());
+        if (lf.size() > 0) {
+            return lf.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
-        return "FilmVault{" +
-                "films=" + films +
-                '}';
+        String str = name + "(" + films.size() + ")";
+        return str;
     }
 }
