@@ -174,6 +174,10 @@ public class CommandController {
                 case "add-b--isbn-v":
                     actionAddBook(parserCommand.get(1), parserCommand.get(2));
                     break;
+                case "add--film--tmid--vault":
+                case "add-f-tmid-v":
+                    actionAddFilm(parserCommand.get(1), parserCommand.get(2));
+                    break;
                 case "delete--book--isbn--vault":
                 case "delete-b--isbn-v":
                     actionDeleteBook(parserCommand.get(1), parserCommand.get(2));
@@ -232,6 +236,10 @@ public class CommandController {
             view.vaultNotFoundView();
             return;
         }
+    }
+
+    private void actionAddFilm(String tmid, String vaultName) {
+        //todo
     }
 
     private void actionAddBook(String isbn, String vaultName) {

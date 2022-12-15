@@ -32,13 +32,15 @@ public class FilmApiDao {
 
     }
 
-    public static FilmApiDao getInstance() { return instance; }
+    public static FilmApiDao getInstance() {
+        return instance;
+    }
 
 
     public List<Film> searchByTitle(String title, int page) {
         ObjectMapper objectMapper = new ObjectMapper();
         String formattedTitle = String.join("+", title.split(" "));
-        String url = String.format(SEARCH_URL, API_KEY , formattedTitle, page);
+        String url = String.format(SEARCH_URL, API_KEY, formattedTitle, page);
         List<Film> films = new ArrayList<>();
 
         try {
@@ -91,7 +93,7 @@ public class FilmApiDao {
 
     }
 
-    public FilmDetail searchByTmdbId(int id) {
+    private FilmDetail searchByTmdbId(int id) {
         ObjectMapper objectMapper = new ObjectMapper();
         String url = String.format(MOVIE_URL, id, API_KEY);
         FilmDetail film = null;

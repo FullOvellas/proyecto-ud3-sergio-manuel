@@ -38,6 +38,7 @@ public class Film extends VaultItem {
         this.tagline = tagline;
     }
 
+
     public Film() {
         
     }
@@ -103,7 +104,6 @@ public class Film extends VaultItem {
     public String toString() {
         return "Film{" +
                 "title='" + title + '\'' +
-
                 ", posterPath='" + posterPath + '\'' +
                 ", genres=" + genres +
                 ", releaseDate=" + releaseDate +
