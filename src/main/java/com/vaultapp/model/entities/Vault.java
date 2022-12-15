@@ -11,7 +11,7 @@ public abstract class Vault<T> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(unique = true)
+
     protected String name;
 
     public Vault() {
@@ -21,9 +21,17 @@ public abstract class Vault<T> {
         this.name = name;
     }
 
-    public void addElement(T t){};
+    public String getName() {
+        return name;
+    }
 
-    public void deleteElement(T t){};
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public abstract void addElement(T t);
+
+    public abstract void deleteElement(T t);
 
     public Long getId() {
         return id;

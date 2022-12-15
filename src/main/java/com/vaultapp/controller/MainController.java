@@ -3,6 +3,9 @@ package com.vaultapp.controller;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.utilities.JpaUtil;
+import jakarta.persistence.EntityManager;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 
 
 /**
@@ -24,6 +27,5 @@ public class MainController {
         //END PROGRAM
         JpaUtil.close();
     }
-
 
 }

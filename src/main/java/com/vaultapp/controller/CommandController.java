@@ -2,9 +2,7 @@ package com.vaultapp.controller;
 
 
 import com.vaultapp.login.UserSession;
-import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.entities.BookVault;
-import com.vaultapp.model.entities.User;
+import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.BookApiRepository;
 import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.model.repository.UserRepository;
@@ -29,7 +27,9 @@ public class CommandController {
             "add",
             "exit",
             "--user",
+            "-u",
             "--password",
+            "-p",
             "--book",
             "--film",
             "--bookvault",
@@ -71,14 +71,14 @@ public class CommandController {
         String[] splitLineCommand = lineCommand.split(" ");
 
         noArgs.add(splitLineCommand[0]);
-        Arrays.stream(splitLineCommand).filter(s -> s.startsWith("--")).forEach(noArgs::add);
+        Arrays.stream(splitLineCommand).filter(s -> s.startsWith("-")).forEach(noArgs::add);
         if (!reservedWords.containsAll(noArgs)) {
             this.view.commandNotFoundView();
             return null;
         }
         List<Integer> index = new ArrayList<>();
         for (int i = 0; i < splitLineCommand.length; i++) {
-            if (splitLineCommand[i].contains("--")) {
+            if (splitLineCommand[i].startsWith("-")) {
                 index.add(i);
             }
         }
@@ -88,7 +88,7 @@ public class CommandController {
                 break;
             } else {
                 for (int j = i + 1; j < splitLineCommand.length; j++) {
-                    if (splitLineCommand[j].contains("--")) {
+                    if (splitLineCommand[j].startsWith("-")) {
                         break;
                     }
                     composeArgs.append(splitLineCommand[j]).append(" ");
@@ -106,11 +106,13 @@ public class CommandController {
     }
 
     private void processParserCommand(List<String> parserCommand) {
+        System.out.println(parserCommand);
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
                 return;
             case "login--user--password":
+            case "login-u-p":
                 actionLogin(parserCommand.get(1), parserCommand.get(2));
                 return;
         }
@@ -131,10 +133,10 @@ public class CommandController {
                 case "open--bookvault--name":
                     actionOpenBookVault(parserCommand.get(1));
                     break;
-                case "delete--bookvault--name":
-                    actionDeleteBookVault();
+                case "delete--vault--name":
+                    actionDeleteVault(parserCommand.get(1));
                     break;
-                case "search--book--title":
+                case "search--book":
                     actionSearchBookTitle(parserCommand.get(1));
                     break;
                 case "add--book--isbn--vault":
@@ -206,7 +208,21 @@ public class CommandController {
         view.listOfBooksView(BookApiRepository.getInstance().getAsListByTitle(title));
     }
 
-    private void actionDeleteBookVault() {
+    private void actionDeleteVault(String title) {
+        User u = UserSession.getInstance().getLoggedUser();
+        List<Vault> vaults = new LinkedList<>();
+        List<BookVault> bv = u.getBookVaults().stream().filter(v -> v.getName().equals(title)).collect(Collectors.toList());
+        List<FilmVault> fv = u.getFilmVaults().stream().filter(v -> v.getName().equals(title)).collect(Collectors.toList());
+        vaults.addAll(bv);
+        vaults.addAll(fv);
+
+        if (vaults.isEmpty()) {
+            view.vaultNotFoundView();
+        } else {
+            u.removeVault(vaults.get(0));
+            view.successfullyActionView();
+        }
+        UserRepository.getInstance().add(u);
     }
 
     private void actionOpenBookVault(String vaultName) {
@@ -219,15 +235,16 @@ public class CommandController {
     }
 
     private void actionCreateBookVault(String name) {
+        User u = UserSession.getInstance().getLoggedUser();
         BookVault v = new BookVault(name);
-        if (!UserSession.getInstance().getLoggedUser().getBookVaults().contains(v)) {
-            UserSession.getInstance().getLoggedUser().addVault(v);
+        if (!u.getBookVaults().contains(v)) {
+            u.addVault(v);
             view.successfullyActionView();
         } else {
             view.vaultAlreadyExistsView();
         }
         //update user status
-        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
+        UserRepository.getInstance().add(u);
     }
 
     private void actionStatusUser() {

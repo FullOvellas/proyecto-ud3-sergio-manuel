@@ -19,6 +19,9 @@ public class BookVault extends Vault<Book> {
     )
     private List<Book> books;
 
+    @Column(unique = true)
+    protected String name;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
@@ -69,6 +72,7 @@ public class BookVault extends Vault<Book> {
     public void deleteElement(Book book) {
         books.remove(book);
     }
+
 
     public Book findByIsbn(String isbn) {
         List<Book> lb = books.stream().filter(b -> b.getIsbn().equals(isbn)).collect(Collectors.toList());
