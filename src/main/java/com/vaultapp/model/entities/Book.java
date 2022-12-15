@@ -23,6 +23,8 @@ public class Book extends VaultItem {
 
     private URL cover;
 
+    private boolean status;
+
 
     public Book() {
     }
@@ -36,6 +38,14 @@ public class Book extends VaultItem {
         this.author = author;
         this.publishYear = publishYear;
         this.isbn = isbn;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public String getIsbn() {
@@ -86,6 +96,9 @@ public class Book extends VaultItem {
         this.id = id;
     }
 
+    public void changeStatus() {
+        status = !status;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -109,6 +122,7 @@ public class Book extends VaultItem {
                 ", publishYear='" + publishYear + '\'' +
                 ", isbn='" + isbn + '\'' +
                 ", cover='" + cover + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

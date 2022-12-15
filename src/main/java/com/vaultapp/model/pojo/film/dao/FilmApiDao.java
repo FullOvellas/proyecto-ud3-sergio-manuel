@@ -103,7 +103,6 @@ public class FilmApiDao {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return film;
     }
 
