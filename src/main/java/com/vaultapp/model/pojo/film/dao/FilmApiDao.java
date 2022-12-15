@@ -5,6 +5,7 @@ import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.pojo.film.*;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +47,8 @@ public class FilmApiDao {
             for (ResultsItem a : pageFilms) {
                 films.add(parseApiFilm(a));
             }
+        } catch (ConnectException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

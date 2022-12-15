@@ -19,6 +19,47 @@ public class CommandControllerView {
     public static final String SUCCESSFULLY_ACTION = "Action done successfully.\n";
     public static final String LOGOUT = "Log out.\n";
     public static final String REMOVE_BOOK = "\n" + "Book has been successfully deleted.";
+    public static final String HELP =
+            "THEME\n" +
+            "\tVault CLI Help System\n" +
+            "\n" +
+            "DESCRIPTION\n" +
+            "\tDisplays help about Vault CLI commands and concepts.\n" +
+            "\n" +
+            "COMMANDS\n" +
+                    "\n\tGENERAL COMMANDS\n" +
+                        "\t\tlogin [-u|--user] USER [-p|--password] PASSWORD\n" +
+                        "\t\t\tLogin with your Vaulted account. Use your USER and your PASSWORD." +
+                        "\n\n" +
+                        "\t\tlogout\n" +
+                        "\t\t\tClose your session." +
+                        "\n\n" +
+                        "\t\tstatus\n" +
+                        "\t\t\tDescription of the session information, vaults and content relative your profile." +
+                        "\n\n" +
+                        "\t\texit\n" +
+                    "\t\t\tClose your sesion, then the application." +
+                    "\n\n" +
+                    "\n\tVAULT MANAGE COMMANDS\n" +
+                            "\t\tcreate [-bv|-fv|--bookvault|--filmvault] NAME\n" +
+                    "\t\t\tCreate a bookvault or filmvault to storage inner your film or book collections." +
+                    "\n\n" +
+                            "\t\topen [-bv|-fv|--bookvault|--filmvault] NAME\n" +
+                    "\t\t\tOpen a bookvault or filmvault by NAME." +
+                    "\n\n" +
+                            "\t\tdelete [-bv|-fv|--bookvault|--filmvault] NAME\n" +
+                    "\t\t\tDelete a bookvault or filmvault by NAME" +
+                    "\n\n" +
+                    "\n\tBOOKS/FILMS MANAGE COMMANDS\n" +
+                            "\t\tsearch [-b|-f|--book|--film] NAME\n" +
+                    "\t\t\tSearch by NAME books or films in main database. If an item does not exist, browser uses differents APIs to load information." +
+                    "\n\n" +
+                            "\t\tadd [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME\n" +
+                    "\t\t\tAdd book into a specific bookvault VAULT_NAME by ISBN." +
+                    "\n\n" +
+                            "\t\tdelete [-bv|-fv|--bookvault|--filmvault] --isbn ISBN [-v|--vault] VAULT_NAME\n" +
+                    "\t\t\tDelete an existing element in VAULT_NAME by ISBN." +
+                    "\n\n";
 
     private final String[] PROMPT = {"", "> "};
     private final String WELCOME = "Welcome %s.\n";
@@ -28,7 +69,6 @@ public class CommandControllerView {
                     "---------------------\n" +
                     "BookVaults: %s\n" +
                     "FilmVaults: %s\n" +
-                    "---------------------\n" +
                     "============================\n";
 
 
@@ -116,6 +156,10 @@ public class CommandControllerView {
         for (Film f : films) {
             System.out.println(String.format(view, f.getTitle(), f.getGenres(), f.getTmdbId(), f.getReleaseDate(), f.getPosterPath()));
         }
+    }
+
+    public void helpView() {
+        System.out.println(HELP);
     }
 
 

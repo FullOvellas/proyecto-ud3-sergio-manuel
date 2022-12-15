@@ -43,7 +43,8 @@ public class CommandController {
             "--title",
             "--isbn",
             "--vault",
-            "-v"
+            "-v",
+            "help"
     );
 
     public CommandController() {
@@ -122,6 +123,9 @@ public class CommandController {
             case "login-u-p":
                 actionLogin(parserCommand.get(1), parserCommand.get(2));
                 return;
+            case "help":
+                actionHelp();
+                return;
         }
         // Session is needed active to work
         if (!UserSession.getInstance().inSession()) {
@@ -178,6 +182,10 @@ public class CommandController {
                     view.commandNotFoundView();
             }
         }
+    }
+
+    private void actionHelp() {
+        view.helpView();
     }
 
     private void actionCreateBookVault(String name) {

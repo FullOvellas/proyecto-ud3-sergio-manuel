@@ -1,10 +1,8 @@
 package com.vaultapp;
 
-import com.vaultapp.controller.MainController;
-
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.pojo.film.dao.FilmApiDao;
-import com.vaultapp.model.repository.FilmRepository;
+import com.vaultapp.model.repository.FilmDbRepository;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,17 +20,17 @@ public class VaultApp {
 
         List<Film> f = FilmApiDao.getInstance().searchByTitle("star", 1);
         for (Film film : f) {
-            FilmRepository.getInstance().add(film);
+            FilmDbRepository.getInstance().add(film);
         }
         f = FilmApiDao.getInstance().searchByTitle("Fight", 1);
         for (Film film : f) {
-            FilmRepository.getInstance().add(film);
+            FilmDbRepository.getInstance().add(film);
         }
 
         if (args.length == 0) {
-            new MainController();
+            //todo
         } else if (args.length == 1 && args[0].equals("--cli")) {
-            // MainCLI.startApp();
+            MainCLI.startApp();
         } else if (args.length == 1 && args[0].equals("--gui")) {
             MainGUI.startApp();
         } else {
