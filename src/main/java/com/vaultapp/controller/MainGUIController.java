@@ -111,6 +111,7 @@ public class MainGUIController {
         if (!expanded) {
             btnFilmView.textAlignmentProperty().setValue(TextAlignment.LEFT);
             btnBookView.textAlignmentProperty().setValue(TextAlignment.LEFT);
+            btnAddView.textAlignmentProperty().setValue(TextAlignment.LEFT);
             vaultControlsContainer.setAlignment(Pos.CENTER_LEFT);
             vbxSidebar.requestFocus();
             vbxSidebar.setStyle("-fx-fill: #3c536e");
@@ -120,21 +121,24 @@ public class MainGUIController {
             btnSideMenu.getStyleClass().add(ACCENT);
             btnFilmView.getStyleClass().add(ACCENT);
             btnBookView.getStyleClass().add(ACCENT);
+            btnAddView.getStyleClass().add(ACCENT);
             rect.setVisible(true);
 
             Timeline timeline = new Timeline();
             timeline.setCycleCount(1);
-            KeyValue kv = new KeyValue(rect.widthProperty(), 184, slide);
+            KeyValue kv = new KeyValue(rect.widthProperty(), 220, slide);
             KeyValue kv2 = new KeyValue(rect.opacityProperty(), 1, slide);
-            KeyValue filmBtnGrow = new KeyValue(btnFilmView.minWidthProperty(), 170, slide);
+            KeyValue filmBtnGrow = new KeyValue(btnFilmView.minWidthProperty(), 207, slide);
             KeyValue bookBtnGrow = new KeyValue(btnBookView.minWidthProperty(), 170, slide);
+            KeyValue addBtnGrow = new KeyValue(btnAddView.minWidthProperty(), 170, slide);
             KeyValue layerOpacity = new KeyValue(layer.opacityProperty(), 0.7);
-            KeyFrame kf = new KeyFrame(Duration.millis(150d), kv, kv2, filmBtnGrow, bookBtnGrow, layerOpacity);
+            KeyFrame kf = new KeyFrame(Duration.millis(150d), kv, kv2, filmBtnGrow, bookBtnGrow, addBtnGrow, layerOpacity);
             timeline.setOnFinished(e -> {
-                btnFilmView.setText("view film vault");
-                btnBookView.setText("view book vault");
+                btnFilmView.setText("select film vault");
+                btnBookView.setText("select book vault");
+                btnAddView.setText("add item to vault");
                 btnFilmView.maxWidthProperty().setValue(btnExpandedWidth);
-                btnFilmView.setPadding(expandedPadding);
+                //btnFilmView.setPadding(expandedPadding);
             });
             timeline.getKeyFrames().add(kf);
             timeline.play();
@@ -143,14 +147,17 @@ public class MainGUIController {
         } else {
             btnFilmView.textAlignmentProperty().setValue(TextAlignment.CENTER);
             btnBookView.textAlignmentProperty().setValue(TextAlignment.CENTER);
-            btnFilmView.setPadding(defPadding);
+            btnAddView.textAlignmentProperty().setValue(TextAlignment.CENTER);
+            //btnFilmView.setPadding(defPadding);
             vaultControlsContainer.setAlignment(Pos.CENTER);
             btnFilmView.setText("");
             btnBookView.setText("");
+            btnAddView.setText("");
             vbxSidebar.setStyle("-fx-fill: rgba(0,0,0,0)");
             btnSideMenu.getStyleClass().remove(ACCENT);
             btnBookView.getStyleClass().remove(ACCENT);
             btnFilmView.getStyleClass().remove(ACCENT);
+            btnAddView.getStyleClass().remove(ACCENT);
             vbxSidebar.setStyle(SIDEBAR_BORDER);
             Timeline timeline = new Timeline();
             timeline.setCycleCount(1);
@@ -158,8 +165,9 @@ public class MainGUIController {
             KeyValue kv2 = new KeyValue(rect.opacityProperty(), 0, slide);
             KeyValue filmBtnShrink = new KeyValue(btnFilmView.minWidthProperty(), btnDefWidth);
             KeyValue bookBtnShrink = new KeyValue(btnBookView.minWidthProperty(), btnDefWidth);
+            KeyValue addBtnShrink = new KeyValue(btnAddView.minWidthProperty(), btnDefWidth);
             KeyValue layerOpacity = new KeyValue(layer.opacityProperty(), 0d);
-            KeyFrame kf = new KeyFrame(Duration.millis(150.0), kv, kv2, filmBtnShrink, bookBtnShrink, layerOpacity);
+            KeyFrame kf = new KeyFrame(Duration.millis(150.0), kv, kv2, filmBtnShrink, bookBtnShrink, layerOpacity, addBtnShrink);
             timeline.getKeyFrames().add(kf);
             timeline.setOnFinished(e -> {
                 rect.setVisible(false);
@@ -300,6 +308,7 @@ public class MainGUIController {
 
     }
 
+    @Deprecated
     public void switchToFilmVault(ActionEvent actionEvent) {
 
         if (filmsSelected) {
@@ -326,6 +335,7 @@ public class MainGUIController {
 
     }
 
+    @Deprecated
     public void switchToBookVault(ActionEvent actionEvent) {
 
         if (!filmsSelected) {
