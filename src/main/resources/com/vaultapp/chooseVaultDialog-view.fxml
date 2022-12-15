@@ -16,7 +16,7 @@
     <TableView fx:id="vaultsTable" />
     <HBox>
         <Button fx:id="btnSelect" text="Select" onAction="#onBtnClick"/>
+        <Button fx:id="btnAdd" text="Add new" onAction="#onBtnClick" />
         <Button fx:id="btnCancel" text="Cancel" onAction="#onBtnClick"/>
     </HBox>
-
 </VBox>

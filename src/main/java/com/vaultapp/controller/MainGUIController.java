@@ -93,11 +93,17 @@ public class MainGUIController {
     private Insets defPadding = new Insets(10d);
     private Insets expandedPadding;
     private boolean expanded = false;
-    private boolean filmsSelected = true; // true: view film vault, false: view book vault
+    private static boolean filmsSelected = true; // true: view film vault, false: view book vault
     private static Vault selectedVault;
-    private User activeUser;
-    private final boolean USE_BOOK_VAULTS = true;
-    private final boolean USE_FILM_VAULTS = false;
+    private static User activeUser;
+
+    public static boolean isFilmsSelected() {
+        return filmsSelected;
+    }
+
+    public static User getActiveUser() {
+        return activeUser;
+    }
 
     public static void setSelectedVault(Vault selectedVault) {
         MainGUIController.selectedVault = selectedVault;
@@ -196,6 +202,8 @@ public class MainGUIController {
         detailView.setOnMouseEntered(disableControls);
         vbxSidebar.setOnMouseExited(disableControls);
         tblItems.setOnMouseExited(enableControls);
+        title.setOnMouseEntered(disableControls);
+        title.setOnMouseExited(enableControls);
 
         // Element initialization
         title.setText(filmsSelected ? "Your film vault" : "Your book vault");
@@ -240,9 +248,20 @@ public class MainGUIController {
 
     public void chooseVault(ActionEvent actionEvent) throws IOException {
 
-        List<Vault> vaults = actionEvent.getSource().equals(btnBookView) ?
-                new ArrayList<>(activeUser.getBookVaults()) :
-                new ArrayList<>(activeUser.getFilmVaults());
+        List<Vault> vaults;
+
+        if (actionEvent.getSource().equals(btnBookView)) {
+
+            vaults = new ArrayList<>(activeUser.getBookVaults());
+            ChooseVaultDialogController.setChoosingFilms(false);
+
+        } else {
+
+            vaults = new ArrayList<>(activeUser.getFilmVaults());
+            ChooseVaultDialogController.setChoosingFilms(true);
+
+        }
+
         Vault oldVault = selectedVault;
 
         ChooseVaultDialogController.setVaultList(vaults);
@@ -254,7 +273,7 @@ public class MainGUIController {
         stage.setScene(scene);
         stage.showAndWait();
 
-        if (!oldVault.equals(selectedVault)) {
+        if (!oldVault.equals(selectedVault) || oldVault == null) {
 
             if (selectedVault instanceof BookVault) {
 
@@ -275,6 +294,7 @@ public class MainGUIController {
         tblItems.getItems().clear();
         tblItems.getColumns().clear();
         FilmVault vault = (FilmVault) selectedVault;
+        title.setText("Your film vault: " + selectedVault.getName());
 
         ObservableList<VaultItem> films = FXCollections.observableArrayList(vault.getBooks());
         tblItems.setItems(films);
@@ -293,6 +313,7 @@ public class MainGUIController {
         tblItems.getItems().clear();
         tblItems.getColumns().clear();
         BookVault vault = (BookVault) selectedVault;
+        title.setText("Your book vault: " + selectedVault.getName());
 
         ObservableList<VaultItem> books = FXCollections.observableArrayList(vault.getBooks());
         tblItems.setItems(books);
@@ -377,6 +398,15 @@ public class MainGUIController {
             detailField4.setText("Tagline: " + f.getTagline());
 
         } else {
+
+            Book b = (Book) tblItems.getSelectionModel().getSelectedItem();
+
+            itemImage.setImage(new Image(b.getCover().toString()));
+
+            detailField1.setText("Title: " + b.getTitle());
+            detailField2.setText("Author: " + b.getAuthor());
+            detailField3.setText("Publish date: " + b.getPublishYear());
+            detailField4.setText("ISBN" + b.getIsbn());
 
         }
 
