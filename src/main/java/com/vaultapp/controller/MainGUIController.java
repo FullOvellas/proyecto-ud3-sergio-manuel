@@ -2,7 +2,6 @@ package com.vaultapp.controller;
 
 import com.vaultapp.MainGUI;
 import com.vaultapp.model.entities.*;
-import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.model.repository.FilmRepository;
 import com.vaultapp.model.repository.UserRepository;
 import javafx.animation.Interpolator;
@@ -269,13 +268,7 @@ public class MainGUIController {
         Vault oldVault = selectedVault;
 
         ChooseVaultDialogController.setVaultList(vaults);
-        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("chooseVaultDialog-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        stage.initOwner(MainGUI.getMainStage());
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
+        launchDialog("chooseVaultDialog-view.fxml");
 
         lightenAll();
 
@@ -321,6 +314,7 @@ public class MainGUIController {
         tblItems.getColumns().clear();
         FilmVault vault = (FilmVault) selectedVault;
         title.setText("Your film vault: " + selectedVault.getName());
+        filmsSelected = true;
 
         ObservableList<VaultItem> films = FXCollections.observableArrayList(vault.getBooks());
         tblItems.setItems(films);
@@ -340,6 +334,7 @@ public class MainGUIController {
         tblItems.getColumns().clear();
         BookVault vault = (BookVault) selectedVault;
         title.setText("Your book vault: " + selectedVault.getName());
+        filmsSelected = false;
 
         ObservableList<VaultItem> books = FXCollections.observableArrayList(vault.getBooks());
         tblItems.setItems(books);
@@ -353,61 +348,6 @@ public class MainGUIController {
         //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
 
-    }
-
-    @Deprecated
-    public void switchToFilmVault(ActionEvent actionEvent) {
-
-        if (filmsSelected) {
-
-            expandRectangle(actionEvent);
-
-        } else {
-
-            filmsSelected = true;
-            title.setText("Your film vault");
-
-            ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
-            tblItems.setItems(films);
-            TableColumn<Film, String> titleCol = new TableColumn<>("Title");
-            titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            TableColumn<Film, LocalDate> releaseCol = new TableColumn<>("Year");
-            releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
-            TableColumn<Film, String> statusCol = new TableColumn<>("Status");
-            statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-            expandRectangle(actionEvent);
-
-        }
-
-    }
-
-    @Deprecated
-    public void switchToBookVault(ActionEvent actionEvent) {
-
-        if (!filmsSelected) {
-
-            expandRectangle(actionEvent);
-
-        } else {
-
-            layer.setMouseTransparent(true);
-            filmsSelected = false;
-            title.setText("Your book vault");
-
-            ObservableList<VaultItem> books = FXCollections.observableArrayList(BookDbRepository.getInstance().getAsList());
-            tblItems.setItems(books);
-            TableColumn<Film, String> titleCol = new TableColumn<>("Title");
-            titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            TableColumn<Film, String> authorCol = new TableColumn<>("Author");
-            authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
-            TableColumn<Film, String> releaseCol = new TableColumn<>("Year");
-            releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishYear"));
-            TableColumn<Film, String> statusCol = new TableColumn<>("Status");
-            statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-            expandRectangle(actionEvent);
-
-        }
     }
 
     public void refreshDetailView(MouseEvent mouseEvent) {
@@ -438,7 +378,22 @@ public class MainGUIController {
 
     }
 
-    public void onAddItemClick(ActionEvent actionEvent) {
+    public void onAddItemClick(ActionEvent actionEvent) throws IOException {
 
+        darkenAll();
+        launchDialog("elementAdd-view.fxml");
+        lightenAll();
+
+
+    }
+
+    private void launchDialog(String resource) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource(resource));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.initOwner(MainGUI.getMainStage());
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 }
