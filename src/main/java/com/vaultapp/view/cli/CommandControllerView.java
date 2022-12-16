@@ -196,7 +196,7 @@ public class CommandControllerView {
         for (Film f : films) {
             String status;
             status = f.isStatus() ? "Finish" : "To watch";
-            System.out.println(String.format(view, f.getTitle(), f.getGenres(), f.getTmdbId(), f.getReleaseDate(), f.getPosterPath()));
+            System.out.println(String.format(view, f.getTitle(), f.getGenres(), f.getTmdbId(), f.getReleaseDate(), f.getPosterPath(), status));
         }
     }
 
