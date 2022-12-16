@@ -11,10 +11,7 @@ import com.vaultapp.model.repository.UserRepository;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -72,6 +69,9 @@ public class ElementAddController {
 
         if (!search.isEmpty()) {
 
+            txfSearch.clear();
+            tblSearchResults.getItems().clear();
+
             if (MainGUIController.isFilmsSelected()) {
 
                 List<Film> results = FilmApiRepository.getInstance().getAsListByTitle(search);
@@ -99,6 +99,10 @@ public class ElementAddController {
             MainGUIController.getActiveUser().addVault(vault);
             UserRepository.getInstance().add(MainGUIController.getActiveUser());
 
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setContentText("Element added");
+            dialog.getDialogPane().getButtonTypes().add(0, new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE));
+            dialog.showAndWait();
         }
 
     }
