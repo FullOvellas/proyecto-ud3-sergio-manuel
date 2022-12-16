@@ -18,6 +18,7 @@ public class Film extends VaultItem {
     private String posterPath;
     @ElementCollection
     private List<String> genres;
+    @Column(length = 65535)
     private String overview;
     private String originalTitle;
     @ElementCollection

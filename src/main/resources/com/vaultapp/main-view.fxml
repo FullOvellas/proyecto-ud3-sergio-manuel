@@ -60,6 +60,7 @@
                 <VBox fx:id="vaultControlsContainer" alignment="CENTER">
                     <Button fx:id="btnFilmView" onAction="#chooseVault"/>
                     <Button fx:id="btnBookView" onAction="#chooseVault"/>
+                    <Button fx:id="btnAddView" onAction="#onAddItemClick" />
                 </VBox>
             </VBox>
         </left>
