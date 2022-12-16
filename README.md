@@ -60,6 +60,9 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
   Devolve un único obxecto `Film` segundo o _movie\_id_ empregado.
 
 ## Manual Técnico
+
+### Diagrama de clases
+![](docs/img/diagrama_clases.jpg)
 ### Persistencia
 ![](docs/img/persistence_diagram.jpg)
 
