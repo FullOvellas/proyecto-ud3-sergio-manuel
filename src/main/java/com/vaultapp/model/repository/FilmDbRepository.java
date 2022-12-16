@@ -8,19 +8,23 @@ import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
-public class FilmRepository implements Repository<Film>{
+public class FilmDbRepository implements Repository<Film> {
     private EntityManager em;
     private Dao<Film> filmDao;
-    private static FilmRepository instance;
+    private static FilmDbRepository instance;
 
-    static { instance = new FilmRepository(JpaUtil.getEntityManager()); }
+    static {
+        instance = new FilmDbRepository(JpaUtil.getEntityManager());
+    }
 
-    private FilmRepository(EntityManager entityManager) {
+    private FilmDbRepository(EntityManager entityManager) {
         em = entityManager;
         filmDao = FilmDao.getInstance();
     }
 
-    public static FilmRepository getInstance() { return instance; }
+    public static FilmDbRepository getInstance() {
+        return instance;
+    }
 
     @Override
     public void add(Film film) {
@@ -28,7 +32,7 @@ public class FilmRepository implements Repository<Film>{
             em.getTransaction().begin();
             filmDao.create(film);
             em.getTransaction().commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
         }

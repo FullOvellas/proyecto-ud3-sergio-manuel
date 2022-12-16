@@ -2,8 +2,8 @@ package com.vaultapp.view.cli;
 
 import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.BookVault;
+import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.entities.FilmVault;
-import org.hibernate.sql.exec.spi.StandardEntityInstanceResolver;
 
 import java.util.List;
 
@@ -15,10 +15,56 @@ public class CommandControllerView {
     public static final String VAULT_ALREADY_EXISTS = "This vault already exists. Try another name.\n";
     public static final String VAULT_NOT_FOUND = "Vault not found. Try another vault name.\n";
     public static final String BOOK_NOT_FOUND = "Book not found. The ISBN may be wrong. Please, try again.\n";
+    public static final String FILM_NOT_FOUND = "Film not found. The TMID may be wrong. Please, try again.\n";
     public static final String BOOK_ALREADY_EXISTS = "Book already exists in the vault.\n";
+    public static final String FILM_ALREADY_EXISTS = "Film already exists in the vault.\n";
     public static final String SUCCESSFULLY_ACTION = "Action done successfully.\n";
     public static final String LOGOUT = "Log out.\n";
     public static final String REMOVE_BOOK = "\n" + "Book has been successfully deleted.";
+    public static final String HELP =
+            "THEME\n" +
+                    "\tVault CLI Help System\n" +
+                    "\n" +
+                    "DESCRIPTION\n" +
+                    "\tDisplays help about Vault CLI commands and concepts.\n" +
+                    "\n" +
+                    "COMMANDS\n" +
+                    "\n\tGENERAL COMMANDS\n" +
+                    "\t\tlogin [-u|--user] USER [-p|--password] PASSWORD\n" +
+                    "\t\t\tLogin with your Vaulted account. Use your USER and your PASSWORD." +
+                    "\n\n" +
+                    "\t\tlogout\n" +
+                    "\t\t\tClose your session." +
+                    "\n\n" +
+                    "\t\tstatus\n" +
+                    "\t\t\tDescription of the session information, vaults and content relative your profile." +
+                    "\n\n" +
+                    "\t\texit\n" +
+                    "\t\t\tClose your sesion, then the application." +
+                    "\n\n" +
+                    "\n\tVAULT MANAGE COMMANDS\n" +
+                    "\t\tcreate [-bv|-fv|--bookvault|--filmvault] NAME\n" +
+                    "\t\t\tCreate a bookvault or filmvault to storage inner your film or book collections." +
+                    "\n\n" +
+                    "\t\topen [-bv|-fv|--bookvault|--filmvault] NAME\n" +
+                    "\t\t\tOpen a bookvault or filmvault by NAME." +
+                    "\n\n" +
+                    "\t\tdelete [-bv|-fv|--bookvault|--filmvault] NAME\n" +
+                    "\t\t\tDelete a bookvault or filmvault by NAME" +
+                    "\n\n" +
+                    "\n\tBOOKS/FILMS MANAGE COMMANDS\n" +
+                    "\t\tsearch [-b|-f|--book|--film] NAME\n" +
+                    "\t\t\tSearch by NAME books or films in main database. If an item does not exist, browser uses differents APIs to load information." +
+                    "\n\n" +
+                    "\t\tadd [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME\n" +
+                    "\t\t\tAdd book into a specific bookvault VAULT_NAME by ISBN." +
+                    "\n\n" +
+                    "\t\tchsts --isbn ISBN [-v|--vault] VAULT_NAME\n" +
+                    "\t\t\tChange the status of a book." +
+                    "\n\n" +
+                    "\t\tdelete [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME\n" +
+                    "\t\t\tDelete an existing element in VAULT_NAME by ISBN." +
+                    "\n\n";
 
     private final String[] PROMPT = {"", "> "};
     private final String WELCOME = "Welcome %s.\n";
@@ -28,7 +74,6 @@ public class CommandControllerView {
                     "---------------------\n" +
                     "BookVaults: %s\n" +
                     "FilmVaults: %s\n" +
-                    "---------------------\n" +
                     "============================\n";
 
 
@@ -38,6 +83,10 @@ public class CommandControllerView {
 
     public void bookAlreadyExistsView() {
         System.out.println(BOOK_ALREADY_EXISTS);
+    }
+
+    public void filmAlreadyExistsView() {
+        System.out.println(FILM_ALREADY_EXISTS);
     }
 
     public void logoutView() {
@@ -88,13 +137,16 @@ public class CommandControllerView {
         System.out.println(BOOK_NOT_FOUND);
     }
 
+    public void filmNotFoundView() {
+        System.out.println(FILM_NOT_FOUND);
+    }
+
     public void vaultNotFoundView() {
         System.out.println(VAULT_NOT_FOUND);
     }
 
 
-
-    public void listOfBooksView(List<Book> books) {
+    public void listOfSearchedBooksView(List<Book> books) {
         String view = "=============\n" +
                 "Title: %s\n" +
                 "Author: %s\n" +
@@ -104,6 +156,52 @@ public class CommandControllerView {
         for (Book b : books) {
             System.out.println(String.format(view, b.getTitle(), b.getAuthor(), b.getIsbn(), b.getPublishYear(), b.getCover()));
         }
+    }
+
+    public void listOfBooksView(List<Book> books) {
+        String view = "=============\n" +
+                "Title: %s\n" +
+                "Author: %s\n" +
+                "ISBN: %s\n" +
+                "Publish Year: %s\n" +
+                "Cover: %s\n" +
+                "Status: %s\n";
+        for (Book b : books) {
+            String status;
+            status = b.isStatus() ? "Finish" : "To read";
+            System.out.println(String.format(view, b.getTitle(), b.getAuthor(), b.getIsbn(), b.getPublishYear(), b.getCover(), status));
+        }
+    }
+
+    public void listOfFilmsView(List<Film> films) {
+        String view = "=============\n" +
+                "Title: %s\n" +
+                "Genres: %s\n" +
+                "Id: %s\n" +
+                "Publish Year: %s\n" +
+                "Cover: %s\n";
+        for (Film f : films) {
+            System.out.println(String.format(view, f.getTitle(), f.getGenres(), f.getTmdbId(), f.getReleaseDate(), f.getPosterPath()));
+        }
+    }
+
+    public void listOfSearchedFilmsView(List<Film> films) {
+        String view = "=============\n" +
+                "Title: %s\n" +
+                "Genres: %s\n" +
+                "Id: %s\n" +
+                "Publish Year: %s\n" +
+                "Cover: %s\n" +
+                "Status: %s\n";
+        for (Film f : films) {
+            String status;
+            status = f.isStatus() ? "Finish" : "To watch";
+            System.out.println(String.format(view, f.getTitle(), f.getGenres(), f.getTmdbId(), f.getReleaseDate(), f.getPosterPath(), status));
+        }
+    }
+
+    public void helpView() {
+        System.out.println(HELP);
     }
 
 

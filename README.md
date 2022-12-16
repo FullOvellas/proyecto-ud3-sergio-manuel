@@ -62,19 +62,23 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 
 ### Comandos para CLI
 #### Comandos para la gestión de la sesión:
-- `login --user user --password password` Inica sesión de usuario.
+- `login [-u|--user] USER [-p|--password] PASSWORD` Inica sesión de usuario.
 - `logout` Cierra sesión de usuario.
 - `status` Muestra información general sobre el usuario y sus colecciones de vaults.
 - `exit` Cierra sesión y sale del programa.
 
 #### Comandos para la gestion de vaults:
-- `create --bookvault --name name` Crea un vault de libros vacío con nombre.
-- `open --bookvault --name name` Abre y muestra un vault por nombre. El vault debe existis previamente en una colección del usuario.
-- `delete --bookvault --name name` Borra un vault por nombre. 
+- `create [-bv|-fv|--bookvault|--filmvault] NAME` Crea un vault vacío con nombre.
+- `open [-bv|-fv|--bookvault|--filmvault] NAME` Abre y muestra un vault por nombre. El vault debe existis previamente en una colección del usuario.
+- `delete [-bv|-fv|--bookvault|--filmvault] NAME` Borra un vault por nombre. 
 
 #### Comandos para gestión de libros y películas
-- `search --book --title title` Busca un libro por título en API Open Library.
-- `add --book --isbn isbn --vault name` Añade el libro de ISBN dado en el vault de nombre dado.
-- `delete --book --isbn isbn --vault name` Borra el libro de ISBN dado en el vault de nombre dado.
+- `search [-b|-f|--book|--film] NAME` Busca un libro por título en API Open Library.
+- `add [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME` Añade el libro de ISBN dado en el vault de nombre dado.
+- `add [-f|--film] --tmid TMID [-v|--vault] VAULT_NAME` Añade la película de TMID dado en el vault de nombre dado.
+- `chsts --isbn ISBN [-v|--vault] VAULT_NAME` Cambia el estado de un libro.
+- `chsts --tmid TMID [-v|--vault] VAULT_NAME` Cambia el estado de una película.
+- `delete delete [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME` Borra el libro de ISBN dado en el vault de nombre dado.
+- `delete delete [-f|--film] --tmid TMID [-v|--vault] VAULT_NAME` Borra la película de TMID dado en el vault de nombre dado.
 
 

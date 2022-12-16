@@ -2,11 +2,10 @@ package com.vaultapp.controller;
 
 
 import com.vaultapp.login.UserSession;
-import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.entities.BookVault;
-import com.vaultapp.model.entities.User;
+import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.BookApiRepository;
 import com.vaultapp.model.repository.BookDbRepository;
+import com.vaultapp.model.repository.FilmApiRepository;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.view.cli.CommandControllerView;
 
@@ -28,15 +27,26 @@ public class CommandController {
             "search",
             "add",
             "exit",
+            "chsts",
             "--user",
+            "-u",
             "--password",
+            "-p",
             "--book",
+            "-b",
             "--film",
+            "-f",
             "--bookvault",
+            "-bv",
+            "--filmvault",
+            "-fv",
             "--name",
             "--title",
             "--isbn",
-            "--vault"
+            "--tmid",
+            "--vault",
+            "-v",
+            "help"
     );
 
     public CommandController() {
@@ -46,6 +56,11 @@ public class CommandController {
         this.commandLoop();
     }
 
+    /**
+     * Processes user input in a loop until the `exit` flag is set to `true`.
+     * This method takes user input from the console, parses it using the `parseUserInput` method,
+     * and then passes the result to the `processParsedCommand` method for execution.
+     */
     private void commandLoop() {
         do {
             view.printPrompt();
@@ -71,14 +86,14 @@ public class CommandController {
         String[] splitLineCommand = lineCommand.split(" ");
 
         noArgs.add(splitLineCommand[0]);
-        Arrays.stream(splitLineCommand).filter(s -> s.startsWith("--")).forEach(noArgs::add);
+        Arrays.stream(splitLineCommand).filter(s -> s.startsWith("-")).forEach(noArgs::add);
         if (!reservedWords.containsAll(noArgs)) {
             this.view.commandNotFoundView();
             return null;
         }
         List<Integer> index = new ArrayList<>();
         for (int i = 0; i < splitLineCommand.length; i++) {
-            if (splitLineCommand[i].contains("--")) {
+            if (splitLineCommand[i].startsWith("-")) {
                 index.add(i);
             }
         }
@@ -88,7 +103,7 @@ public class CommandController {
                 break;
             } else {
                 for (int j = i + 1; j < splitLineCommand.length; j++) {
-                    if (splitLineCommand[j].contains("--")) {
+                    if (splitLineCommand[j].startsWith("-")) {
                         break;
                     }
                     composeArgs.append(splitLineCommand[j]).append(" ");
@@ -106,12 +121,17 @@ public class CommandController {
     }
 
     private void processParserCommand(List<String> parserCommand) {
+        System.out.println(parserCommand);
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
                 return;
             case "login--user--password":
+            case "login-u-p":
                 actionLogin(parserCommand.get(1), parserCommand.get(2));
+                return;
+            case "help":
+                actionHelp();
                 return;
         }
         // Session is needed active to work
@@ -125,23 +145,61 @@ public class CommandController {
                 case "status":
                     actionStatusUser();
                     break;
-                case "create--bookvault--name":
+                case "create--bookvault":
+                case "create-bv":
                     actionCreateBookVault(parserCommand.get(1));
                     break;
-                case "open--bookvault--name":
+                case "create--filmvault":
+                case "create-fv":
+                    actionCreateFilmVault(parserCommand.get(1));
+                    break;
+                case "open--bookvault":
+                case "open-bv":
                     actionOpenBookVault(parserCommand.get(1));
                     break;
-                case "delete--bookvault--name":
-                    actionDeleteBookVault();
+                case "open--filmvault":
+                case "open-fv":
+                    actionOpenFilmVault(parserCommand.get(1));
                     break;
-                case "search--book--title":
+                case "delete--bookvault":
+                case "delete-bv":
+                    actionDeleteBookVault(parserCommand.get(1));
+                    break;
+                case "delete--filmvault":
+                case "delete-fv":
+                    actionDeleteFilmVault(parserCommand.get(1));
+                    break;
+                case "search--book":
+                case "search-b":
                     actionSearchBookTitle(parserCommand.get(1));
                     break;
+                case "search--film":
+                case "search-f":
+                    actionSearchFilmTitle(parserCommand.get(1));
+                    break;
+                case "chsts--isbn--vault":
+                case "chsts--isbn-v":
+                    actionChangeBookStatus(parserCommand.get(1), parserCommand.get(2));
+                    break;
+                case "chsts--tmid--vault":
+                case "chsts--tmid-v":
+                    actionChangeFilmStatus(parserCommand.get(1), parserCommand.get(2));
+                    break;
                 case "add--book--isbn--vault":
+                case "add-b--isbn-v":
                     actionAddBook(parserCommand.get(1), parserCommand.get(2));
                     break;
+                case "add--film--tmid--vault":
+                case "add-f-tmid-v":
+                    actionAddFilm(parserCommand.get(1), parserCommand.get(2));
+                    break;
                 case "delete--book--isbn--vault":
+                case "delete-b--isbn-v":
                     actionDeleteBook(parserCommand.get(1), parserCommand.get(2));
+                    break;
+                case "delete--film--isbn--vault":
+                case "delete-f--tmid-v":
+                    actionDeleteFilm(parserCommand.get(1), parserCommand.get(2));
                     break;
                 default:
                     view.commandNotFoundView();
@@ -149,8 +207,58 @@ public class CommandController {
         }
     }
 
-    private void actionExit() {
-        this.exit = true;
+
+    private void actionChangeBookStatus(String isbn, String vaultName) {
+        User u = UserSession.getInstance().getLoggedUser();
+        var vault = u.getBookVaults().stream().filter(v -> v.getName().equals(vaultName)).collect(Collectors.toList());
+        if (!vault.isEmpty()) {
+            var books = vault.get(0).getBooks();
+            if (!books.isEmpty()) {
+                var book = books.stream().filter(b -> b.getIsbn().equals(isbn)).collect(Collectors.toList());
+                if (!book.isEmpty()) {
+                    book.get(0).changeStatus();
+                    view.successfullyActionView();
+                    UserRepository.getInstance().add(u);
+                } else {
+                    view.bookNotFoundView();
+                }
+            } else {
+                view.bookNotFoundView();
+            }
+        } else {
+            view.vaultNotFoundView();
+        }
+    }
+
+
+    private void actionHelp() {
+        view.helpView();
+    }
+
+    private void actionCreateBookVault(String name) {
+        User u = UserSession.getInstance().getLoggedUser();
+        BookVault v = new BookVault(name);
+        if (!u.getBookVaults().contains(v)) {
+            u.addVault(v);
+            view.successfullyActionView();
+        } else {
+            view.vaultAlreadyExistsView();
+        }
+        //update user status
+        UserRepository.getInstance().add(u);
+    }
+
+    private void actionCreateFilmVault(String name) {
+        User u = UserSession.getInstance().getLoggedUser();
+        FilmVault v = new FilmVault(name);
+        if (!u.getFilmVaults().contains(v)) {
+            u.addVault(v);
+            view.successfullyActionView();
+        } else {
+            view.vaultAlreadyExistsView();
+        }
+        //update user status
+        UserRepository.getInstance().add(u);
     }
 
     private void actionDeleteBook(String isbn, String vaultName) {
@@ -173,6 +281,48 @@ public class CommandController {
         }
     }
 
+    private void actionDeleteFilm(String tmid, String vaultName) {
+        //todo
+    }
+
+    private void actionAddFilm(String tmid, String vaultName) {
+        //todo
+    }
+
+    /**
+     * Changes the status of a film in the specified film vault belonging to the currently logged-in user.
+     *
+     * @param tmid The TMDB ID of the film whose status should be changed.
+     * @param vaultName The name of the film vault in which the film is located.
+     */
+    private void actionChangeFilmStatus(String tmid, String vaultName) {
+        User u = UserSession.getInstance().getLoggedUser();
+        var vault = u.getFilmVaults().stream().filter(v -> v.getName().equals(vaultName)).collect(Collectors.toList());
+        if (!vault.isEmpty()) {
+            var films = vault.get(0).getFilms();
+            if (!films.isEmpty()) {
+                var film = films.stream().filter(f -> String.valueOf(f.getTmdbId()).equals(tmid)).collect(Collectors.toList());
+                if (!film.isEmpty()) {
+                    film.get(0).changeStatus();
+                    view.successfullyActionView();
+                    UserRepository.getInstance().add(u);
+                } else {
+                    view.filmNotFoundView();
+                }
+            } else {
+                view.filmNotFoundView();
+            }
+        } else {
+            view.vaultNotFoundView();
+        }
+    }
+
+    /**
+     * Adds a book to the specified book vault belonging to the currently logged-in user.
+     *
+     * @param isbn The ISBN number of the book to be added.
+     * @param vaultName The name of the book vault to which the book should be added.
+     */
     private void actionAddBook(String isbn, String vaultName) {
         var vaultList = UserSession.getInstance().getLoggedUser().getBookVaults().stream().filter(bv -> bv.getName().equals(vaultName)).collect(Collectors.toList());
         // test if vaultList exists
@@ -203,12 +353,54 @@ public class CommandController {
     }
 
     private void actionSearchBookTitle(String title) {
-        view.listOfBooksView(BookApiRepository.getInstance().getAsListByTitle(title));
+        view.listOfSearchedBooksView(BookApiRepository.getInstance().getAsListByTitle(title));
     }
 
-    private void actionDeleteBookVault() {
+    private void actionSearchFilmTitle(String title) {
+        view.listOfSearchedFilmsView(FilmApiRepository.getInstance().getAsListByTitle(title));
     }
 
+    /**
+     * Deletes a book vault belonging to the currently logged-in user.
+     *
+     * @param title The title of the book vault to be deleted.
+     */
+    private void actionDeleteBookVault(String title) {
+        User u = UserSession.getInstance().getLoggedUser();
+        List<BookVault> bv = u.getBookVaults().stream().filter(v -> v.getName().equals(title)).collect(Collectors.toList());
+
+        if (bv.isEmpty()) {
+            view.vaultNotFoundView();
+        } else {
+            u.removeVault(bv.get(0));
+            view.successfullyActionView();
+        }
+        UserRepository.getInstance().add(u);
+    }
+
+    /**
+     * Deletes a film vault belonging to the currently logged-in user.
+     *
+     * @param title The title of the film vault to be deleted.
+     */
+    private void actionDeleteFilmVault(String title) {
+        User u = UserSession.getInstance().getLoggedUser();
+        List<FilmVault> fv = u.getFilmVaults().stream().filter(v -> v.getName().equals(title)).collect(Collectors.toList());
+
+        if (fv.isEmpty()) {
+            view.vaultNotFoundView();
+        } else {
+            u.removeVault(fv.get(0));
+            view.successfullyActionView();
+        }
+        UserRepository.getInstance().add(u);
+    }
+
+    /**
+     * Opens a book vault belonging to the currently logged-in user and shows the list of books in the vault.
+     *
+     * @param vaultName The name of the book vault to be opened.
+     */
     private void actionOpenBookVault(String vaultName) {
         List<BookVault> bv = UserSession.getInstance().getLoggedUser().getBookVaults().stream().filter(v -> v.getName().equals(vaultName)).collect(Collectors.toList());
         if (bv.size() < 1) {
@@ -218,23 +410,31 @@ public class CommandController {
         view.listOfBooksView(bv.get(0).getBooks());
     }
 
-    private void actionCreateBookVault(String name) {
-        BookVault v = new BookVault(name);
-        if (!UserSession.getInstance().getLoggedUser().getBookVaults().contains(v)) {
-            UserSession.getInstance().getLoggedUser().addVault(v);
-            view.successfullyActionView();
-        } else {
-            view.vaultAlreadyExistsView();
+    /**
+     * Opens a film vault belonging to the currently logged-in user and shows the list of films in the vault.
+     *
+     * @param vaultName The name of the film vault to be opened.
+     */
+    private void actionOpenFilmVault(String vaultName) {
+        List<FilmVault> fv = UserSession.getInstance().getLoggedUser().getFilmVaults().stream().filter(v -> v.getName().equals(vaultName)).collect(Collectors.toList());
+        if (fv.size() < 1) {
+            view.vaultNotFoundView();
+            return;
         }
-        //update user status
-        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
+        view.listOfFilmsView(fv.get(0).getFilms());
     }
 
+    /**
+     * Shows the status of the currently logged-in user, including their name and the number of books and films in their vaults.
+     */
     private void actionStatusUser() {
         User u = UserSession.getInstance().getLoggedUser();
         view.statusView(u.getName(), u.getBookVaults(), u.getFilmVaults());
     }
 
+    /**
+     * Performs the logout of the currently logged-in user from the application.
+     */
     private void actionLogout() {
         if (UserSession.getInstance().logout()) {
             view.resetPrompt();
@@ -242,6 +442,12 @@ public class CommandController {
         }
     }
 
+    /**
+     * Performs the login of a user in the application.
+     *
+     * @param name User's name.
+     * @param password User's password.
+     */
     private void actionLogin(String name, String password) {
         if (!UserSession.getInstance().login(new User(name, password))) {
             view.loginErrorView();
@@ -249,5 +455,9 @@ public class CommandController {
             view.modifyPrompt(name);
             view.welcomeView(name);
         }
+    }
+
+    private void actionExit() {
+        this.exit = true;
     }
 }

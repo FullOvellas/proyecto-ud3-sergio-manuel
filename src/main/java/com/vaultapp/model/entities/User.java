@@ -4,8 +4,10 @@ import com.vaultapp.utilities.Cipher;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -92,6 +94,23 @@ public class User {
             bookVaults.add((BookVault) vault);
             ((BookVault) vault).setOwner(this);
         }
+    }
+
+    public void removeVault(Vault vault) {
+        if (vault instanceof BookVault) {
+            bookVaults.remove((BookVault) vault);
+        } else if (vault instanceof FilmVault) {
+            filmVaults.remove((FilmVault) vault);
+        }
+    }
+
+    public List<Vault> findVaultByName(String title) {
+        List<Vault> vaults = new LinkedList<>();
+        List<BookVault> bv = bookVaults.stream().filter(v -> v.getName().equals(title)).collect(Collectors.toList());
+        List<FilmVault> fv = filmVaults.stream().filter(v -> v.getName().equals(title)).collect(Collectors.toList());
+        vaults.addAll(bv);
+        vaults.addAll(fv);
+        return vaults;
     }
 
     @Override

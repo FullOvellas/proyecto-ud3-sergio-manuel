@@ -1,9 +1,14 @@
 package com.vaultapp.controller;
 
+
 import com.vaultapp.MainGUI;
 import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.FilmRepository;
 import com.vaultapp.model.repository.UserRepository;
+import com.vaultapp.model.entities.Film;
+import com.vaultapp.model.entities.VaultItem;
+import com.vaultapp.model.repository.BookDbRepository;
+import com.vaultapp.model.repository.FilmDbRepository;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -233,7 +238,7 @@ public class MainGUIController {
 
         if (filmsSelected) {
 
-            ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmRepository.getInstance().getAsList());
+            ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmDbRepository.getInstance().getAsList());
             tblItems.setItems(films);
             TableColumn<VaultItem, String> titleCol = new TableColumn<>("Title");
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));

@@ -1,11 +1,9 @@
-package com.vaultapp.controller;
+package com.vaultapp;
 
+import com.vaultapp.controller.CommandController;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.utilities.JpaUtil;
-import jakarta.persistence.EntityManager;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 
 
 /**
@@ -14,17 +12,16 @@ import javafx.fxml.FXML;
  * @author Manuel Landín Gómez
  * @author Sergio Alonso Pazo
  */
-public class MainController {
+public class MainCLI {
 
-
-    public MainController() {
-        // PERSISTENT DATA
+    public static void startApp() {
+        // PERSISTENT TEST DATA
         User u = new User("root", "root");
         UserRepository.getInstance().add(u);
 
-        // BEGIN CLI PROGRAM
+        // START APP
         new CommandController();
-        //END PROGRAM
+
         JpaUtil.close();
     }
 
