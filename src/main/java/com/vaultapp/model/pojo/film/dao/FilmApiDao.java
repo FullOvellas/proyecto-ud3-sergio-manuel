@@ -108,7 +108,7 @@ public class FilmApiDao {
         return film;
     }
 
-    private Film getFilmByTmdb(int id) throws IOException {
+    private Film getFilmByTmdbId(int id) throws IOException {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US);
         ObjectMapper om = new ObjectMapper();
