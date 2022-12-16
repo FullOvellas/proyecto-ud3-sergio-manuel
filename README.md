@@ -29,7 +29,7 @@ dos modalidades:
 
 La aplicación podrá ser lanzada en dos modos: CLI y GUI.
 
-![](.\docs\img\mapa_conceptual_app.jpg)
+![](docs/img/mapa_conceptual_app.jpg)
 
 
 
@@ -61,7 +61,7 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 
 ## Manual Técnico
 ### Persistencia
-![](.\docs\img\persistence_diagram.jpg)
+![](docs/img/persistence_diagram.jpg)
 
 ### Clases
 
