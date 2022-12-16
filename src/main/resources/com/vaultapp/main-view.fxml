@@ -58,10 +58,12 @@
 
                 <Button fx:id="btnSideMenu" onAction="#expandRectangle" />
                 <VBox fx:id="vaultControlsContainer" alignment="CENTER">
-                    <Button fx:id="btnFilmView" onAction="#switchToFilmVault"/>
-                    <Button fx:id="btnBookView" onAction="#switchToBookVault"/>
+                    <Button fx:id="btnFilmView" onAction="#chooseVault"/>
+                    <Button fx:id="btnBookView" onAction="#chooseVault"/>
+                    <Button fx:id="btnAddView" onAction="#onAddItemClick" />
                 </VBox>
             </VBox>
         </left>
     </BorderPane>
+    <Rectangle fx:id="topLayer" mouseTransparent="true" fill="black" opacity="0" width="10000" height="10000"/>
 </StackPane>

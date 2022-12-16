@@ -18,15 +18,6 @@ public class VaultApp {
                 "--cli: aplicación en línea de comandos\n\t" +
                 "--gui: aplicación con cliente gráfico";
 
-        List<Film> f = FilmApiDao.getInstance().searchByTitle("star", 1);
-        for (Film film : f) {
-            FilmDbRepository.getInstance().add(film);
-        }
-        f = FilmApiDao.getInstance().searchByTitle("Fight", 1);
-        for (Film film : f) {
-            FilmDbRepository.getInstance().add(film);
-        }
-
         if (args.length == 0) {
             //todo
         } else if (args.length == 1 && args[0].equals("--cli")) {

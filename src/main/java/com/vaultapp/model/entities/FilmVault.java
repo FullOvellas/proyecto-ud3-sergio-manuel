@@ -29,8 +29,8 @@ public class FilmVault extends Vault<Film> {
     }
 
     public FilmVault(String name) {
-        this();
-        this.name = name;
+       super(name);
+       films = new ArrayList<>();
     }
 
     public List<Film> getFilms() {
