@@ -25,8 +25,10 @@ public class Film extends VaultItem {
     private List<String> productionCompanies;
     private LocalDate releaseDate;
     private String tagline;
+    private boolean status;
 
     public Film(int tmdbId, String title, String posterPath, List<String> genres, String overview, String originalTitle, List<String> productionCompanies, LocalDate releaseDate, String tagline) {
+        this();
         this.tmdbId = tmdbId;
         this.title = title;
         this.posterPath = posterPath;
@@ -38,8 +40,18 @@ public class Film extends VaultItem {
         this.tagline = tagline;
     }
 
+
     public Film() {
+        status = false;
         
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public Long getId() {
@@ -86,6 +98,10 @@ public class Film extends VaultItem {
         return tagline;
     }
 
+    public void changeStatus() {
+        status = !status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,5 +113,15 @@ public class Film extends VaultItem {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Film{" +
+                "title='" + title + '\'' +
+                ", posterPath='" + posterPath + '\'' +
+                ", genres=" + genres +
+                ", releaseDate=" + releaseDate +
+                '}';
     }
 }

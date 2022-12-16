@@ -11,7 +11,6 @@ public abstract class Vault<T> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-
     protected String name;
 
     public Vault() {

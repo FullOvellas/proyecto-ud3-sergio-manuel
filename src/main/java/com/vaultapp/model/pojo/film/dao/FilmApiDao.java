@@ -1,14 +1,12 @@
 package com.vaultapp.model.pojo.film.dao;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.pojo.film.*;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,13 +32,15 @@ public class FilmApiDao {
 
     }
 
-    public static FilmApiDao getInstance() { return instance; }
+    public static FilmApiDao getInstance() {
+        return instance;
+    }
 
 
     public List<Film> searchByTitle(String title, int page) {
         ObjectMapper objectMapper = new ObjectMapper();
         String formattedTitle = String.join("+", title.split(" "));
-        String url = String.format(SEARCH_URL, API_KEY , formattedTitle, page);
+        String url = String.format(SEARCH_URL, API_KEY, formattedTitle, page);
         List<Film> films = new ArrayList<>();
 
         try {
@@ -49,6 +49,8 @@ public class FilmApiDao {
             for (ResultsItem a : pageFilms) {
                 films.add(parseApiFilm(a));
             }
+        } catch (ConnectException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -91,7 +93,7 @@ public class FilmApiDao {
 
     }
 
-    public FilmDetail searchByTmdbId(int id) {
+    private FilmDetail searchByTmdbId(int id) {
         ObjectMapper objectMapper = new ObjectMapper();
         String url = String.format(MOVIE_URL, id, API_KEY);
         FilmDetail film = null;
@@ -101,7 +103,6 @@ public class FilmApiDao {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return film;
     }
 
