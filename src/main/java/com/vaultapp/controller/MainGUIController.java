@@ -387,6 +387,23 @@ public class MainGUIController {
         launchDialog("elementAdd-view.fxml");
         lightenAll();
 
+        if (expanded) {
+            expandRectangle(new ActionEvent());
+        }
+
+        if (filmsSelected) {
+
+            FilmVault vault = (FilmVault) selectedVault;
+            tblItems.setItems(FXCollections.observableArrayList(vault.getFilms()));
+
+        } else {
+
+            BookVault vault = (BookVault) selectedVault;
+            tblItems.setItems(FXCollections.observableArrayList(vault.getBooks()));
+
+        }
+
+
 
     }
 
