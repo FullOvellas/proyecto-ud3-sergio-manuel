@@ -8,7 +8,7 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
-class JpaUtilTest {
+public class JpaUtilTest {
 
     @Test
     void testGetEntityManager() {

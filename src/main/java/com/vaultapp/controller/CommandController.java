@@ -479,9 +479,10 @@ public class CommandController {
      * Performs the logout of the currently logged-in user from the application.
      */
     private void actionLogout() {
+        User u = UserSession.getInstance().getLoggedUser();
         if (UserSession.getInstance().logout()) {
             view.resetPrompt();
-            view.logoutView();
+            view.logoutView(u.getName());
         }
     }
 

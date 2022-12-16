@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.vaultapp.utilities.Cipher;
 import org.junit.jupiter.api.Test;
 
-class CipherTest {
+public class CipherTest {
 
     @Test
     void testEncryptDecrypt() {

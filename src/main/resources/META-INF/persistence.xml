@@ -14,4 +14,17 @@
             <property name="hibernate.hbm2ddl.auto" value="create"/>
         </properties>
     </persistence-unit>
+
+    <persistence-unit name="vault_azure">
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://vaultapps.database.windows.net:1433;DatabaseName=vault"/>
+            <property name="javax.persistence.jdbc.user" value="vaultroot"/>
+            <property name="javax.persistence.jdbc.password" value="@Renaido"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+        </properties>
+    </persistence-unit>
+
 </persistence>

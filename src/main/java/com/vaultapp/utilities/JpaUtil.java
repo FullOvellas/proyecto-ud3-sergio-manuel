@@ -18,7 +18,7 @@ public class JpaUtil {
     static { em = entityManagerrFactory.createEntityManager(); }
 
     private static EntityManagerFactory buildEntityManagerFactory() {
-        return Persistence.createEntityManagerFactory("manuel_home_unit");
+        return Persistence.createEntityManagerFactory("vault_azure");
     }
 
     /**
