@@ -3,6 +3,9 @@ package com.vaultapp.login;
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.repository.UserRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class UserSession {
     private static UserSession instance;
     private User loginUser;
@@ -49,6 +52,8 @@ public class UserSession {
      */
     public boolean logout() {
         if (loginUser != null) {
+            loginUser.setLastConnection(LocalDateTime.now());
+            UserRepository.getInstance().add(loginUser);
             loginUser = null;
             return true;
         }

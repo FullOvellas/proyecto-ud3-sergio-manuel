@@ -3,6 +3,8 @@ package com.vaultapp.model.entities;
 import com.vaultapp.utilities.Cipher;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +23,9 @@ public class User {
 
     private String password;
 
+    @Column(name = "last_connection")
+    private LocalDateTime lastConnection;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
     private List<FilmVault> filmVaults;
 
@@ -37,6 +42,14 @@ public class User {
         this();
         this.name = name;
         this.password = Cipher.getInstance().encrypt(password);
+    }
+
+    public LocalDateTime getLastConnection() {
+        return lastConnection;
+    }
+
+    public void setLastConnection(LocalDateTime lastConnection) {
+        this.lastConnection = lastConnection;
     }
 
     public String getName() {

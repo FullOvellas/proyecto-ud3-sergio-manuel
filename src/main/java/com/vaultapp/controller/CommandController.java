@@ -6,6 +6,7 @@ import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.*;
 import com.vaultapp.view.cli.CommandControllerView;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -187,7 +188,7 @@ public class CommandController {
                     actionAddBook(parserCommand.get(1), parserCommand.get(2));
                     break;
                 case "add--film--tmid--vault":
-                case "add-f-tmid-v":
+                case "add-f--tmid-v":
                     actionAddFilm(parserCommand.get(1), parserCommand.get(2));
                     break;
                 case "delete--book--isbn--vault":
@@ -313,7 +314,7 @@ public class CommandController {
         Film bdf = FilmDbRepository.getInstance().findByTmid(tmid);
         if (bdf == null) {
             // test if isbn exists in the api
-            Film f = FilmDbRepository.getInstance().findByTmid(tmid);
+            Film f = FilmApiRepository.getInstance().getByTmid(tmid);
             if (f == null) {
                 view.filmNotFoundView();
                 return;
@@ -466,8 +467,13 @@ public class CommandController {
      * Shows the status of the currently logged-in user, including their name and the number of books and films in their vaults.
      */
     private void actionStatusUser() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd hh:mm:ss", Locale.US);
         User u = UserSession.getInstance().getLoggedUser();
-        view.statusView(u.getName(), u.getBookVaults(), u.getFilmVaults());
+        String lastConnection = "Never";
+        if (u.getLastConnection() != null) {
+            lastConnection = formatter.format(u.getLastConnection());
+        }
+        view.statusView(u.getName(), lastConnection, u.getBookVaults(), u.getFilmVaults());
     }
 
     /**
@@ -496,6 +502,7 @@ public class CommandController {
     }
 
     private void actionExit() {
+        UserSession.getInstance().logout();
         this.exit = true;
     }
 }
