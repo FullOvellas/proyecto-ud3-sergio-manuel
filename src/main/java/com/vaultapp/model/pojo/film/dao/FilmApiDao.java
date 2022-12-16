@@ -1,11 +1,13 @@
 package com.vaultapp.model.pojo.film.dao;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.pojo.film.*;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -104,6 +106,43 @@ public class FilmApiDao {
             throw new RuntimeException(e);
         }
         return film;
+    }
+
+    private Film getFilmByTmdb(int id) throws IOException {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US);
+        ObjectMapper om = new ObjectMapper();
+        String url = String.format(MOVIE_URL, id, API_KEY);
+        FilmDetail filmDetail = om.readValue(new URL(url), FilmDetail.class);
+
+        int tmdbId = filmDetail.getId();
+        String title = filmDetail.getTitle();
+        String posterPath = String.format(POSTER_URL, filmDetail.getPosterPath());
+        List<String> genres = new ArrayList<>();
+        String overview = filmDetail.getOverview();
+        String originalTitle = filmDetail.getOriginalTitle();
+        List<String> productionCompanies = new ArrayList<>();
+        LocalDate releaseDate;
+        if (filmDetail.getReleaseDate().length() != 0) {
+            releaseDate = LocalDate.parse(filmDetail.getReleaseDate(), formatter);
+        } else {
+            releaseDate = null;
+        }
+        String tagline = filmDetail.getTagline();
+
+        filmDetail.getGenres().forEach(g -> genres.add(g.getName()));
+        filmDetail.getProductionCompanies().forEach(p -> productionCompanies.add(p.getName()));
+
+        return new Film(tmdbId,
+                title,
+                posterPath,
+                genres,
+                overview,
+                originalTitle,
+                productionCompanies,
+                releaseDate,
+                tagline);
+        
     }
 
 }
