@@ -119,7 +119,6 @@ public class CommandController {
     }
 
     private void processParserCommand(List<String> parserCommand) {
-        System.out.println(parserCommand);
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
