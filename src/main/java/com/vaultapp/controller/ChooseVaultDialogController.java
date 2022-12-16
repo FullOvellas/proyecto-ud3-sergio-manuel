@@ -1,11 +1,7 @@
 package com.vaultapp.controller;
 
 import com.vaultapp.MainGUI;
-import com.vaultapp.model.entities.BookVault;
-import com.vaultapp.model.entities.FilmVault;
-import com.vaultapp.model.entities.User;
 import com.vaultapp.model.entities.Vault;
-import com.vaultapp.model.repository.FilmRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,7 +14,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import static atlantafx.base.theme.Styles.*;
 
@@ -85,10 +80,7 @@ public class ChooseVaultDialogController {
             stage.showAndWait();
 
         }
-
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
-
     }
-
 }

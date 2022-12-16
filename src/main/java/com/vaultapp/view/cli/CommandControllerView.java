@@ -21,6 +21,7 @@ public class CommandControllerView {
     public static final String SUCCESSFULLY_ACTION = "Action done successfully.\n";
     public static final String LOGOUT = "Log out.\n";
     public static final String REMOVE_BOOK = "\n" + "Book has been successfully deleted.";
+    public static final String REMOVE_FILM = "\n" + "Film has been successfully deleted.";
     public static final String HELP =
             "THEME\n" +
                     "\tVault CLI Help System\n" +
@@ -76,6 +77,9 @@ public class CommandControllerView {
                     "FilmVaults: %s\n" +
                     "============================\n";
 
+    public void removeFilmView() {
+        System.out.println(REMOVE_FILM);
+    }
 
     public void welcomeView(String arg) {
         System.out.println(String.format(WELCOME, arg));

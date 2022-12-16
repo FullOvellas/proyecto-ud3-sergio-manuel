@@ -53,7 +53,4 @@ public abstract class Vault<T> {
         return Objects.hash(name);
     }
 
-    public String getName() {
-        return name;
-    }
 }
