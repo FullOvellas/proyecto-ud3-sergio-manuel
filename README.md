@@ -11,20 +11,27 @@ almacenar listas con sus libros y películas favoritos.
 Para ello un usuario puede crear distintos *vaults* o almacenes donde
 guardar sus listas.
 
-* Un usuario puede registrarse en la app o iniciar sesión para recuperar
-sus *vaults*.
+* Un usuario puede iniciar sesión en la app, recuperando la configuración de su perfil y *vaults* creados.
 * Un *vault* puede almacenar una lista de libros o de películas, pero no ambos.
 Además un usuario podrá crear una cantidad de *vaults* arbitraria. De esta manera,
 un usuario dispondá de dos listas de *vaults* independientes, una con sus
 *vaults* de libros y otra con sus *vaults* de películas. 
 
-
-Los datos de libros y películas serán incluidos por el usuario, recibiendo asistencia
-de APIs externas con información adicional como autor, descripción, fecha de publicación, etc.
-Además, los datos almacenados se mostrarán al usuario, 
+Los datos de libros y películas serán buscados a través de la aplicación, pudiendo ser
+incluidos en los vaults que el usuario desee.
+Además, los datos almacenados se mostrarán al usuario,
 pudiendo ser modificados, o eliminados a placer.
 
+Toda la información estará almacenada de manera persistente en una base de datos, admitiendo
+dos modalidades:
+- Sistema gestor MySQL en local.
+- Sistema gestor SQL Server en Azure.
+
 La aplicación podrá ser lanzada en dos modos: CLI y GUI.
+
+![](C:\Users\manue\Desktop\proyecto-ud3-sergio-y-manuel\docs\img\mapa_conceptual_app.jpg)
+
+
 
 
 
@@ -53,12 +60,14 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
   Devolve un único obxecto `Film` segundo o _movie\_id_ empregado.
 
 ## Manual Técnico
+### Persistencia
+![](C:\Users\manue\Desktop\proyecto-ud3-sergio-y-manuel\docs\img\persistence_diagram.jpg)
 
 ### Clases
 
 ### Database schema
 
-## Manual de usuario
+## Manual de usuario para CLI
 
 ### Comandos para CLI
 #### Comandos para la gestión de la sesión:
@@ -81,4 +90,4 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 - `delete delete [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME` Borra el libro de ISBN dado en el vault de nombre dado.
 - `delete delete [-f|--film] --tmid TMID [-v|--vault] VAULT_NAME` Borra la película de TMID dado en el vault de nombre dado.
 
-
+## Manual de usuario para GUI
