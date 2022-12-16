@@ -245,7 +245,6 @@ public class MainGUIController {
             //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
             //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
             tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
-
         }
 
     }
@@ -345,11 +344,12 @@ public class MainGUIController {
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         TableColumn<VaultItem, String> authorCol = new TableColumn<>("Author");
         authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
-        TableColumn<VaultItem, LocalDate> releaseCol = new TableColumn<>("Release");
+        TableColumn<VaultItem, String> releaseCol = new TableColumn<>("Release");
         releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishYear"));
         //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
         //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-        tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
+        tblItems.getColumns().addAll(titleCol, authorCol, releaseCol/*, statusCol*/);
+        tblItems.refresh();
 
     }
 
@@ -375,7 +375,7 @@ public class MainGUIController {
             detailField1.setText("Title: " + b.getTitle());
             detailField2.setText("Author: " + b.getAuthor());
             detailField3.setText("Publish date: " + b.getPublishYear());
-            detailField4.setText("ISBN" + b.getIsbn());
+            detailField4.setText("ISBN: " + b.getIsbn());
 
         }
 
