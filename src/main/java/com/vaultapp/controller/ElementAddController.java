@@ -1,9 +1,7 @@
 package com.vaultapp.controller;
 
-import com.vaultapp.model.entities.Book;
-import com.vaultapp.model.entities.Film;
-import com.vaultapp.model.entities.Vault;
-import com.vaultapp.model.entities.VaultItem;
+import com.vaultapp.login.UserSession;
+import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.BookApiRepository;
 import com.vaultapp.model.repository.BookDbRepository;
 import com.vaultapp.model.repository.FilmApiRepository;
@@ -24,6 +22,7 @@ public class ElementAddController {
     private final String[] PROMPTS_FILM = {"Search %s by title"};
     private final String[] SPINNER_FIELDS = {"By title"};
     private final String PROMPT_TERM = MainGUIController.isFilmsSelected() ? "film" : "book";
+    private UserSession session = UserSession.getInstance();
     @FXML
     public HBox hbxSearch;
     @FXML
@@ -38,6 +37,7 @@ public class ElementAddController {
     public void initialize() {
 
         txfSearch.setPromptText(String.format(PROMPTS_FILM[0], PROMPT_TERM));
+        tblSearchResults.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tblSearchResults.requestFocus();
 
 
@@ -45,7 +45,7 @@ public class ElementAddController {
 
             TableColumn<VaultItem, String> titleCol = new TableColumn<>("Title");
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            TableColumn<VaultItem, LocalDate> releaseCol = new TableColumn<>("Year");
+            TableColumn<VaultItem, LocalDate> releaseCol = new TableColumn<>("Release");
             releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
             tblSearchResults.getColumns().addAll(titleCol, releaseCol);
 
@@ -55,7 +55,7 @@ public class ElementAddController {
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
             TableColumn<VaultItem, String> authorCol = new TableColumn<>("Author");
             authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
-            TableColumn<VaultItem, String> releaseCol = new TableColumn<>("Year");
+            TableColumn<VaultItem, String> releaseCol = new TableColumn<>("Release");
             releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
             tblSearchResults.getColumns().addAll(titleCol, authorCol, releaseCol);
 
@@ -96,8 +96,7 @@ public class ElementAddController {
 
             Vault vault = MainGUIController.getSelectedVault();
             vault.addElement(item);
-            MainGUIController.getActiveUser().addVault(vault);
-            UserRepository.getInstance().add(MainGUIController.getActiveUser());
+            UserRepository.getInstance().add(session.getLoggedUser());
 
             Dialog<String> dialog = new Dialog<>();
             dialog.setContentText("Element added");

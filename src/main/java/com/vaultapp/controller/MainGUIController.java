@@ -2,6 +2,7 @@ package com.vaultapp.controller;
 
 
 import com.vaultapp.MainGUI;
+import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.model.entities.Film;
@@ -99,14 +100,10 @@ public class MainGUIController {
     private boolean expanded = false;
     private static boolean filmsSelected = true; // true: view film vault, false: view book vault
     private static Vault selectedVault;
-    private static User activeUser;
+    private UserSession session = UserSession.getInstance();
 
     public static boolean isFilmsSelected() {
         return filmsSelected;
-    }
-
-    public static User getActiveUser() {
-        return activeUser;
     }
 
     public static void setSelectedVault(Vault selectedVault) {
@@ -192,11 +189,12 @@ public class MainGUIController {
 
         //TODO: THIS IS FOR TESTING ////////////////////////
         //
-        UserRepository.getInstance().add(new User("root", "root"));
-        activeUser = UserRepository.getInstance().find("root");
-        activeUser.addVault(new BookVault("testing"));
-        UserRepository.getInstance().add(activeUser);
-        selectedVault = new BookVault();
+        User u = new User("root", "root");
+        UserRepository.getInstance().add(u);
+        UserSession.getInstance().login(u);
+        UserSession.getInstance().getLoggedUser().addVault(new BookVault("testing_books"));
+        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
+        selectedVault = null;
         //
         /////////////////////////////////////////////////////
 
@@ -257,12 +255,12 @@ public class MainGUIController {
 
         if (actionEvent.getSource().equals(btnBookView)) {
 
-            vaults = new ArrayList<>(activeUser.getBookVaults());
+            vaults = new ArrayList<>(session.getLoggedUser().getBookVaults());
             ChooseVaultDialogController.setChoosingFilms(false);
 
         } else {
 
-            vaults = new ArrayList<>(activeUser.getFilmVaults());
+            vaults = new ArrayList<>(session.getLoggedUser().getBookVaults());
             ChooseVaultDialogController.setChoosingFilms(true);
 
         }
@@ -274,7 +272,7 @@ public class MainGUIController {
 
         lightenAll();
 
-        if (!oldVault.equals(selectedVault) || oldVault == null) {
+        if (oldVault == null || !oldVault.equals(selectedVault)) {
 
             if (selectedVault instanceof BookVault) {
 
@@ -327,6 +325,7 @@ public class MainGUIController {
         //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
         //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
+        tblItems.refresh();
 
     }
 
@@ -402,8 +401,6 @@ public class MainGUIController {
             tblItems.setItems(FXCollections.observableArrayList(vault.getBooks()));
 
         }
-
-
 
     }
 
