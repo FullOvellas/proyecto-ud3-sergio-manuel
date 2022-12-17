@@ -10,8 +10,9 @@
     * [The Movie Data Base (TMDB)](#the-movie-data-base--tmdb-)
       * [Endpoints](#endpoints)
   * [Manual Técnico](#manual-técnico)
-    * [Documentación Java](#documentación-java)
+    * [Estructura de paquetes](#estructura-de-paquetes)
     * [Diagrama de clases](#diagrama-de-clases)
+    * [Diagrama ER](#diagrama-er)
     * [Diagrama de persistencia](#diagrama-de-persistencia)
   * [Manual de usuario para CLI](#manual-de-usuario-para-cli)
       * [1. Inicio de sesión](#1-inicio-de-sesión)
@@ -25,6 +26,9 @@
       * [9. Cerrar la aplicación](#9-cerrar-la-aplicación)
     * [Lista detallada de comandos para CLI](#lista-detallada-de-comandos-para-cli)
   * [Manual de usuario para GUI](#manual-de-usuario-para-gui)
+  * [GIT](#git)
+    * [Lista de pull requests cerradas](#lista-de-pull-requests-cerradas)
+    * [Pull request relevantes](#pull-request-relevantes)
 <!-- TOC -->
 
 ## Participantes
