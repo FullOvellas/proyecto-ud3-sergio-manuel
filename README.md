@@ -1,5 +1,32 @@
 # Proyecto UD3 - Hibernate
 
+<!-- TOC -->
+* [Proyecto UD3 - Hibernate](#proyecto-ud3---hibernate)
+  * [Participantes](#participantes)
+  * [Supuesto textual](#supuesto-textual)
+  * [APIs utilizadas](#apis-utilizadas)
+    * [Open Library Search API](#open-library-search-api)
+    * [Open Library Covers API](#open-library-covers-api)
+    * [The Movie Data Base (TMDB)](#the-movie-data-base--tmdb-)
+      * [Endpoints](#endpoints)
+  * [Manual Técnico](#manual-técnico)
+    * [Documentación Java](#documentación-java)
+    * [Diagrama de clases](#diagrama-de-clases)
+    * [Diagrama de persistencia](#diagrama-de-persistencia)
+  * [Manual de usuario para CLI](#manual-de-usuario-para-cli)
+      * [1. Inicio de sesión](#1-inicio-de-sesión)
+      * [2. Status](#2-status)
+      * [3. Crear un nuevo Vault](#3-crear-un-nuevo-vault)
+      * [4. Buscar y añadir un nuevo elemento a un vault](#4-buscar-y-añadir-un-nuevo-elemento-a-un-vault)
+      * [5. Abrir y visualizar el contenido de un vault](#5-abrir-y-visualizar-el-contenido-de-un-vault)
+      * [6. Borrar un libro o película](#6-borrar-un-libro-o-película)
+      * [7. Borrar un vault](#7-borrar-un-vault)
+      * [8. Cerrar sesión de usuario](#8-cerrar-sesión-de-usuario)
+      * [9. Cerrar la aplicación](#9-cerrar-la-aplicación)
+    * [Lista detallada de comandos para CLI](#lista-detallada-de-comandos-para-cli)
+  * [Manual de usuario para GUI](#manual-de-usuario-para-gui)
+<!-- TOC -->
+
 ## Participantes
 
 - Manuel Landín Gómez
@@ -60,12 +87,34 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
   Devolve un único obxecto `Film` segundo o _movie\_id_ empregado.
 
 ## Manual Técnico
-### Documentación Java
-Puedes acceder a toda la documentación del código a través
-del enlace externo [Javadoc](https://srgottfried.github.io/vaultApp_documentation/)
+
+### Estructura de paquetes
+A continuación se describe la estructura general del proyecto. Para una información más precisa
+acerca de la estructura, descripción de clases, y funcionalidades consulte el [Javadoc](https://srgottfried.github.io/vaultApp_documentation/index.html) de la aplicación.
+- `com.vaultapp`
+  - `controller` Contiene las clases controladoras principales del proyecto. Aquí se desarrolla la lógica de negocio.
+  - `login` Contiene la clase de gestión de sesiones de usuario.
+  - `model` 
+    - `entities` Contiene a las clases de entidad o modelos principales del proyecto.
+      - `dao` Contiene el conjunto de implementaciones de acceso a datos para los modelos.
+    - `pojo` Contiene la estructura necesaria para el adecuado volcado de datos desde las distintas APIs empleadas.
+    - `repository` Contiene las clases de gestión de datos. Este paquete actúa como una capa superior de abstracción del paquete DAO, que permite tratar a los datos virtualmente como colecciones de Java.
+  - `tests` Contiene los test unitarios necesarios durante el desarrollo.
+  - `utilities` Contiene algunas clases de utilidad, como un gestor de conexión o una clase para el cifrado de datos.
+  - `view` Contiene las vistas del proyecto.
+
 ### Diagrama de clases
+A continuación se expone el diagrama de clases empleado en la resolución del
+supuesto textual.
 ![](docs/img/diagrama_clases.jpg)
+### Diagrama ER
+La aplicación cuenta con dos bases de datos operativas,
+una en entorno local y otra en la nube de Azure. 
+A continuación se expone el diagrama ER empleado:
+![](docs/img/ER_diagram.png)
 ### Diagrama de persistencia
+Para el desarrollo del proyecto se ha hecho uso del ORM Hibernate. A continuación
+se muestra el esquema de persistencia que se ha empleado en la resolución del supuesto:
 ![](docs/img/persistence_diagram.jpg)
 
 
@@ -211,3 +260,24 @@ parar su ejecución a través del comando `exit`:
   - `delete [-f|--film] --tmid TMID [-v|--vault] VAULT_NAME` Borra la película de TMID dado en el vault de nombre dado.
 
 ## Manual de usuario para GUI
+
+## GIT
+Puede consultarse el proyecto en el repositorio de GitHub:
+https://github.com/CGAInstitution/proyecto-ud3-sergio-y-manuel.git
+### Lista de pull requests cerradas
+![](docs/img/user_manual_cli_img/git.jpg)
+### Pull request relevantes
+
+![](docs/img/user_manual_cli_img/pr1.jpg)
+
+![](docs/img/user_manual_cli_img/pr2.jpg)
+
+![](docs/img/user_manual_cli_img/pr13.jpg)
+
+![](docs/img/user_manual_cli_img/pr4.jpg)
+
+![](docs/img/user_manual_cli_img/pr5.jpg)
+
+![](docs/img/user_manual_cli_img/pr6.jpg)
+
+![](docs/img/user_manual_cli_img/pr7.jpg)
