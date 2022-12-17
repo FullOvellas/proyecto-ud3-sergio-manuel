@@ -119,7 +119,6 @@ public class CommandController {
     }
 
     private void processParserCommand(List<String> parserCommand) {
-        System.out.println(parserCommand);
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
@@ -480,9 +479,10 @@ public class CommandController {
      * Performs the logout of the currently logged-in user from the application.
      */
     private void actionLogout() {
+        User u = UserSession.getInstance().getLoggedUser();
         if (UserSession.getInstance().logout()) {
             view.resetPrompt();
-            view.logoutView();
+            view.logoutView(u.getName());
         }
     }
 

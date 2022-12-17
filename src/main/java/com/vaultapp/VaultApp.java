@@ -1,10 +1,5 @@
 package com.vaultapp;
 
-import com.vaultapp.model.entities.Film;
-import com.vaultapp.model.pojo.film.dao.FilmApiDao;
-import com.vaultapp.model.repository.FilmDbRepository;
-
-import java.util.List;
 import java.util.Locale;
 
 public class VaultApp {

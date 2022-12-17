@@ -18,7 +18,7 @@ public class CommandControllerView {
     public static final String BOOK_ALREADY_EXISTS = "Book already exists in the vault.\n";
     public static final String FILM_ALREADY_EXISTS = "Film already exists in the vault.\n";
     public static final String SUCCESSFULLY_ACTION = "Action done successfully.\n";
-    public static final String LOGOUT = "Log out.\n";
+    public static final String LOGOUT = "Bye %s. Your session is closed. See you soon.\n";
     public static final String REMOVE_BOOK = "\n" + "Book has been successfully deleted.";
     public static final String REMOVE_FILM = "\n" + "Film has been successfully deleted.";
     public static final String HELP =
@@ -92,8 +92,8 @@ public class CommandControllerView {
         System.out.println(FILM_ALREADY_EXISTS);
     }
 
-    public void logoutView() {
-        System.out.println(LOGOUT);
+    public void logoutView(String arg) {
+        System.out.println(String.format(LOGOUT, arg));
     }
 
     public void removeBookView() {
