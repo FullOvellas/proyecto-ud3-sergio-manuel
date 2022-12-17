@@ -269,7 +269,7 @@ public class MainGUIController {
         Vault oldVault = selectedVault;
 
         ChooseVaultDialogController.setVaultList(vaults);
-        launchDialog("chooseVaultDialog-view.fxml");
+        launchDialog("chooseVaultDialog-view.fxml", "Choose a vault");
 
         lightenAll();
 
@@ -413,7 +413,7 @@ public class MainGUIController {
         }
 
         darkenAll();
-        launchDialog("elementAdd-view.fxml");
+        launchDialog("elementAdd-view.fxml", filmsSelected ? "Add a film" : "Add a book");
         lightenAll();
 
         if (expanded) {
@@ -434,10 +434,11 @@ public class MainGUIController {
 
     }
 
-    private void launchDialog(String resource) throws IOException {
+    private void launchDialog(String resource, String title) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource(resource));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
+        stage.setTitle(title);
         stage.initOwner(MainGUI.getMainStage());
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setScene(scene);

@@ -52,8 +52,6 @@ public class ChooseVaultDialogController {
 
     public void initialize() {
 
-        Stage stage = (Stage) btnAdd.getScene().getWindow();
-        stage.setTitle("Choose a vault");
         prompt.getStyleClass().add(TITLE_2);
         vaultsTable.getStyleClass().add(STRIPED);
         vaultsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
