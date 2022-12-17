@@ -12,6 +12,8 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,10 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +41,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static atlantafx.base.theme.Styles.*;
 
@@ -88,6 +89,10 @@ public class MainGUIController {
     public Rectangle topLayer;
     @FXML
     public Button btnAddView;
+    @FXML
+    public Button btnLogout;
+    @FXML
+    public ChoiceBox<String> chbStatus;
     @FXML
     private Rectangle rect;
     private final Interpolator slide = Interpolator.SPLINE(0, 0, 0.1, 1);
@@ -186,17 +191,7 @@ public class MainGUIController {
     }
 
     public void initialize() {
-
-        //TODO: THIS IS FOR TESTING ////////////////////////
-        //
-        User u = new User("root", "root");
-        UserRepository.getInstance().add(u);
-        UserSession.getInstance().login(u);
-        UserSession.getInstance().getLoggedUser().addVault(new BookVault("testing_books"));
-        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
         selectedVault = null;
-        //
-        /////////////////////////////////////////////////////
 
         // Control flow
         EventHandler<MouseEvent> enableControls = e -> controlsLayer.setMouseTransparent(false);
@@ -207,9 +202,23 @@ public class MainGUIController {
         title.setOnMouseEntered(disableControls);
         title.setOnMouseExited(enableControls);
 
+        // Element events
+        chbStatus.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            VaultItem item = tblItems.getSelectionModel().getSelectedItem();
+
+            if (item instanceof Book) {
+                Book b = (Book) item;
+                b.setStatus(newValue.intValue() == 1);
+                UserRepository.getInstance().add(session.getLoggedUser());
+            } else {
+                Film f = (Film) item;
+                f.setStatus(newValue.intValue() == 1);
+                UserRepository.getInstance().add(session.getLoggedUser());
+            }
+        });
+
         // Element initialization
-        title.setText(filmsSelected ? "Your film vault" : "Your book vault");
-        title.getStyleClass().add(TITLE_1);
+        chbStatus.setItems(FXCollections.observableArrayList("Planning", "Completed"));
         vbxSidebar.setPadding(new Insets(0, 3, 0, 2));
         btnSideMenu.setGraphic(new FontIcon("bi-list"));
         btnSideMenu.getStyleClass().add(LARGE);
@@ -232,6 +241,7 @@ public class MainGUIController {
         itemImage.setFitWidth(200);
         itemInfo.autosize();
 
+        /*
         if (filmsSelected) {
 
             ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmDbRepository.getInstance().getAsList());
@@ -242,9 +252,9 @@ public class MainGUIController {
             releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
             //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
             //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-            tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
+            tblItems.getColumns().addAll(titleCol, releaseCol);
         }
-
+        */
     }
 
     public void chooseVault(ActionEvent actionEvent) throws IOException {
@@ -260,7 +270,7 @@ public class MainGUIController {
 
         } else {
 
-            vaults = new ArrayList<>(session.getLoggedUser().getBookVaults());
+            vaults = new ArrayList<>(session.getLoggedUser().getFilmVaults());
             ChooseVaultDialogController.setChoosingFilms(true);
 
         }
@@ -353,34 +363,60 @@ public class MainGUIController {
     }
 
     public void refreshDetailView(MouseEvent mouseEvent) {
+        chbStatus.setVisible(true);
 
         if (filmsSelected) {
 
             Film f = (Film) tblItems.getSelectionModel().getSelectedItem();
 
-            itemImage.setImage(new Image(f.getPosterPath()));
+            String posterPath = f.getPosterPath();
+
+            Image image = posterPath != null ?
+                    new Image(posterPath) :
+                    new Image(Objects.requireNonNull(MainGUI.class.getResource("placeholder.png")).toString());
+
+            itemImage.setImage(image);
 
             detailField1.setText("Title: " + f.getTitle());
             detailField2.setText("Genres: " + String.join(", ", f.getGenres()));
             detailField3.setText("Overview: " + f.getOverview());
             detailField4.setText("Tagline: " + f.getTagline());
+            chbStatus.getSelectionModel().select(f.isStatus() ? 1 : 0);
 
         } else {
 
             Book b = (Book) tblItems.getSelectionModel().getSelectedItem();
 
-            itemImage.setImage(new Image(b.getCover().toString()));
+            String cover = b.getCover().toString();
+            Image image = cover != null ?
+                    new Image(cover) :
+                    new Image(Objects.requireNonNull(MainGUI.class.getResource("placeholder.png")).toString());
+
+            if (image.isError()) {
+                image = new Image(Objects.requireNonNull(MainGUI.class.getResource("placeholder.png")).toString());
+            }
+
+            itemImage.setImage(image);
 
             detailField1.setText("Title: " + b.getTitle());
             detailField2.setText("Author: " + b.getAuthor());
             detailField3.setText("Publish date: " + b.getPublishYear());
             detailField4.setText("ISBN: " + b.getIsbn());
+            chbStatus.getSelectionModel().select(b.isStatus() ? 1 : 0);
 
         }
 
     }
 
     public void onAddItemClick(ActionEvent actionEvent) throws IOException {
+
+        if (selectedVault == null) {
+            Dialog dialog = new Dialog();
+            dialog.setContentText("No vault selected");
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+            dialog.showAndWait();
+            return;
+        }
 
         darkenAll();
         launchDialog("elementAdd-view.fxml");
@@ -412,5 +448,32 @@ public class MainGUIController {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setScene(scene);
         stage.showAndWait();
+    }
+
+    public void onLogoutClick(ActionEvent actionEvent) {
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setContentText("Do you really want to log out?");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+        darkenAll();
+
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        lightenAll();
+
+        if (result.isEmpty() || result.get().equals(ButtonType.NO)) {
+            return;
+        }
+
+        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("login-view.fxml"));
+        Stage current = (Stage) btnLogout.getScene().getWindow();
+
+        try {
+            current.getScene().setRoot(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        session.logout();
     }
 }

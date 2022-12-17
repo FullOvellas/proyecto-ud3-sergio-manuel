@@ -3,6 +3,8 @@ package com.vaultapp;
 import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
 import com.vaultapp.controller.MainGUIController;
+import com.vaultapp.model.entities.User;
+import com.vaultapp.model.repository.UserRepository;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,8 +26,8 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
         mainStage = primaryStage;
-        // TODO: launch in login view
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
+        UserRepository.getInstance().add(new User("root", "root"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login-view.fxml"));
         main = new Scene(fxmlLoader.load(), 1200, 800);
         primaryStage.setTitle("Vaulted");
         primaryStage.setScene(main);

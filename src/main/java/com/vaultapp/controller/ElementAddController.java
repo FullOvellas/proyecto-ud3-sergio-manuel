@@ -55,9 +55,11 @@ public class ElementAddController {
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
             TableColumn<VaultItem, String> authorCol = new TableColumn<>("Author");
             authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
+            TableColumn<VaultItem, String> isbnCol = new TableColumn<>("ISBN");
+            isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
             TableColumn<VaultItem, String> releaseCol = new TableColumn<>("Release");
-            releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
-            tblSearchResults.getColumns().addAll(titleCol, authorCol, releaseCol);
+            releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishYear"));
+            tblSearchResults.getColumns().addAll(titleCol, authorCol,isbnCol, releaseCol);
 
         }
 
@@ -94,8 +96,9 @@ public class ElementAddController {
 
         if (item != null) {
 
-            Vault vault = MainGUIController.getSelectedVault();
+            Vault vault = session.getLoggedUser().findVaultByName(MainGUIController.getSelectedVault().getName()).get(0);
             vault.addElement(item);
+            MainGUIController.setSelectedVault(vault);
             UserRepository.getInstance().add(session.getLoggedUser());
 
             Dialog<String> dialog = new Dialog<>();

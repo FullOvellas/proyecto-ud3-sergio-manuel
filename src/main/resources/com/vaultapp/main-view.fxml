@@ -10,6 +10,8 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import atlantafx.base.theme.Styles?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.vaultapp.controller.MainGUIController">
@@ -18,7 +20,11 @@
         <top>
             <HBox>
                 <Region fx:id="titleSpacer" />
-                <Label fx:id="title" />
+                <Label fx:id="title" text="No vault selected">
+                    <styleClass>
+                        <Styles fx:constant="TITLE_1" />
+                    </styleClass>
+                </Label>
             </HBox>
         </top>
         <left>
@@ -37,6 +43,7 @@
                     <Label fx:id="detailField2" wrapText="true" />
                     <Label fx:id="detailField3" wrapText="true" />
                     <Label fx:id="detailField4" wrapText="true" />
+                    <ChoiceBox fx:id="chbStatus" visible="false" />
                 </VBox>
             </VBox>
         </right>
@@ -61,6 +68,14 @@
                     <Button fx:id="btnFilmView" onAction="#chooseVault"/>
                     <Button fx:id="btnBookView" onAction="#chooseVault"/>
                     <Button fx:id="btnAddView" onAction="#onAddItemClick" />
+                    <Button fx:id="btnLogout" onAction="#onLogoutClick">
+                        <styleClass>
+                            <Styles fx:constant="LARGE" />
+                        </styleClass>
+                        <graphic>
+                            <FontIcon iconLiteral="bi-person" />
+                        </graphic>
+                    </Button>
                 </VBox>
             </VBox>
         </left>
