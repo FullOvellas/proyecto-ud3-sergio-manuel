@@ -20,7 +20,6 @@ import java.util.List;
 public class ElementAddController {
 
     private final String[] PROMPTS_FILM = {"Search %s by title"};
-    private final String[] SPINNER_FIELDS = {"By title"};
     private final String PROMPT_TERM = MainGUIController.isFilmsSelected() ? "film" : "book";
     private UserSession session = UserSession.getInstance();
     @FXML
@@ -101,10 +100,13 @@ public class ElementAddController {
             MainGUIController.setSelectedVault(vault);
             UserRepository.getInstance().add(session.getLoggedUser());
 
-            Dialog<String> dialog = new Dialog<>();
-            dialog.setContentText("Element added");
-            dialog.getDialogPane().getButtonTypes().add(0, new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE));
-            dialog.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Element added");
+            alert.setHeaderText("Success");
+            alert.setContentText("The selected item was added to your vault");
+
+            alert.showAndWait();
+
         }
 
     }

@@ -398,11 +398,18 @@ public class MainGUIController {
     public void onAddItemClick(ActionEvent actionEvent) throws IOException {
 
         if (selectedVault == null) {
-            Dialog dialog = new Dialog();
-            dialog.setContentText("No vault selected");
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-            dialog.showAndWait();
+
+            darkenAll();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Cannot add item");
+            alert.setContentText("No vault selected");
+            alert.showAndWait();
+
+            lightenAll();
             return;
+
         }
 
         darkenAll();
@@ -439,16 +446,18 @@ public class MainGUIController {
 
     public void onLogoutClick(ActionEvent actionEvent) {
 
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setContentText("Do you really want to log out?");
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Log out");
+        alert.setHeaderText("Logging out");
+        alert.setContentText("Your data will be saved");
+
         darkenAll();
 
-        Optional<ButtonType> result = dialog.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
 
         lightenAll();
 
-        if (result.isEmpty() || result.get().equals(ButtonType.NO)) {
+        if (result.isEmpty() || result.get().equals(ButtonType.CANCEL)) {
             return;
         }
 
