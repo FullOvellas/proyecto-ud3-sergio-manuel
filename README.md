@@ -61,7 +61,8 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
 
 ## Manual Técnico
 ### Documentación Java
-[Javadoc](https://srgottfried.github.io/vaultApp_documentation/)
+Puedes acceder a toda la documentación del código a través
+del enlace externo [Javadoc](https://srgottfried.github.io/vaultApp_documentation/)
 ### Diagrama de clases
 ![](docs/img/diagrama_clases.jpg)
 ### Diagrama de persistencia
