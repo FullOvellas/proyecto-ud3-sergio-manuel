@@ -3,7 +3,6 @@ package com.vaultapp.controller;
 import com.vaultapp.MainGUI;
 import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.User;
-import com.vaultapp.model.repository.UserRepository;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -16,7 +15,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 

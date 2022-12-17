@@ -100,8 +100,6 @@ public class MainGUIController {
     private final String HIDDEN_BORDER = "-fx-border-style: hidden";
     private double btnDefWidth;
     private double btnExpandedWidth = 180d;
-    private Insets defPadding = new Insets(10d);
-    private Insets expandedPadding;
     private boolean expanded = false;
     private static boolean filmsSelected = true; // true: view film vault, false: view book vault
     private static Vault selectedVault;
@@ -124,6 +122,7 @@ public class MainGUIController {
             btnFilmView.textAlignmentProperty().setValue(TextAlignment.LEFT);
             btnBookView.textAlignmentProperty().setValue(TextAlignment.LEFT);
             btnAddView.textAlignmentProperty().setValue(TextAlignment.LEFT);
+            btnLogout.textAlignmentProperty().setValue(TextAlignment.LEFT);
             vaultControlsContainer.setAlignment(Pos.CENTER_LEFT);
             vbxSidebar.requestFocus();
             vbxSidebar.setStyle("-fx-fill: #3c536e");
@@ -134,6 +133,7 @@ public class MainGUIController {
             btnFilmView.getStyleClass().add(ACCENT);
             btnBookView.getStyleClass().add(ACCENT);
             btnAddView.getStyleClass().add(ACCENT);
+            btnLogout.getStyleClass().add(ACCENT);
             rect.setVisible(true);
 
             Timeline timeline = new Timeline();
@@ -143,12 +143,14 @@ public class MainGUIController {
             KeyValue filmBtnGrow = new KeyValue(btnFilmView.minWidthProperty(), 207, slide);
             KeyValue bookBtnGrow = new KeyValue(btnBookView.minWidthProperty(), 170, slide);
             KeyValue addBtnGrow = new KeyValue(btnAddView.minWidthProperty(), 170, slide);
+            KeyValue logoutBtnGrow = new KeyValue(btnLogout.minWidthProperty(), 170, slide);
             KeyValue layerOpacity = new KeyValue(layer.opacityProperty(), 0.7);
-            KeyFrame kf = new KeyFrame(Duration.millis(150d), kv, kv2, filmBtnGrow, bookBtnGrow, addBtnGrow, layerOpacity);
+            KeyFrame kf = new KeyFrame(Duration.millis(150d), kv, kv2, filmBtnGrow, bookBtnGrow, addBtnGrow, layerOpacity, logoutBtnGrow);
             timeline.setOnFinished(e -> {
                 btnFilmView.setText("select film vault");
                 btnBookView.setText("select book vault");
                 btnAddView.setText("add item to vault");
+                btnLogout.setText("log out");
                 btnFilmView.maxWidthProperty().setValue(btnExpandedWidth);
                 //btnFilmView.setPadding(expandedPadding);
             });
@@ -160,16 +162,18 @@ public class MainGUIController {
             btnFilmView.textAlignmentProperty().setValue(TextAlignment.CENTER);
             btnBookView.textAlignmentProperty().setValue(TextAlignment.CENTER);
             btnAddView.textAlignmentProperty().setValue(TextAlignment.CENTER);
-            //btnFilmView.setPadding(defPadding);
+            btnLogout.textAlignmentProperty().setValue(TextAlignment.CENTER);
             vaultControlsContainer.setAlignment(Pos.CENTER);
             btnFilmView.setText("");
             btnBookView.setText("");
             btnAddView.setText("");
+            btnLogout.setText("");
             vbxSidebar.setStyle("-fx-fill: rgba(0,0,0,0)");
             btnSideMenu.getStyleClass().remove(ACCENT);
             btnBookView.getStyleClass().remove(ACCENT);
             btnFilmView.getStyleClass().remove(ACCENT);
             btnAddView.getStyleClass().remove(ACCENT);
+            btnLogout.getStyleClass().remove(ACCENT);
             vbxSidebar.setStyle(SIDEBAR_BORDER);
             Timeline timeline = new Timeline();
             timeline.setCycleCount(1);
@@ -178,8 +182,9 @@ public class MainGUIController {
             KeyValue filmBtnShrink = new KeyValue(btnFilmView.minWidthProperty(), btnDefWidth);
             KeyValue bookBtnShrink = new KeyValue(btnBookView.minWidthProperty(), btnDefWidth);
             KeyValue addBtnShrink = new KeyValue(btnAddView.minWidthProperty(), btnDefWidth);
+            KeyValue logoutBtnShrink = new KeyValue(btnLogout.minWidthProperty(), btnDefWidth);
             KeyValue layerOpacity = new KeyValue(layer.opacityProperty(), 0d);
-            KeyFrame kf = new KeyFrame(Duration.millis(150.0), kv, kv2, filmBtnShrink, bookBtnShrink, layerOpacity, addBtnShrink);
+            KeyFrame kf = new KeyFrame(Duration.millis(150.0), kv, kv2, filmBtnShrink, bookBtnShrink, layerOpacity, addBtnShrink, logoutBtnShrink);
             timeline.getKeyFrames().add(kf);
             timeline.setOnFinished(e -> {
                 rect.setVisible(false);
@@ -218,6 +223,7 @@ public class MainGUIController {
         });
 
         // Element initialization
+        title.minWidthProperty().bind(tblItems.widthProperty().subtract(4));
         chbStatus.setItems(FXCollections.observableArrayList("Planning", "Completed"));
         vbxSidebar.setPadding(new Insets(0, 3, 0, 2));
         btnSideMenu.setGraphic(new FontIcon("bi-list"));
@@ -230,7 +236,6 @@ public class MainGUIController {
         btnAddView.getStyleClass().addAll(FONT_ICON, LARGE);
 
         btnDefWidth = btnFilmView.getWidth();
-        expandedPadding = new Insets(10d, 15d, 10d, 5d);
         spacer.minWidthProperty().setValue(58);
         titleSpacer.minWidthProperty().setValue(62);
         tblItems.getStyleClass().add(STRIPED);
@@ -241,20 +246,6 @@ public class MainGUIController {
         itemImage.setFitWidth(200);
         itemInfo.autosize();
 
-        /*
-        if (filmsSelected) {
-
-            ObservableList<VaultItem> films = FXCollections.observableArrayList(FilmDbRepository.getInstance().getAsList());
-            tblItems.setItems(films);
-            TableColumn<VaultItem, String> titleCol = new TableColumn<>("Title");
-            titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            TableColumn<VaultItem, LocalDate> releaseCol = new TableColumn<>("Release");
-            releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
-            //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
-            //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-            tblItems.getColumns().addAll(titleCol, releaseCol);
-        }
-        */
     }
 
     public void chooseVault(ActionEvent actionEvent) throws IOException {
@@ -323,7 +314,7 @@ public class MainGUIController {
         tblItems.getItems().clear();
         tblItems.getColumns().clear();
         FilmVault vault = (FilmVault) selectedVault;
-        title.setText("Your film vault: " + selectedVault.getName());
+        title.setText(session.getLoggedUser().getName() + "'s film vault: " + selectedVault.getName());
         filmsSelected = true;
 
         ObservableList<VaultItem> films = FXCollections.observableArrayList(vault.getFilms());
@@ -332,9 +323,7 @@ public class MainGUIController {
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         TableColumn<VaultItem, LocalDate> releaseCol = new TableColumn<>("Release");
         releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
-        //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
-        //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-        tblItems.getColumns().addAll(titleCol, releaseCol/*, statusCol*/);
+        tblItems.getColumns().addAll(titleCol, releaseCol);
         tblItems.refresh();
 
     }
@@ -344,7 +333,7 @@ public class MainGUIController {
         tblItems.getItems().clear();
         tblItems.getColumns().clear();
         BookVault vault = (BookVault) selectedVault;
-        title.setText("Your book vault: " + selectedVault.getName());
+        title.setText(session.getLoggedUser().getName() + "'s book vault: " + selectedVault.getName());
         filmsSelected = false;
 
         ObservableList<VaultItem> books = FXCollections.observableArrayList(vault.getBooks());
@@ -354,10 +343,8 @@ public class MainGUIController {
         TableColumn<VaultItem, String> authorCol = new TableColumn<>("Author");
         authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
         TableColumn<VaultItem, String> releaseCol = new TableColumn<>("Release");
-        releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishYear"));
-        //TableColumn<VaultItem, String> statusCol = new TableColumn<>("Status");
-        //statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-        tblItems.getColumns().addAll(titleCol, authorCol, releaseCol/*, statusCol*/);
+        releaseCol.setCellValueFactory(new PropertyValueFactory<>("publishYear"));;
+        tblItems.getColumns().addAll(titleCol, authorCol, releaseCol);
         tblItems.refresh();
 
     }
