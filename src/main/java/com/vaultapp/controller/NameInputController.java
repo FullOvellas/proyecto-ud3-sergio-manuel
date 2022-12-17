@@ -1,8 +1,10 @@
 package com.vaultapp.controller;
 
+import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.FilmVault;
 import com.vaultapp.model.entities.User;
+import com.vaultapp.model.entities.Vault;
 import com.vaultapp.model.repository.UserRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,10 +19,18 @@ public class NameInputController {
     public TextField txfVaultName;
     @FXML
     public Button btnConfirmName;
+    private UserSession session = UserSession.getInstance();
+
+    public void initialize() {
+
+        Stage stage = (Stage) btnConfirmName.getScene().getWindow();
+        stage.setTitle("Name your vault");
+
+    }
 
     public void onNameConfirmClick(ActionEvent actionEvent) {
 
-        User activeUser = MainGUIController.getActiveUser();
+        User activeUser = session.getLoggedUser();
         String name = txfVaultName.getText();
 
         if (!name.isEmpty() && ChooseVaultDialogController.getVaultList().stream().noneMatch(vault -> vault.getName().equals(name))) {
@@ -28,17 +38,19 @@ public class NameInputController {
             if (ChooseVaultDialogController.isChoosingFilms()) {
 
                 FilmVault vault = new FilmVault(name);
+                vault.setOwner(activeUser);
                 activeUser.addVault(vault);
-                UserRepository.getInstance().add(activeUser);
                 MainGUIController.setSelectedVault(vault);
+                UserRepository.getInstance().add(activeUser);
 
             } else {
 
                 BookVault vault = new BookVault(name);
+                vault.setOwner(activeUser);
                 activeUser.addVault(vault);
                 UserRepository.getInstance().add(activeUser);
-                MainGUIController.setSelectedVault(vault);
-
+                // TODO TESTING
+                MainGUIController.setSelectedVault(activeUser.findVaultByName(vault.getName()).get(0));
 
             }
 

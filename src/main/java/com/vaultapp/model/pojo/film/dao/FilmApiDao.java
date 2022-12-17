@@ -16,7 +16,7 @@ public class FilmApiDao {
 
     private final String SEARCH_URL = "https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s&page=%d";
     private final String MOVIE_URL = "https://api.themoviedb.org/3/movie/%d?api_key=%s";
-    private final String POSTER_URL = "https://image.tmdb.org/t/p/original/%s";
+    private final String POSTER_URL = "https://image.tmdb.org/t/p/original%s";
     private final String API_KEY = "19ccdf01a305d5f5c3485958c90ef5d6";
 
     private static FilmApiDao instance;
