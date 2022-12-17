@@ -1,5 +1,6 @@
 package com.vaultapp.model.repository;
 
+import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.dao.Dao;
 import com.vaultapp.model.entities.dao.FilmDao;
 import com.vaultapp.model.entities.Film;
@@ -7,6 +8,7 @@ import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FilmDbRepository implements Repository<Film> {
     private EntityManager em;
@@ -36,6 +38,17 @@ public class FilmDbRepository implements Repository<Film> {
             em.getTransaction().rollback();
             e.printStackTrace();
         }
+    }
+
+    public Film findByTmid(String tmid) {
+        if (getAsList() == null || getAsList().isEmpty()) {
+            return null;
+        }
+        List<Film> l = getAsList().stream().filter(s -> String.valueOf(s.getTmdbId()).equals(tmid.trim())).collect(Collectors.toList());
+        if (l.isEmpty()) {
+            return null;
+        }
+        return l.get(0);
     }
 
     @Override

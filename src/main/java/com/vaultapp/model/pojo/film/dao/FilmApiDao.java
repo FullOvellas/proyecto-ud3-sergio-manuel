@@ -1,13 +1,10 @@
 package com.vaultapp.model.pojo.film.dao;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.pojo.film.*;
-
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -56,7 +53,6 @@ public class FilmApiDao {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return films;
     }
 
@@ -92,7 +88,6 @@ public class FilmApiDao {
                 productionCompanies,
                 releaseDate,
                 tagline);
-
     }
 
     private FilmDetail searchByTmdbId(int id) {
@@ -108,7 +103,7 @@ public class FilmApiDao {
         return film;
     }
 
-    private Film getFilmByTmdb(int id) throws IOException {
+    public Film getFilmByTmdbId(int id) throws IOException {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US);
         ObjectMapper om = new ObjectMapper();
@@ -142,7 +137,5 @@ public class FilmApiDao {
                 productionCompanies,
                 releaseDate,
                 tagline);
-
     }
-
 }

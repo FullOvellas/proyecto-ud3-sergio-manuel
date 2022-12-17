@@ -2,6 +2,7 @@ package com.vaultapp.login;
 
 import com.vaultapp.model.entities.User;
 import com.vaultapp.model.repository.UserRepository;
+import java.time.LocalDateTime;
 
 public class UserSession {
     private static UserSession instance;
@@ -32,7 +33,9 @@ public class UserSession {
      * @return `true` if the login was successful, `false` otherwise
      */
     public boolean login(User user) {
+
         User u = UserRepository.getInstance().find(user.getName());
+        logout();
         if (user.equals(u)) {
             loginUser = u;
             return true;
@@ -49,6 +52,8 @@ public class UserSession {
      */
     public boolean logout() {
         if (loginUser != null) {
+            loginUser.setLastConnection(LocalDateTime.now());
+            UserRepository.getInstance().add(loginUser);
             loginUser = null;
             return true;
         }

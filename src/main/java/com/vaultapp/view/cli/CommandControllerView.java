@@ -4,7 +4,6 @@ import com.vaultapp.model.entities.Book;
 import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.entities.FilmVault;
-
 import java.util.List;
 
 public class CommandControllerView {
@@ -19,8 +18,9 @@ public class CommandControllerView {
     public static final String BOOK_ALREADY_EXISTS = "Book already exists in the vault.\n";
     public static final String FILM_ALREADY_EXISTS = "Film already exists in the vault.\n";
     public static final String SUCCESSFULLY_ACTION = "Action done successfully.\n";
-    public static final String LOGOUT = "Log out.\n";
+    public static final String LOGOUT = "Bye %s. Your session is closed. See you soon.\n";
     public static final String REMOVE_BOOK = "\n" + "Book has been successfully deleted.";
+    public static final String REMOVE_FILM = "\n" + "Film has been successfully deleted.";
     public static final String HELP =
             "THEME\n" +
                     "\tVault CLI Help System\n" +
@@ -69,13 +69,16 @@ public class CommandControllerView {
     private final String[] PROMPT = {"", "> "};
     private final String WELCOME = "Welcome %s.\n";
     private final String STATUS =
-            "\n============================\n" +
+            "\n===================\n" +
                     "Username: %s\n" +
-                    "---------------------\n" +
+                    "Last connection: %s\n" +
+                    "-------------------\n" +
                     "BookVaults: %s\n" +
-                    "FilmVaults: %s\n" +
-                    "============================\n";
+                    "FilmVaults: %s\n";
 
+    public void removeFilmView() {
+        System.out.println(REMOVE_FILM);
+    }
 
     public void welcomeView(String arg) {
         System.out.println(String.format(WELCOME, arg));
@@ -89,8 +92,8 @@ public class CommandControllerView {
         System.out.println(FILM_ALREADY_EXISTS);
     }
 
-    public void logoutView() {
-        System.out.println(LOGOUT);
+    public void logoutView(String arg) {
+        System.out.println(String.format(LOGOUT, arg));
     }
 
     public void removeBookView() {
@@ -117,8 +120,8 @@ public class CommandControllerView {
         System.out.println(LOGIN_ERROR);
     }
 
-    public void statusView(String name, List<BookVault> bookVaults, List<FilmVault> filmVaults) {
-        System.out.println(String.format(STATUS, name, bookVaults, filmVaults));
+    public void statusView(String name, String lastConnection, List<BookVault> bookVaults, List<FilmVault> filmVaults) {
+        System.out.println(String.format(STATUS, name, lastConnection, bookVaults, filmVaults));
     }
 
     public void vaultAlreadyExistsView() {
@@ -173,7 +176,7 @@ public class CommandControllerView {
         }
     }
 
-    public void listOfFilmsView(List<Film> films) {
+    public void listOfSearchedFilmsView(List<Film> films) {
         String view = "=============\n" +
                 "Title: %s\n" +
                 "Genres: %s\n" +
@@ -185,7 +188,7 @@ public class CommandControllerView {
         }
     }
 
-    public void listOfSearchedFilmsView(List<Film> films) {
+    public void listOfFilmsView(List<Film> films) {
         String view = "=============\n" +
                 "Title: %s\n" +
                 "Genres: %s\n" +

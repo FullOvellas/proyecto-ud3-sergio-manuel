@@ -4,6 +4,7 @@ package com.vaultapp.model.repository;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.pojo.film.dao.FilmApiDao;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FilmApiRepository {
@@ -32,7 +33,12 @@ public class FilmApiRepository {
      * @param tmid of the book.
      * @return list of books.
      */
-    public Film getByIsbn(String tmid) {
-        return null;
+    public Film getByTmid(String tmid) {
+        try {
+            return FilmApiDao.getInstance().getFilmByTmdbId(Integer.valueOf(tmid));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

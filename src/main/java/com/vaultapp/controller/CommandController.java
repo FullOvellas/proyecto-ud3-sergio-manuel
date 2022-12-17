@@ -3,12 +3,10 @@ package com.vaultapp.controller;
 
 import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.*;
-import com.vaultapp.model.repository.BookApiRepository;
-import com.vaultapp.model.repository.BookDbRepository;
-import com.vaultapp.model.repository.FilmApiRepository;
-import com.vaultapp.model.repository.UserRepository;
+import com.vaultapp.model.repository.*;
 import com.vaultapp.view.cli.CommandControllerView;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -121,7 +119,6 @@ public class CommandController {
     }
 
     private void processParserCommand(List<String> parserCommand) {
-        System.out.println(parserCommand);
         switch (parserCommand.get(0)) {
             case "exit":
                 actionExit();
@@ -190,7 +187,7 @@ public class CommandController {
                     actionAddBook(parserCommand.get(1), parserCommand.get(2));
                     break;
                 case "add--film--tmid--vault":
-                case "add-f-tmid-v":
+                case "add-f--tmid-v":
                     actionAddFilm(parserCommand.get(1), parserCommand.get(2));
                     break;
                 case "delete--book--isbn--vault":
@@ -282,11 +279,52 @@ public class CommandController {
     }
 
     private void actionDeleteFilm(String tmid, String vaultName) {
-        //todo
+        User u = UserSession.getInstance().getLoggedUser();
+        List<FilmVault> fvs = u.getFilmVaults();
+        for (FilmVault fv : fvs) {
+            if (fv.getName().equals(vaultName)) {
+                Film f = fv.findByTmid(tmid);
+                if (f != null) {
+                    fv.deleteElement(f);
+                    view.removeFilmView();
+                    UserRepository.getInstance().add(u);
+                    return;
+                }
+                view.filmNotFoundView();
+                return;
+            }
+            view.vaultNotFoundView();
+            return;
+        }
     }
 
     private void actionAddFilm(String tmid, String vaultName) {
-        //todo
+        var vaultList = UserSession.getInstance().getLoggedUser().getFilmVaults().stream().filter(bv -> bv.getName().equals(vaultName)).collect(Collectors.toList());
+        // test if vaultList exists
+        if (vaultList.size() == 0) {
+            view.vaultNotFoundView();
+            return;
+        }
+        if (vaultList.get(0).findByTmid(tmid) != null) {
+            view.filmAlreadyExistsView();
+            return;
+        }
+        // test if isbn exists in db
+        Film bdf = FilmDbRepository.getInstance().findByTmid(tmid);
+        if (bdf == null) {
+            // test if isbn exists in the api
+            Film f = FilmApiRepository.getInstance().getByTmid(tmid);
+            if (f == null) {
+                view.filmNotFoundView();
+                return;
+            }
+            vaultList.get(0).addElement(f);
+        } else {
+            vaultList.get(0).addElement(bdf);
+        }
+        view.successfullyActionView();
+        //update user status
+        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
     }
 
     /**
@@ -428,17 +466,23 @@ public class CommandController {
      * Shows the status of the currently logged-in user, including their name and the number of books and films in their vaults.
      */
     private void actionStatusUser() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd hh:mm:ss", Locale.US);
         User u = UserSession.getInstance().getLoggedUser();
-        view.statusView(u.getName(), u.getBookVaults(), u.getFilmVaults());
+        String lastConnection = "Never";
+        if (u.getLastConnection() != null) {
+            lastConnection = formatter.format(u.getLastConnection());
+        }
+        view.statusView(u.getName(), lastConnection, u.getBookVaults(), u.getFilmVaults());
     }
 
     /**
      * Performs the logout of the currently logged-in user from the application.
      */
     private void actionLogout() {
+        User u = UserSession.getInstance().getLoggedUser();
         if (UserSession.getInstance().logout()) {
             view.resetPrompt();
-            view.logoutView();
+            view.logoutView(u.getName());
         }
     }
 
@@ -458,6 +502,7 @@ public class CommandController {
     }
 
     private void actionExit() {
+        UserSession.getInstance().logout();
         this.exit = true;
     }
 }
