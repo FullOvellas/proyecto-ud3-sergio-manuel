@@ -21,13 +21,6 @@ public class NameInputController {
     public Button btnConfirmName;
     private UserSession session = UserSession.getInstance();
 
-    public void initialize() {
-
-        Stage stage = (Stage) btnConfirmName.getScene().getWindow();
-        stage.setTitle("Name your vault");
-
-    }
-
     public void onNameConfirmClick(ActionEvent actionEvent) {
 
         User activeUser = session.getLoggedUser();

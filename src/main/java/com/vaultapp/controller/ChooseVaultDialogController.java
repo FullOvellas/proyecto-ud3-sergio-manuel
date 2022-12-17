@@ -73,6 +73,7 @@ public class ChooseVaultDialogController {
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("vaultNameInput-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
+            stage.setTitle("Name your vault");
             stage.initOwner(MainGUI.getMainStage());
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setScene(scene);
