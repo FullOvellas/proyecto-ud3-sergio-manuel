@@ -1,9 +1,11 @@
 package com.vaultapp.model.repository;
 
+import com.vaultapp.model.entities.User;
 import com.vaultapp.model.entities.dao.BookDao;
 import com.vaultapp.model.entities.dao.Dao;
 import com.vaultapp.model.entities.Book;
 import com.vaultapp.utilities.JpaUtil;
+import com.vaultapp.utilities.filters.BookFilter;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -14,14 +16,18 @@ public class BookDbRepository implements Repository<Book> {
     private Dao<Book> bookDao;
     private static BookDbRepository instance;
 
-    static { instance = new BookDbRepository(JpaUtil.getEntityManager()); }
+    static {
+        instance = new BookDbRepository(JpaUtil.getEntityManager());
+    }
 
     private BookDbRepository(EntityManager entityManager) {
         em = entityManager;
         bookDao = BookDao.getInstance();
     }
 
-    public static BookDbRepository getInstance() { return instance; }
+    public static BookDbRepository getInstance() {
+        return instance;
+    }
 
     @Override
     public void add(Book book) {
@@ -61,5 +67,9 @@ public class BookDbRepository implements Repository<Book> {
             em.getTransaction().rollback();
             e.printStackTrace();
         }
+    }
+
+    public List<Book> findBy(User user, BookFilter filter, String arg) {
+        return ((BookDao) bookDao).findBy(user, filter, arg);
     }
 }

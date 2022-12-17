@@ -1,10 +1,14 @@
 package com.vaultapp.model.repository;
 
 import com.vaultapp.model.entities.Book;
+import com.vaultapp.model.entities.User;
+import com.vaultapp.model.entities.dao.BookDao;
 import com.vaultapp.model.entities.dao.Dao;
 import com.vaultapp.model.entities.dao.FilmDao;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.utilities.JpaUtil;
+import com.vaultapp.utilities.filters.BookFilter;
+import com.vaultapp.utilities.filters.FilmFilter;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -66,5 +70,9 @@ public class FilmDbRepository implements Repository<Film> {
             em.getTransaction().rollback();
             e.printStackTrace();
         }
+    }
+
+    public List<Film> findBy(User user, FilmFilter filter, String arg) {
+        return ((FilmDao) filmDao).findBy(user, filter, arg);
     }
 }
