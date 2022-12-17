@@ -13,8 +13,10 @@ public class CommandControllerView {
     public static final String NO_SESION = "You must login before.\n";
     public static final String VAULT_ALREADY_EXISTS = "This vault already exists. Try another name.\n";
     public static final String VAULT_NOT_FOUND = "Vault not found. Try another vault name.\n";
-    public static final String BOOK_NOT_FOUND = "Book not found. The ISBN may be wrong. Please, try again.\n";
-    public static final String FILM_NOT_FOUND = "Film not found. The TMID may be wrong. Please, try again.\n";
+    public static final String BOOK_NOT_FOUND = "Book not found. Please, try again.\n";
+    public static final String FILM_NOT_FOUND = "Film not found. Please, try again.\n";
+    public static final String INVALID_BOOK_FILTER = "Invalid filter. Valid filters are: `author`, `title` or `isbn`.\n";
+    public static final String INVALID_FILM_FILTER = "Invalid filter. Valid filters are: `title` or `tmid`.\n";
     public static final String BOOK_ALREADY_EXISTS = "Book already exists in the vault.\n";
     public static final String FILM_ALREADY_EXISTS = "Film already exists in the vault.\n";
     public static final String SUCCESSFULLY_ACTION = "Action done successfully.\n";
@@ -59,6 +61,9 @@ public class CommandControllerView {
                     "\t\tadd [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME\n" +
                     "\t\t\tAdd book into a specific bookvault VAULT_NAME by ISBN." +
                     "\n\n" +
+                    "\t\tfind [-bv|-fv|--bookvault|--filmvault] VAULT_NAME [-sf|--filter] FILTER [-a|--arg] ARGUMENT\n" +
+                    "\t\t\tFind book or film into a vault with a filter." +
+                    "\n\n" +
                     "\t\tchsts --isbn ISBN [-v|--vault] VAULT_NAME\n" +
                     "\t\t\tChange the status of a book." +
                     "\n\n" +
@@ -98,6 +103,14 @@ public class CommandControllerView {
 
     public void removeBookView() {
         System.out.println(REMOVE_BOOK);
+    }
+
+    public void invalidBookFilter() {
+        System.out.println(INVALID_BOOK_FILTER);
+    }
+
+    public void invalidFilmFilter() {
+        System.out.println(INVALID_FILM_FILTER);
     }
 
     public void modifyPrompt(String arg) {
