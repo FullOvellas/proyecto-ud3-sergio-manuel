@@ -60,15 +60,13 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
   Devolve un único obxecto `Film` segundo o _movie\_id_ empregado.
 
 ## Manual Técnico
-
+### Documentación Java
+[Javadoc](docs/javadoc/index.html)
 ### Diagrama de clases
 ![](docs/img/diagrama_clases.jpg)
-### Persistencia
+### Diagrama de persistencia
 ![](docs/img/persistence_diagram.jpg)
 
-### Clases
-
-### Database schema
 
 ## Manual de usuario para CLI
 La experiencia de usuario por interfaz de línea de comandos es una experiencia sencilla y funcional
@@ -76,19 +74,17 @@ que no debe asustar al público inexperto. En los puntos sucesivos, indicaremos 
 básico de la aplicación, haciendo uso de la totalidad de los sencillos comandos que el usuario pueda
 requerir.
 
-#### 1. Iniciamos la ejecución
-
-#### 2. Inicio de sesión
+#### 1. Inicio de sesión
 Tan pronto como el programa se encuentre en ejecución, un prompt triangular se mostrará en la
 parte izquierda del terminal. Nuestro primer paso será iniciar sesión. Para ello es suficiente
 con escribir el comando `login -u USUARIO -p CONTRASEÑA` tal y como se muestra en la siguiente imagen:
 
 ![](docs/img/user_manual_cli_img/login.jpg)
 
-El sistema nos datá la bienvenida. El prompt se actualizará para visualizar el usuario que se encuetra
+El sistema nos dará la bienvenida. El prompt se actualizará para visualizar el usuario que se encuetra
 manejando la sesión.
 
-#### 3. Status
+#### 2. Status
 Lo primero que podemos hacer al inicar sesión es visualizar nuestro estado de sesión a través del
 comando `status`:
 
@@ -99,7 +95,7 @@ El sistema nos mostrará información sobre:
 - Nuestra última fecha y hora de conexión.
 - Nuestras listas, tanto de libros (BookVaults) como de películas (FilmVaults).
 
-#### 4. Crear un nuevo Vault
+#### 3. Crear un nuevo Vault
 Esta es una aplicación de crear colecciones de libros y películas, y para ello nos apoyamos en
 el concepto de **Vault**. Un **vault** es un simple contenedor, que almacenará una lista de libros
 o películas. Podremos crear tantos vaults como queramos, y se almacenarán a su vez en dos listas
@@ -112,33 +108,34 @@ Por ahora no contamos con ningún vault. Para crear un nuevo vault de libros hac
 ![](docs/img/user_manual_cli_img/create_bookvault.jpg)
 
 Una vez creado el vault, se mostrará en su lista correspondiente. De forma análoga podemos crear
-un vault de películas a través del comando `create -bv NOMBRE_DEL_VAULT`:
+un vault de películas a través del comando `create -fv NOMBRE_DEL_VAULT`:
 
 ![](docs/img/user_manual_cli_img/create_filmvault.jpg)
 
-#### 5. Buscar y añadir un nuevo elemento a un vault
+#### 4. Buscar y añadir un nuevo elemento a un vault
 Como vemos en las imágenes, cada nuevo vault creado va acompañado de un número entre paréntesis.
 Este número indica la cantidad de libros o películas que dicho vault tiene en su interior. Como
-ambos vaults, Literature y Comedy, están recién creados, no contienen ningún libro.
+ambos vaults, Literature y Comedy, están recién creados, no contienen ningún elemento.
 
-Para añadir libros a nuestros vaults tenemos que seguir un simple proceso:
-1. Hacemos uso del buscador integrado en la aplicación para encontrar el libro deseado. Para ello
+Para añadir elementos a nuestros vaults tenemos que seguir un simple proceso:
+1. Hacemos uso del buscador integrado en la aplicación para encontrar el elemento deseado. Para ello
 es suficiente con escribir el comando `search -b TÍTULO` para libros o `search -f TÍTULO`para 
 películas. El programa nos mostrará una lista relativamente amplia de resultados obtenidos de
 distintas APIs de uso libre:
 ![](docs/img/user_manual_cli_img/search_books.jpg)
-2. Una vez encontrada la versión que más nos guste, copiamos el ISBN y lo usamos para añadir
-dicha versión a nuestro vault de libros creado.
+2. Una vez encontrada la versión que más nos guste, copiamos el ISBN (para libros) o TMID (para películas)
+y lo usamos para añadir dicha versión a nuestro vault:
 ![](docs/img/user_manual_cli_img/add_book.jpg)
-Ahora el contador de libros de nuestro vault Literature se mostrará a 1. 
+Ahora el contador del vault Literature se muestra a 1. 
 
 Podemos repetir el
-proceso de añadir libros tantas veces como queramos, dando lugar a toda una colección de libros
-encapsulada en nuestro vault Literature.
+proceso de añadir libros o películas tantas veces como queramos.
+En el caso de ejemplo, podemos construir una colección de libros
+encapsulada en nuestro vault Literature tan grande como se desee:
 
 ![](docs/img/user_manual_cli_img/some_books_added.jpg)
 
-#### 6. Abrir y visualizar el contenido de un vault
+#### 5. Abrir y visualizar el contenido de un vault
 Para visualziar el contenido de un vault es tan sencillo como escribir
 el comando `open -bv NOMBRE` para un vault de libros y 
 `open -fv NOMBER` para un vault de películas.
@@ -149,7 +146,7 @@ El sistema nos mostrará el contenido completo del vault, con nuestra lista de l
 favoritas.
 
 Además de la información habitual, se añade el atributo *Status* para indicar si aún no hemos
-empezado a ver leer el libro (*to read*) o ya lo hemos terminado (*finish*). Un atributo análogo
+empezado a leer el libro (*to read*) o ya lo hemos terminado (*finish*). Un atributo análogo
 se muestra en las listas de películas.
 
 Para cambiar el valor de este atributo es tan sencillo como escribir el comando 
@@ -157,7 +154,7 @@ Para cambiar el valor de este atributo es tan sencillo como escribir el comando
 
 ![](docs/img/user_manual_cli_img/chsts_book.jpg)
 
-#### 7. Borrar un libro o película
+#### 6. Borrar un libro o película
 Si pensamos que un libro o película ya no debiera estar en nuestra lista, podemos borrarla
 del vault con el comando `delete -b --isbn ISBN -v NOMBRE_DEL_VAULT` en el caso de un libro
 o `delete -f --tmid TMID -v NOMBRE_DEL_VAULT` en el caso de una película. 
@@ -167,7 +164,7 @@ vault de libros Literature:
 
 ![](docs/img/user_manual_cli_img/delete_book.jpg)
 
-#### 8. Borrar un vault
+#### 7. Borrar un vault
 También resulta posible borrar un vault directamente si nos hemos cansado de él.
 Para ello recurrimos al comando `delete -bv NOMBRE_DEL_VAULT` para un vault de libros
 o `delete -fv NOMBRE_DEL_VAULT` para un vault de películas.
@@ -176,20 +173,20 @@ En el siguiente ejemplo procedemos a borrar el vault Literature (!con libros den
 
 ![](docs/img/user_manual_cli_img/delete_bookvault.jpg)
 
-#### 9. Cerrar sesión de usuario
+#### 8. Cerrar sesión de usuario
 Para cerrar nuestra sesión y que nadie toquetee nuestros vaults favoritos, hacemos uso
 del comando `logout`. El programa seguirá en ejecución, pero nuestra sesión se habrá cerrado
 con éxito. 
 
 ![](docs/img/user_manual_cli_img/logout.jpg)
 
-#### 10. Cerrar la aplicación
+#### 9. Cerrar la aplicación
 Si ningún otro usuario va a hacer uso de la aplicación en el corto plazo, podemos
 parar su ejecución a través del comando `exit`:
 
 ![](docs/img/user_manual_cli_img/exit.jpg)
 
-### Lista de comandos para CLI
+### Lista detallada de comandos para CLI
 - Comandos para la gestión de la sesión:
   - `login [-u|--user] USER [-p|--password] PASSWORD` Inica sesión de usuario.
   - `logout` Cierra sesión de usuario.
