@@ -16,8 +16,15 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.InvalidationListener;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.WeakListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -45,6 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static atlantafx.base.theme.Styles.*;
 
@@ -364,6 +372,7 @@ public class MainGUIController {
 
         // Element initialization
         title.minWidthProperty().bind(tblItems.widthProperty().subtract(4));
+        btnDelete.minWidthProperty().bind(chbStatus.widthProperty());
         chbStatus.setItems(FXCollections.observableArrayList("Planning", "Completed"));
         vbxSidebar.setPadding(new Insets(0, 3, 0, 2));
         btnSideMenu.setGraphic(new FontIcon("bi-list"));
@@ -418,6 +427,15 @@ public class MainGUIController {
 
         lightenAll();
 
+        if (selectedVault == null) {
+
+            tblItems.setDisable(true);
+            tblItems.getItems().clear();
+            title.setText("No vault selected");
+            return;
+
+        }
+
         if (oldVault == null || !oldVault.equals(selectedVault)) {
 
             if (selectedVault instanceof BookVault) {
@@ -465,6 +483,7 @@ public class MainGUIController {
      */
     private void swapToFilmVault() {
 
+        clearDetailView();
         tblItems.getItems().clear();
         tblItems.getColumns().clear();
         FilmVault vault = (FilmVault) selectedVault;
@@ -479,6 +498,19 @@ public class MainGUIController {
         releaseCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
         tblItems.getColumns().addAll(titleCol, releaseCol);
         tblItems.refresh();
+
+    }
+
+    /**
+     * Resets the detail view to its initial state.
+     */
+    private void clearDetailView() {
+        chbStatus.setVisible(false);
+        btnDelete.setVisible(false);
+
+        itemImage.setImage(null);
+        Stream.of(detailField1, detailField2, detailField3, detailField4)
+                .forEach(field -> field.setText(""));
 
     }
 
@@ -507,9 +539,13 @@ public class MainGUIController {
     }
 
     public void refreshDetailView(MouseEvent mouseEvent) {
+
+        if (selectedVault == null)
+            return;
+
         chbStatus.setVisible(true);
         btnDelete.setVisible(true);
-        
+
         if (filmsSelected) {
 
             Film f = (Film) tblItems.getSelectionModel().getSelectedItem();
@@ -644,5 +680,31 @@ public class MainGUIController {
         }
 
         session.logout();
+    }
+
+    public void onDeleteClick(ActionEvent actionEvent) {
+
+        VaultItem item = tblItems.getSelectionModel().getSelectedItem();
+
+        Vault vault = session.getLoggedUser().findVaultByName(selectedVault.getName()).get(0);
+
+        vault.deleteElement(item);
+        selectedVault = vault;
+
+        if (vault instanceof BookVault) {
+
+            BookVault bookVault = (BookVault) vault;
+            tblItems.setItems(FXCollections.observableArrayList(bookVault.getBooks()));
+
+        } else {
+
+            FilmVault filmVault = (FilmVault) vault;
+            tblItems.setItems(FXCollections.observableArrayList(filmVault.getFilms()));
+
+        }
+
+        UserRepository.getInstance().add(session.getLoggedUser());
+        clearDetailView();
+
     }
 }

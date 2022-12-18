@@ -7,7 +7,11 @@
 package com.vaultapp.controller;
 
 import com.vaultapp.MainGUI;
+import com.vaultapp.login.UserSession;
+import com.vaultapp.model.entities.BookVault;
+import com.vaultapp.model.entities.FilmVault;
 import com.vaultapp.model.entities.Vault;
+import com.vaultapp.model.repository.UserRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -64,6 +68,12 @@ public class ChooseVaultDialogController {
      * Boolean value indicating whether the user is choosing films or not.
      */
     private static boolean choosingFilms;
+
+    /**
+     * Button that allows the user to delete a vault
+     */
+    @FXML
+    public Button btnDelete;
 
     /**
      * Returns the ObservableList of vaults.
@@ -150,4 +160,24 @@ public class ChooseVaultDialogController {
         stage.close();
     }
 
+    public void onDeleteClick(ActionEvent actionEvent) {
+
+        Vault vault = vaultsTable.getSelectionModel().getSelectedItem();
+        UserSession.getInstance().getLoggedUser().removeVault(vault);
+
+        if (vault.equals(MainGUIController.getSelectedVault())) {
+
+            MainGUIController.setSelectedVault(null);
+
+        }
+
+        vaultList = choosingFilms ?
+                FXCollections.observableArrayList(UserSession.getInstance().getLoggedUser().getFilmVaults()) :
+                FXCollections.observableArrayList(UserSession.getInstance().getLoggedUser().getBookVaults());
+
+        vaultsTable.setItems(vaultList);
+        vaultsTable.refresh();
+        UserRepository.getInstance().add(UserSession.getInstance().getLoggedUser());
+
+    }
 }
