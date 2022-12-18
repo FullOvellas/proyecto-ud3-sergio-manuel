@@ -49,6 +49,17 @@
                     <Label fx:id="detailField3" wrapText="true" />
                     <Label fx:id="detailField4" wrapText="true" />
                     <ChoiceBox fx:id="chbStatus" visible="false" />
+                    <Button fx:id="btnDelete" visible="false">
+                        <styleClass>
+                            <Styles fx:constant="BUTTON_OUTLINED" />
+                        </styleClass>
+                        <styleClass>
+                            <Styles fx:constant="DANGER" />
+                        </styleClass>
+                        <graphic>
+                            <FontIcon iconLiteral="bi-trash" />
+                        </graphic>
+                    </Button>
                 </VBox>
             </VBox>
         </right>

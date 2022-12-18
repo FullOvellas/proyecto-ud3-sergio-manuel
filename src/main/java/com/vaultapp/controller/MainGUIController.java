@@ -1,5 +1,10 @@
+/**
+ * The MainGUIController is a controller class for the main GUI view. It allows users to view and manage
+ * their books and films in a selected vault.
+ *
+ * @author Vault App
+ */
 package com.vaultapp.controller;
-
 
 import com.vaultapp.MainGUI;
 import com.vaultapp.login.UserSession;
@@ -7,13 +12,10 @@ import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.UserRepository;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.entities.VaultItem;
-import com.vaultapp.model.repository.FilmDbRepository;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,75 +50,213 @@ import static atlantafx.base.theme.Styles.*;
 
 public class MainGUIController {
 
+    /**
+     * Button that opens and closes the sidebar menu.
+     */
     @FXML
     public Button btnSideMenu;
+
+    /**
+     * Button that displays the book vault view.
+     */
     @FXML
     public Button btnBookView;
+
+    /**
+     * Button that displays the film vault view.
+     */
     @FXML
     public Button btnFilmView;
+
+    /**
+     * VBox that holds the sidebar menu items.
+     */
     @FXML
     public VBox vbxSidebar;
+
+    /**
+     * VBox that holds the vault controls.
+     */
     @FXML
     public VBox vaultControlsContainer;
+    /**
+     * TableView that displays the items in the selected vault.
+     */
     @FXML
     public TableView<VaultItem> tblItems;
+
+    /**
+     * Spacer that separates the sidebar menu and the main content.
+     */
     @FXML
     public Region spacer;
+
+    /**
+     * Label that displays the title of the selected vault.
+     */
     @FXML
     public Label title;
+
+    /**
+     * Spacer that separates the title label and the main content.
+     */
     @FXML
     public Region titleSpacer;
+
+    /**
+     * Rectangle that forms a layer over the main content.
+     */
     public Rectangle layer;
+
+    /**
+     * BorderPane that holds the controls for the selected item.
+     */
     @FXML
     public BorderPane controlsLayer;
+
+    /**
+     * BorderPane that holds the main content.
+     */
     @FXML
     public BorderPane userContent;
+
+    /**
+     * ImageView that displays the image of the selected item.
+     */
     @FXML
     public ImageView itemImage;
+
+    /**
+     * Label that displays the first detail field of the selected item.
+     */
     @FXML
     public Label detailField1;
+
+    /**
+     * Label that displays the second detail field of the selected item.
+     */
     @FXML
     public Label detailField2;
+
+    /**
+     * Label that displays the third detail field of the selected item.
+     */
     @FXML
     public Label detailField3;
+
+    /**
+     * Label that displays the fourth detail field of the selected item.
+     */
     @FXML
     public Label detailField4;
+
+    /**
+     * VBox that holds the detail view of the selected item.
+     */
     @FXML
     public VBox detailView;
+
+    /**
+     * VBox that holds the information of the selected item.
+     */
     @FXML
     public VBox itemInfo;
+
+    /**
+     * Rectangle that forms a layer over the controlsLayer.
+     */
     @FXML
     public Rectangle topLayer;
+
+    /**
+     * Button that opens the add item view.
+     */
     @FXML
     public Button btnAddView;
+
+    /**
+     * Button that logs the user out and returns to the login view.
+     */
     @FXML
     public Button btnLogout;
+
+    /**
+     * ChoiceBox that allows the user to change the status of the selected item.
+     */
     @FXML
     public ChoiceBox<String> chbStatus;
+
+    /**
+     * Interpolator for smoothing animations.
+     */
+    private final Interpolator slide = Interpolator.SPLINE(0, 0, 0.1, 1);
+    /**
+     * Button for deleting items from a vault.
+     */
+    @FXML
+    public Button btnDelete;
     @FXML
     private Rectangle rect;
-    private final Interpolator slide = Interpolator.SPLINE(0, 0, 0.1, 1);
+    /**
+     * String that defines the border style for the sidebar when it is open.
+     */
     private final String SIDEBAR_BORDER = "-fx-border-style: hidden solid hidden hidden";
+    /**
+     * String that defines the border style for the sidebar when it is closed.
+     */
     private final String HIDDEN_BORDER = "-fx-border-style: hidden";
+    /**
+     * Double that stores the default width of the sidebar menu buttons.
+     */
     private double btnDefWidth;
+    /**
+     * Double that stores the expanded width of the sidebar menu buttons.
+     */
     private double btnExpandedWidth = 180d;
+    /**
+     * Boolean that stores the state of the sidebar menu (open or closed).
+     */
     private boolean expanded = false;
-    private static boolean filmsSelected = true; // true: view film vault, false: view book vault
+    /**
+     * Boolean that stores the state of the selected vault view (film or book).
+     */
+    private static boolean filmsSelected = true;
+    /**
+     * Vault object that stores the currently selected vault.
+     */
     private static Vault selectedVault;
+    /**
+     * UserSession object that stores the current user session.
+     */
     private UserSession session = UserSession.getInstance();
 
+    /**
+     * Returns de state of the selected vault view.
+     * @return state of the selected vault view (true for films, false for books)
+     */
     public static boolean isFilmsSelected() {
         return filmsSelected;
     }
 
+    /**
+     * Sets the currently selected vault.
+     * @param selectedVault vault to select
+     */
     public static void setSelectedVault(Vault selectedVault) {
         MainGUIController.selectedVault = selectedVault;
     }
 
+    /**
+     * Returns the currently selected vault.
+     * @return currently selected vault
+     */
     public static Vault getSelectedVault() {
         return selectedVault;
     }
 
+    /**
+     * Initializes the MainGUI view.
+     */
     public void expandRectangle(ActionEvent actionEvent) {
         if (!expanded) {
             btnFilmView.textAlignmentProperty().setValue(TextAlignment.LEFT);
@@ -248,6 +388,11 @@ public class MainGUIController {
 
     }
 
+    /**
+     * Opens the Choose Vault Dialog and sets the selected vault as the current vault.
+     * @param actionEvent ActionEvent object that triggered the method
+     * @throws IOException if there is an error loading the FXML file for the Choose Vault Dialog
+     */
     public void chooseVault(ActionEvent actionEvent) throws IOException {
 
         darkenAll();
@@ -289,6 +434,9 @@ public class MainGUIController {
 
     }
 
+    /**
+     * Returns the whole main window to its initial color.
+     */
     private void lightenAll() {
 
         Timeline timeline = new Timeline();
@@ -300,6 +448,9 @@ public class MainGUIController {
 
     }
 
+    /**
+     * Darkens the whole main window.
+     */
     private void darkenAll() {
         Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
@@ -309,6 +460,9 @@ public class MainGUIController {
         timeline.play();
     }
 
+    /**
+     * Switches the current vault view to the film vault.
+     */
     private void swapToFilmVault() {
 
         tblItems.getItems().clear();
@@ -328,6 +482,9 @@ public class MainGUIController {
 
     }
 
+    /**
+     * Switches the current vault view to the book vault.
+     */
     private void swapToBookVault() {
 
         tblItems.getItems().clear();
@@ -351,7 +508,8 @@ public class MainGUIController {
 
     public void refreshDetailView(MouseEvent mouseEvent) {
         chbStatus.setVisible(true);
-
+        btnDelete.setVisible(true);
+        
         if (filmsSelected) {
 
             Film f = (Film) tblItems.getSelectionModel().getSelectedItem();
@@ -395,6 +553,11 @@ public class MainGUIController {
 
     }
 
+    /**
+     * Shows the add item view.
+     * @param actionEvent MouseEvent object that triggered the method
+     * @throws IOException if there is an error loading the FXML file for the add item view
+     */
     public void onAddItemClick(ActionEvent actionEvent) throws IOException {
 
         if (selectedVault == null) {
@@ -434,6 +597,11 @@ public class MainGUIController {
 
     }
 
+    /**
+     * Shows a dialog with a given and title.
+     * @param resource dialog view to be loaded
+     * @param title the title of the dialog
+     */
     private void launchDialog(String resource, String title) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource(resource));
         Scene scene = new Scene(fxmlLoader.load());
@@ -445,6 +613,10 @@ public class MainGUIController {
         stage.showAndWait();
     }
 
+    /**
+     * Logs the user out and shows the login view.
+     * @param actionEvent object that triggered the method
+     */
     public void onLogoutClick(ActionEvent actionEvent) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

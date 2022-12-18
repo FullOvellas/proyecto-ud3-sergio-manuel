@@ -12,6 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * The `NameInputController` class is a controller class for the name input view. It handles user input when
+ * creating a new film or book vault.
+ */
 public class NameInputController {
 
 
@@ -21,6 +25,12 @@ public class NameInputController {
     public Button btnConfirmName;
     private UserSession session = UserSession.getInstance();
 
+    /**
+     * Handles the user's input when creating a new film or book vault. If the user's input is not empty and the
+     * entered name does not already exist in the list of vaults, the method creates a new film or book vault and
+     * adds it to the active user's list of vaults.
+     * @param actionEvent the ActionEvent object that triggered the method
+     */
     public void onNameConfirmClick(ActionEvent actionEvent) {
 
         User activeUser = session.getLoggedUser();
