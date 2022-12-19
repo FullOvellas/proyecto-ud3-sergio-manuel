@@ -2,8 +2,15 @@ package com.vaultapp;
 
 import java.util.Locale;
 
+/**
+ * Launcher class of the application.
+ */
 public class VaultApp {
 
+    /**
+     * Launches the aplication in CLI or graphic mode.
+     * @param args mode to launch the application in (--cli for CLI or --gui for graphic)
+     */
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
 

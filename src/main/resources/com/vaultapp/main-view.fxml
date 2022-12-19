@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.shape.Rectangle?>
 
 <?import javafx.scene.image.ImageView?>
-<?import javafx.geometry.Insets?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <?import atlantafx.base.theme.Styles?>
 <StackPane xmlns="http://javafx.com/javafx"
@@ -35,7 +31,7 @@
             </VBox>
         </left>
         <center>
-            <TableView fx:id="tblItems" onMouseClicked="#refreshDetailView"/>
+            <TableView fx:id="tblItems" onMouseClicked="#refreshDetailView" />
         </center>
         <right>
             <VBox fx:id="detailView"
@@ -49,6 +45,20 @@
                     <Label fx:id="detailField3" wrapText="true" />
                     <Label fx:id="detailField4" wrapText="true" />
                     <ChoiceBox fx:id="chbStatus" visible="false" />
+                    <Button fx:id="btnDelete"
+                            visible="false"
+                            text="Delete"
+                            onAction="#onDeleteClick">
+                        <styleClass>
+                            <Styles fx:constant="BUTTON_OUTLINED" />
+                        </styleClass>
+                        <styleClass>
+                            <Styles fx:constant="DANGER" />
+                        </styleClass>
+                        <graphic>
+                            <FontIcon iconLiteral="bi-trash" />
+                        </graphic>
+                    </Button>
                 </VBox>
             </VBox>
         </right>
