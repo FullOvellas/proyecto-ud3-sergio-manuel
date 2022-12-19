@@ -26,10 +26,10 @@ public class User {
     @Column(name = "last_connection")
     private LocalDateTime lastConnection;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<FilmVault> filmVaults;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<BookVault> bookVaults;
 
     public User() {
