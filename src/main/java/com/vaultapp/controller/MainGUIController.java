@@ -429,7 +429,6 @@ public class MainGUIController {
 
         if (selectedVault == null) {
 
-            tblItems.setDisable(true);
             tblItems.getItems().clear();
             title.setText("No vault selected");
             return;
