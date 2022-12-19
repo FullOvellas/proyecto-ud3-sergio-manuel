@@ -255,7 +255,8 @@ public class MainGUIController {
     }
 
     /**
-     * Initializes the MainGUI view.
+     * Toggles the state of the sidebar menu.
+     * @param actionEvent the event that triggered the method
      */
     public void expandRectangle(ActionEvent actionEvent) {
         if (!expanded) {
@@ -335,6 +336,9 @@ public class MainGUIController {
 
     }
 
+    /**
+     * Initializes the UI components of the main view.
+     */
     public void initialize() {
         selectedVault = null;
 
@@ -529,6 +533,11 @@ public class MainGUIController {
 
     }
 
+    /**
+     * It takes the selected item from the table and displays its details in the detail view
+     *
+     * @param mouseEvent The mouse event that triggered the method.
+     */
     public void refreshDetailView(MouseEvent mouseEvent) {
 
         if (selectedVault == null)
@@ -673,6 +682,11 @@ public class MainGUIController {
         session.logout();
     }
 
+    /**
+     * Deletes the selected item from the table and updates the table
+     *
+     * @param actionEvent The event that triggered the action.
+     */
     public void onDeleteClick(ActionEvent actionEvent) {
 
         VaultItem item = tblItems.getSelectionModel().getSelectedItem();
