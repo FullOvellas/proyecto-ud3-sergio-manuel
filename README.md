@@ -91,7 +91,6 @@ API key: 19ccdf01a305d5f5c3485958c90ef5d6
   Devolve un único obxecto `Film` segundo o _movie\_id_ empregado.
 
 ## Manual Técnico
-
 ### Estructura de paquetes
 A continuación se describe la estructura general del proyecto. Para una información más precisa
 acerca de la estructura, descripción de clases, y funcionalidades consulte el [Javadoc](https://srgottfried.github.io/vaultApp_documentation/index.html) de la aplicación.
@@ -105,6 +104,7 @@ acerca de la estructura, descripción de clases, y funcionalidades consulte el [
     - `repository` Contiene las clases de gestión de datos. Este paquete actúa como una capa superior de abstracción del paquete DAO, que permite tratar a los datos virtualmente como colecciones de Java.
   - `tests` Contiene los test unitarios necesarios durante el desarrollo.
   - `utilities` Contiene algunas clases de utilidad, como un gestor de conexión o una clase para el cifrado de datos.
+    - `filters` Contiene los filtros de búsqueda válidos.
   - `view` Contiene las vistas del proyecto.
 
 ### Diagrama de clases
@@ -208,7 +208,19 @@ Para cambiar el valor de este atributo es tan sencillo como escribir el comando
 
 ![](docs/img/user_manual_cli_img/chsts_book.jpg)
 
-#### 6. Borrar un libro o película
+#### 6. Buscar por criterios dentro de un vault
+Cuando las listas se hacen grandes, resulta muy útil buscar elementos de dicha lista 
+usando criterios de búsqueda definidos por el propio usuario. Para ello, podemos hacer uso
+del comando `find -bv NOMBRE_DEL_VAULT -sf FILTRO -a BÚSQUEDA` tal y como se muestra en las
+siguientes imágenes:
+- Buscando por ISBN:
+![](docs/img/user_manual_cli_img/find_book_by_filter.jpg)
+- Buscando por autor:
+- ![](docs/img/user_manual_cli_img/find_by_author.jpg)
+- Buscando por título:
+- ![](docs/img/user_manual_cli_img/find_by_title.jpg)
+
+#### 7. Borrar un libro o película
 Si pensamos que un libro o película ya no debiera estar en nuestra lista, podemos borrarla
 del vault con el comando `delete -b --isbn ISBN -v NOMBRE_DEL_VAULT` en el caso de un libro
 o `delete -f --tmid TMID -v NOMBRE_DEL_VAULT` en el caso de una película. 
@@ -218,7 +230,7 @@ vault de libros Literature:
 
 ![](docs/img/user_manual_cli_img/delete_book.jpg)
 
-#### 7. Borrar un vault
+#### 8. Borrar un vault
 También resulta posible borrar un vault directamente si nos hemos cansado de él.
 Para ello recurrimos al comando `delete -bv NOMBRE_DEL_VAULT` para un vault de libros
 o `delete -fv NOMBRE_DEL_VAULT` para un vault de películas.
@@ -227,14 +239,14 @@ En el siguiente ejemplo procedemos a borrar el vault Literature (!con libros den
 
 ![](docs/img/user_manual_cli_img/delete_bookvault.jpg)
 
-#### 8. Cerrar sesión de usuario
+#### 9. Cerrar sesión de usuario
 Para cerrar nuestra sesión y que nadie toquetee nuestros vaults favoritos, hacemos uso
 del comando `logout`. El programa seguirá en ejecución, pero nuestra sesión se habrá cerrado
 con éxito. 
 
 ![](docs/img/user_manual_cli_img/logout.jpg)
 
-#### 9. Cerrar la aplicación
+#### 10. Cerrar la aplicación
 Si ningún otro usuario va a hacer uso de la aplicación en el corto plazo, podemos
 parar su ejecución a través del comando `exit`:
 
@@ -258,6 +270,7 @@ parar su ejecución a través del comando `exit`:
   - `search [-b|-f|--book|--film] NAME` Busca un libro por título en API Open Library.
   - `add [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME` Añade el libro de ISBN dado en el vault de nombre dado.
   - `add [-f|--film] --tmid TMID [-v|--vault] VAULT_NAME` Añade la película de TMID dado en el vault de nombre dado.
+  - `find [-bv|-fv|--bookvault|--filmvault] VAULT_NAME [-sf|--filter] FILTER [-a|--arg] ARGUMENT`Realiza una búsqueda sobre un vault bajo un criterio de búsqueda prporcionado por el usuario. 
   - `chsts --isbn ISBN [-v|--vault] VAULT_NAME` Cambia el estado de un libro.
   - `chsts --tmid TMID [-v|--vault] VAULT_NAME` Cambia el estado de una película.
   - `delete [-b|--book] --isbn ISBN [-v|--vault] VAULT_NAME` Borra el libro de ISBN dado en el vault de nombre dado.

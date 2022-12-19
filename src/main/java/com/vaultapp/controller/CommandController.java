@@ -4,6 +4,8 @@ package com.vaultapp.controller;
 import com.vaultapp.login.UserSession;
 import com.vaultapp.model.entities.*;
 import com.vaultapp.model.repository.*;
+import com.vaultapp.utilities.filters.BookFilter;
+import com.vaultapp.utilities.filters.FilmFilter;
 import com.vaultapp.view.cli.CommandControllerView;
 
 import java.time.format.DateTimeFormatter;
@@ -23,6 +25,7 @@ public class CommandController {
             "open",
             "delete",
             "search",
+            "find",
             "add",
             "exit",
             "chsts",
@@ -44,6 +47,11 @@ public class CommandController {
             "--tmid",
             "--vault",
             "-v",
+            "--filter",
+            "-ff",
+            "--arg",
+            "-a",
+
             "help"
     );
 
@@ -154,6 +162,14 @@ public class CommandController {
                 case "open-bv":
                     actionOpenBookVault(parserCommand.get(1));
                     break;
+                case "find--bookvault--filter--arg":
+                case "find-bv-ff-a":
+                    actionFindBookByFilterInBookVault(parserCommand.get(1), parserCommand.get(2), parserCommand.get(3));
+                    break;
+                case "find--filmvault--filter--arg":
+                case "find-fv-ff-a":
+                    actionFindFilmByFilterInFilmVault(parserCommand.get(1), parserCommand.get(2), parserCommand.get(3));
+                    break;
                 case "open--filmvault":
                 case "open-fv":
                     actionOpenFilmVault(parserCommand.get(1));
@@ -201,6 +217,61 @@ public class CommandController {
                 default:
                     view.commandNotFoundView();
             }
+        }
+    }
+
+    private void actionFindFilmByFilterInFilmVault(String vaultName, String filter, String arg) {
+        User u = UserSession.getInstance().getLoggedUser();
+        List<FilmVault> vaults = u.getFilmVaults().stream().filter(fv -> fv.getName().equals(vaultName)).collect(Collectors.toList());
+        List<Film> films = new ArrayList<>();
+        if (!vaults.isEmpty()) {
+            switch (filter) {
+                case "author":
+                    films = FilmDbRepository.getInstance().findBy(u, FilmFilter.AUTHOR, arg);
+                    break;
+                case "tmid":
+                    films = FilmDbRepository.getInstance().findBy(u, FilmFilter.TITLE, arg);
+                    break;
+                default:
+                    view.invalidFilmFilter();
+            }
+            if (!films.isEmpty()) {
+                view.listOfFilmsView(films);
+            } else {
+                view.filmNotFoundView();
+            }
+
+        } else {
+            view.vaultNotFoundView();
+        }
+    }
+
+    private void actionFindBookByFilterInBookVault(String vaultName, String filter, String arg) {
+        User u = UserSession.getInstance().getLoggedUser();
+        List<BookVault> vaults = u.getBookVaults().stream().filter(bv -> bv.getName().equals(vaultName)).collect(Collectors.toList());
+        List<Book> books = new ArrayList<>();
+        if (!vaults.isEmpty()) {
+            switch (filter) {
+                case "author":
+                    books = BookDbRepository.getInstance().findBy(u, BookFilter.AUTHOR, arg);
+                    break;
+                case "title":
+                    books = BookDbRepository.getInstance().findBy(u, BookFilter.TITLE, arg);
+                    break;
+                case "isbn":
+                    books = BookDbRepository.getInstance().findBy(u, BookFilter.ISBN, arg);
+                    break;
+                default:
+                    view.invalidBookFilter();
+            }
+            if (!books.isEmpty()) {
+                view.listOfBooksView(books);
+            } else {
+                view.bookNotFoundView();
+            }
+
+        } else {
+            view.vaultNotFoundView();
         }
     }
 

@@ -1,9 +1,3 @@
-/**
- * The MainGUIController is a controller class for the main GUI view. It allows users to view and manage
- * their books and films in a selected vault.
- *
- * @author Vault App
- */
 package com.vaultapp.controller;
 
 import com.vaultapp.MainGUI;
@@ -16,15 +10,8 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.InvalidationListener;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableObjectValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.WeakListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -56,6 +43,11 @@ import java.util.stream.Stream;
 
 import static atlantafx.base.theme.Styles.*;
 
+/**
+ * The MainGUIController is a controller class for the main GUI view. It allows users to view and manage
+ * their books and films in a selected vault.
+ *
+ */
 public class MainGUIController {
 
     /**
