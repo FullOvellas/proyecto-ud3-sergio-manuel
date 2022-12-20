@@ -24,7 +24,8 @@ public class CommandControllerTest {
 
     @Test
     public void testActionChangeBookStatus() {
-        user = UserSession.getInstance().getLoggedUser();
+        userSession = UserSession.getInstance();
+        user = new User("root", "root");
         Book book = new Book("book");
         BookVault bookVault = new BookVault("My Books");
         bookVault.addElement(book);

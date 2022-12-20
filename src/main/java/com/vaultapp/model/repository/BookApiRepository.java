@@ -6,7 +6,14 @@ import com.vaultapp.model.pojo.book.dao.BookApiDao;
 
 import java.util.List;
 
+/**
+ * Repository class for accessing books through the BookApiDao.
+ */
 public class BookApiRepository {
+    /**
+     * Gets the singleton instance of the BookApiRepository.
+     * @return the singleton instance of the BookApiRepository
+     */
     private static BookApiRepository instance;
 
     static {
