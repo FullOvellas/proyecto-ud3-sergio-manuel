@@ -18,11 +18,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+
 import static atlantafx.base.theme.Styles.*;
 
 public class ChooseVaultDialogController {
@@ -117,6 +121,7 @@ public class ChooseVaultDialogController {
      */
     public void initialize() {
 
+        btnDelete.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("trash.png")).toString())));
         prompt.getStyleClass().add(TITLE_2);
         vaultsTable.getStyleClass().add(STRIPED);
 

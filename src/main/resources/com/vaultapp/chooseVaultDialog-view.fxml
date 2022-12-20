@@ -6,7 +6,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import org.kordamp.ikonli.javafx.FontIcon?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.vaultapp.controller.ChooseVaultDialogController"
@@ -19,10 +18,6 @@
         <Button fx:id="btnSelect" text="Select" onAction="#onBtnClick"/>
         <Button fx:id="btnAdd" text="Add new" onAction="#onBtnClick" />
         <Button fx:id="btnCancel" text="Cancel" onAction="#onBtnClick"/>
-        <Button fx:id="btnDelete" text="Delete" onAction="#onDeleteClick">
-            <graphic>
-                <FontIcon iconLiteral="bi-trash" />
-            </graphic>
-        </Button>
+        <Button fx:id="btnDelete" text="Delete" onAction="#onDeleteClick" />
     </HBox>
 </VBox>
