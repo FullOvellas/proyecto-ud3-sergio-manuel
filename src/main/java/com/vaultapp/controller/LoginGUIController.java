@@ -13,10 +13,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static atlantafx.base.theme.Styles.*;
 
@@ -45,6 +48,8 @@ public class LoginGUIController {
         lblAppName.setStyle("-fx-font-size: 60");
         btnLogin.getStyleClass().add(LARGE);
         lblErrMsg.getStyleClass().add(DANGER);
+        btnLogin.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("box-arrow-in-down.png")).toString())));
+        lblAppName.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("box.png")).toString())));
 
     }
 

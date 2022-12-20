@@ -31,7 +31,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -262,13 +261,12 @@ public class MainGUIController {
         if (!expanded) {
             btnFilmView.textAlignmentProperty().setValue(TextAlignment.LEFT);
             btnBookView.textAlignmentProperty().setValue(TextAlignment.LEFT);
+            btnBookView.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("book.png")).toString())));
             btnAddView.textAlignmentProperty().setValue(TextAlignment.LEFT);
             btnLogout.textAlignmentProperty().setValue(TextAlignment.LEFT);
             vaultControlsContainer.setAlignment(Pos.CENTER_LEFT);
             vbxSidebar.requestFocus();
             vbxSidebar.setStyle("-fx-fill: #3c536e");
-            FontIcon icon = (FontIcon) btnBookView.getGraphic();
-            icon.iconColorProperty().set(Paint.valueOf("#FFF"));
             vbxSidebar.setStyle(HIDDEN_BORDER);
             btnSideMenu.getStyleClass().add(ACCENT);
             btnFilmView.getStyleClass().add(ACCENT);
@@ -369,16 +367,18 @@ public class MainGUIController {
         // Element initialization
         title.minWidthProperty().bind(tblItems.widthProperty().subtract(4));
         btnDelete.minWidthProperty().bind(chbStatus.widthProperty());
+        btnDelete.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("trash.png")).toString())));
         chbStatus.setItems(FXCollections.observableArrayList("Planning", "Completed"));
         vbxSidebar.setPadding(new Insets(0, 3, 0, 2));
-        btnSideMenu.setGraphic(new FontIcon("bi-list"));
+        btnSideMenu.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("list.png")).toString())));
         btnSideMenu.getStyleClass().add(LARGE);
-        btnBookView.setGraphic(new FontIcon("bi-book"));
+        btnBookView.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("book.png")).toString())));
         btnBookView.getStyleClass().addAll(FONT_ICON, LARGE);
-        btnFilmView.setGraphic(new FontIcon("bi-film"));
+        btnFilmView.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("film.png")).toString())));
         btnFilmView.getStyleClass().addAll(FONT_ICON, LARGE);
-        btnAddView.setGraphic(new FontIcon("bi-plus"));
+        btnAddView.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("plus.png")).toString())));
         btnAddView.getStyleClass().addAll(FONT_ICON, LARGE);
+        btnLogout.setGraphic(new ImageView(new Image(Objects.requireNonNull(MainGUI.class.getResource("person.png")).toString())));
 
         btnDefWidth = btnFilmView.getWidth();
         spacer.minWidthProperty().setValue(58);
