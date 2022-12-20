@@ -136,8 +136,13 @@ public class CommandController {
                 return;
             case "login--user--password":
             case "login-u-p":
-                actionLogin(parserCommand.get(1), parserCommand.get(2));
-                return;
+                try {
+                    actionLogin(parserCommand.get(1), parserCommand.get(2));
+                } catch (Exception e) {
+                    view.invalidInputArgumentsView();
+                } finally {
+                    return;
+                }
             case "help":
                 actionHelp();
                 return;
@@ -148,84 +153,174 @@ public class CommandController {
         } else {
             switch (parserCommand.get(0)) {
                 case "logout":
-                    actionLogout();
-                    break;
+                    try {
+                        actionLogout();
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "status":
-                    actionStatusUser();
-                    break;
+                    try {
+                        actionStatusUser();
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "create--bookvault":
                 case "create-bv":
-                    actionCreateBookVault(parserCommand.get(1));
-                    break;
+                    try {
+                        actionCreateBookVault(parserCommand.get(1));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "create--filmvault":
                 case "create-fv":
-                    actionCreateFilmVault(parserCommand.get(1));
-                    break;
+                    try {
+                        actionCreateFilmVault(parserCommand.get(1));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "add--gift--name--description":
                 case "add-g-n-d":
                     try {
                         actionAddGift(parserCommand.get(1), parserCommand.get(2));
-                    }catch (Exception e) {
+                    } catch (Exception e) {
                         view.invalidInputArgumentsView();
                     } finally {
                         break;
                     }
                 case "open--bookvault":
                 case "open-bv":
-                    actionOpenBookVault(parserCommand.get(1));
-                    break;
+                    try {
+                        actionOpenBookVault(parserCommand.get(1));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "find--bookvault--filter--arg":
                 case "find-bv-ff-a":
-                    actionFindBookByFilterInBookVault(parserCommand.get(1), parserCommand.get(2), parserCommand.get(3));
-                    break;
+                    try {
+                        actionFindBookByFilterInBookVault(parserCommand.get(1), parserCommand.get(2), parserCommand.get(3));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "find--filmvault--filter--arg":
                 case "find-fv-ff-a":
-                    actionFindFilmByFilterInFilmVault(parserCommand.get(1), parserCommand.get(2), parserCommand.get(3));
-                    break;
+                    try {
+                        actionFindFilmByFilterInFilmVault(parserCommand.get(1), parserCommand.get(2), parserCommand.get(3));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "open--filmvault":
                 case "open-fv":
-                    actionOpenFilmVault(parserCommand.get(1));
-                    break;
+                    try {
+                        actionOpenFilmVault(parserCommand.get(1));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "delete--bookvault":
                 case "delete-bv":
-                    actionDeleteBookVault(parserCommand.get(1));
-                    break;
+                    try {
+                        actionDeleteBookVault(parserCommand.get(1));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "delete--filmvault":
                 case "delete-fv":
-                    actionDeleteFilmVault(parserCommand.get(1));
-                    break;
+                    try {
+                        actionDeleteFilmVault(parserCommand.get(1));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "search--book":
                 case "search-b":
-                    actionSearchBookTitle(parserCommand.get(1));
-                    break;
+                    try {
+                        actionSearchBookTitle(parserCommand.get(1));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "search--film":
                 case "search-f":
-                    actionSearchFilmTitle(parserCommand.get(1));
-                    break;
+                    try {
+                        actionSearchFilmTitle(parserCommand.get(1));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "chsts--isbn--vault":
                 case "chsts--isbn-v":
-                    actionChangeBookStatus(parserCommand.get(1), parserCommand.get(2));
-                    break;
+                    try {
+                        actionChangeBookStatus(parserCommand.get(1), parserCommand.get(2));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "chsts--tmid--vault":
                 case "chsts--tmid-v":
-                    actionChangeFilmStatus(parserCommand.get(1), parserCommand.get(2));
-                    break;
+                    try {
+                        actionChangeFilmStatus(parserCommand.get(1), parserCommand.get(2));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "add--book--isbn--vault":
                 case "add-b--isbn-v":
-                    actionAddBook(parserCommand.get(1), parserCommand.get(2));
-                    break;
+                    try {
+                        actionAddBook(parserCommand.get(1), parserCommand.get(2));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "add--film--tmid--vault":
                 case "add-f--tmid-v":
-                    actionAddFilm(parserCommand.get(1), parserCommand.get(2));
-                    break;
+                    try {
+                        actionAddFilm(parserCommand.get(1), parserCommand.get(2));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "delete--book--isbn--vault":
                 case "delete-b--isbn-v":
-                    actionDeleteBook(parserCommand.get(1), parserCommand.get(2));
-                    break;
+                    try {
+                        actionDeleteBook(parserCommand.get(1), parserCommand.get(2));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "delete--film--isbn--vault":
                 case "delete-f--tmid-v":
-                    actionDeleteFilm(parserCommand.get(1), parserCommand.get(2));
-                    break;
+                    try {
+                        actionDeleteFilm(parserCommand.get(1), parserCommand.get(2));
+                    } catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 default:
                     view.commandNotFoundView();
             }
@@ -427,7 +522,7 @@ public class CommandController {
     /**
      * Changes the status of a film in the specified film vault belonging to the currently logged-in user.
      *
-     * @param tmid The TMDB ID of the film whose status should be changed.
+     * @param tmid      The TMDB ID of the film whose status should be changed.
      * @param vaultName The name of the film vault in which the film is located.
      */
     private void actionChangeFilmStatus(String tmid, String vaultName) {
@@ -455,7 +550,7 @@ public class CommandController {
     /**
      * Adds a book to the specified book vault belonging to the currently logged-in user.
      *
-     * @param isbn The ISBN number of the book to be added.
+     * @param isbn      The ISBN number of the book to be added.
      * @param vaultName The name of the book vault to which the book should be added.
      */
     private void actionAddBook(String isbn, String vaultName) {
@@ -586,7 +681,7 @@ public class CommandController {
     /**
      * Performs the login of a user in the application.
      *
-     * @param name User's name.
+     * @param name     User's name.
      * @param password User's password.
      */
     private void actionLogin(String name, String password) {
