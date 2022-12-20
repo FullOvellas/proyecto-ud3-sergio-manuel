@@ -10,7 +10,6 @@ import java.util.Objects;
  * @param <T> the type of elements in the vault
  */
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Vault<T> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
