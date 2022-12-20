@@ -8,8 +8,6 @@ package com.vaultapp.controller;
 
 import com.vaultapp.MainGUI;
 import com.vaultapp.login.UserSession;
-import com.vaultapp.model.entities.BookVault;
-import com.vaultapp.model.entities.FilmVault;
 import com.vaultapp.model.entities.Vault;
 import com.vaultapp.model.repository.UserRepository;
 import javafx.collections.FXCollections;
@@ -160,6 +158,11 @@ public class ChooseVaultDialogController {
         stage.close();
     }
 
+    /**
+     * It deletes the selected vault from the user's vault list and refreshes the table
+     *
+     * @param actionEvent The event that triggered the action.
+     */
     public void onDeleteClick(ActionEvent actionEvent) {
 
         Vault vault = vaultsTable.getSelectionModel().getSelectedItem();
