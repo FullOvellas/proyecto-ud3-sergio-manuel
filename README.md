@@ -312,6 +312,71 @@ parar su ejecución a través del comando `exit`:
 
 ## Manual de usuario para GUI
 
+### Inicio de sesión
+
+![login](docs/img/user_manual_gui_img/1_login.png)
+
+La pantalla inicial que se muestra al abrir la aplicación. Los usuarios inician sesión introduciendo sus credenciales en
+los campos designados para ello:
+
+1. Nombre de usuario
+2. Contraseña de usuario
+
+El elemento 3 es el botón que permite al usuario iniciar sesión.
+
+### Gestión de _vaults_
+
+![vista principal](docs/img/user_manual_gui_img/2_initial_main_view.png)
+
+1. Campo para el nombre del vault seleccionado. En caso de no haberlo se muestra un mensaje explicativo.
+2. _Toggle_ para expandir el menú lateral
+3. Abrir el diálogo de elección de vaults de películas
+4. Abrir el diálogo de elección de vaults de libros
+5. Añadir un elemento al vault actual
+6. Finalizar la sesión actual
+
+![](docs/img/user_manual_gui_img/3_no_vault_error.png)
+
+Error resultante de intentar añadir un elemento sin seleccionar un vault.
+
+![](docs/img/user_manual_gui_img/4_logout.png)
+
+Mensaje mostrado al iniciar el cierre de sesión.
+
+![](docs/img/user_manual_gui_img/5_extended_sidebar.png)
+
+El menú lateral muestra información aclarativa sobre la función de cada control al expandirse.
+
+![](docs/img/user_manual_gui_img/6_choose_vault.png)
+
+Al pulsar los botones de la vista principal correspondientes, se inicia un diálogo para seleccionar o crear un nuevo vault.
+
+1. Tabla que muestra el listado de vaults
+2. Selecciona el vault resaltado en la tabla para operar con él
+3. Crea un nuevo vault de películas o libros según el botón usado para iniciar el diálogo
+4. Vuelve a la vista principal
+5. Borra el vault resaltado
+
+![](docs/img/user_manual_gui_img/7_name_vault.png)
+
+Al crear un vault, se propondrá al usuario que le dé un nombre.
+
+![](docs/img/user_manual_gui_img/8_search_add.png)
+
+Diálogo de confirmación al añadir un elemento al vault seleccionado tras buscarlo usando el campo de texto y el botón
+search.
+
+![](docs/img/user_manual_gui_img/9_main_populated.png)
+
+Vista principal mostrando los datos de un vault.
+
+1. Nombre del usuario y el vault seleccionado
+2. Datos básicos de un elemento
+3. Vista de detalle
+4. Información sobre el elemento
+5. Control de cambio de estado del elemento
+6. Botón de eliminación del elemento
+
 ## Requisitos de codificación
 
 - [CRUD para 3 de las entidades principales.](https://srgottfried.github.io/vaultApp_documentation/com/vaultapp/model/entities/dao/package-summary.html)
