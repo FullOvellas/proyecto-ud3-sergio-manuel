@@ -5,6 +5,7 @@ import com.vaultapp.model.entities.BookVault;
 import com.vaultapp.model.entities.Film;
 import com.vaultapp.model.entities.FilmVault;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class CommandControllerView {
 
@@ -20,6 +21,8 @@ public class CommandControllerView {
     public static final String BOOK_ALREADY_EXISTS = "Book already exists in the vault.\n";
     public static final String FILM_ALREADY_EXISTS = "Film already exists in the vault.\n";
     public static final String SUCCESSFULLY_ACTION = "Action done successfully.\n";
+    public static final String INVALID_ACTION = "Invalid action. Try again.";
+    public static final String INVALID_INPUT_ARGUMENTS = "Invalid input arguments";
     public static final String LOGOUT = "Bye %s. Your session is closed. See you soon.\n";
     public static final String REMOVE_BOOK = "\n" + "Book has been successfully deleted.";
     public static final String REMOVE_FILM = "\n" + "Film has been successfully deleted.";
@@ -97,6 +100,10 @@ public class CommandControllerView {
         System.out.println(FILM_ALREADY_EXISTS);
     }
 
+    public void invalidInputArgumentsView() {
+        System.out.println(INVALID_INPUT_ARGUMENTS);
+    }
+
     public void logoutView(String arg) {
         System.out.println(String.format(LOGOUT, arg));
     }
@@ -111,6 +118,10 @@ public class CommandControllerView {
 
     public void invalidFilmFilter() {
         System.out.println(INVALID_FILM_FILTER);
+    }
+
+    public void invalidActionView() {
+        System.out.println(INVALID_ACTION);
     }
 
     public void modifyPrompt(String arg) {

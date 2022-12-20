@@ -21,7 +21,7 @@ public class VaultApp {
                 "--gui: aplicación con cliente gráfico";
 
         if (args.length == 0) {
-            //todo
+            MainGUI.startApp();
         } else if (args.length == 1 && args[0].equals("--cli")) {
             MainCLI.startApp();
         } else if (args.length == 1 && args[0].equals("--gui")) {

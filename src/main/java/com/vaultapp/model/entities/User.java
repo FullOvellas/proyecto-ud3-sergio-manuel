@@ -32,6 +32,10 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<BookVault> bookVaults;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_regalo")
+    private Regalo regalo;
+
     public User() {
         filmVaults = new ArrayList<>();
         bookVaults = new ArrayList<>();
@@ -92,6 +96,14 @@ public class User {
         this.bookVaults = bookVaults;
     }
 
+    public Regalo getRegalo() {
+        return regalo;
+    }
+
+    public void setRegalo(Regalo regalo) {
+        this.regalo = regalo;
+    }
+
     /**
      * Adds a vault for the user. Symmetrically defines an owner for the vault.
      * This method ensures the bidirectional class relation between <code>User</code> and
@@ -124,6 +136,11 @@ public class User {
         vaults.addAll(bv);
         vaults.addAll(fv);
         return vaults;
+    }
+
+    public void addRegalo(Regalo regalo) {
+        this.regalo = regalo;
+        regalo.setUser(this);
     }
 
     @Override

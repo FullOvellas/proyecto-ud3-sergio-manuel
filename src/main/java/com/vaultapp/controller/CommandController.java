@@ -31,6 +31,8 @@ public class CommandController {
             "chsts",
             "--user",
             "-u",
+            "--gift",
+            "-g",
             "--password",
             "-p",
             "--book",
@@ -51,7 +53,8 @@ public class CommandController {
             "-ff",
             "--arg",
             "-a",
-
+            "-n",
+            "-d",
             "help"
     );
 
@@ -158,6 +161,15 @@ public class CommandController {
                 case "create-fv":
                     actionCreateFilmVault(parserCommand.get(1));
                     break;
+                case "add--gift--name--description":
+                case "add-g-n-d":
+                    try {
+                        actionAddGift(parserCommand.get(1), parserCommand.get(2));
+                    }catch (Exception e) {
+                        view.invalidInputArgumentsView();
+                    } finally {
+                        break;
+                    }
                 case "open--bookvault":
                 case "open-bv":
                     actionOpenBookVault(parserCommand.get(1));
@@ -219,6 +231,20 @@ public class CommandController {
             }
         }
     }
+
+    private void actionAddGift(String giftName, String giftDescription) {
+        User u = UserSession.getInstance().getLoggedUser();
+        try {
+            Regalo r = new Regalo(giftName, giftDescription);
+            u.addRegalo(r);
+            UserRepository.getInstance().add(u);
+            view.successfullyActionView();
+        } catch (Exception e) {
+            view.invalidActionView();
+        }
+
+    }
+
 
     private void actionFindFilmByFilterInFilmVault(String vaultName, String filter, String arg) {
         User u = UserSession.getInstance().getLoggedUser();

@@ -1,26 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <data-source source="LOCAL" name="@localhost" uuid="5722806f-497b-4c13-8e65-e2779e073260">
-=======
-    <data-source source="LOCAL" name="@localhost" uuid="fbedfa5b-2810-4286-8ec8-b7d15a449b25">
->>>>>>> c7fb309c3e5d6afbec73afc273ca3128a1bafae5
-=======
-    <data-source source="LOCAL" name="vault@localhost" uuid="a630930a-ce2c-4815-996a-753180107fa6">
->>>>>>> c1330739fdf217c5fd646a4e415126632118cffa
+    <data-source source="LOCAL" name="@localhost" uuid="e413629f-752c-49b6-8d8b-f7e52489e950">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/vault</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="vault@vaultapps.database.windows.net" uuid="dca33939-708e-4b58-8d75-9739b87d6530">
-      <driver-ref>azure.ms</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
-      <jdbc-url>jdbc:sqlserver://vaultapps.database.windows.net:1433;database=vault</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
