@@ -3,6 +3,7 @@ package com.vaultapp.model.entities.dao;
 import com.vaultapp.model.entities.FilmVault;
 import com.vaultapp.utilities.JpaUtil;
 import jakarta.persistence.EntityManager;
+
 import java.util.List;
 
 public class FilmVaultDao implements Dao<FilmVault> {

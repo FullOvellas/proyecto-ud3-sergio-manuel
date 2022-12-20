@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.shape.Rectangle?>
 
 <?import javafx.scene.image.ImageView?>
-<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import atlantafx.base.theme.Styles?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.vaultapp.controller.MainGUIController">
@@ -18,7 +16,13 @@
         <top>
             <HBox>
                 <Region fx:id="titleSpacer" />
-                <Label fx:id="title" />
+                <Label fx:id="title"
+                       text="No vault selected"
+                       style="-fx-border-style: hidden solid hidden hidden; -fx-border-width: 1; -fx-border-color: #CCC">
+                    <styleClass>
+                        <Styles fx:constant="TITLE_1" />
+                    </styleClass>
+                </Label>
             </HBox>
         </top>
         <left>
@@ -27,16 +31,34 @@
             </VBox>
         </left>
         <center>
-            <TableView fx:id="tblItems" onMouseClicked="#refreshDetailView"/>
+            <TableView fx:id="tblItems" onMouseClicked="#refreshDetailView" />
         </center>
         <right>
-            <VBox fx:id="detailView" minWidth="300" alignment="TOP_CENTER" spacing="35">
+            <VBox fx:id="detailView"
+                  minWidth="300"
+                  alignment="TOP_CENTER"
+                  spacing="35">
                 <ImageView fx:id="itemImage"/>
                 <VBox fx:id="itemInfo" spacing="10">
                     <Label fx:id="detailField1" wrapText="true" />
                     <Label fx:id="detailField2" wrapText="true" />
                     <Label fx:id="detailField3" wrapText="true" />
                     <Label fx:id="detailField4" wrapText="true" />
+                    <ChoiceBox fx:id="chbStatus" visible="false" />
+                    <Button fx:id="btnDelete"
+                            visible="false"
+                            text="Delete"
+                            onAction="#onDeleteClick">
+                        <styleClass>
+                            <Styles fx:constant="BUTTON_OUTLINED" />
+                        </styleClass>
+                        <styleClass>
+                            <Styles fx:constant="DANGER" />
+                        </styleClass>
+                        <graphic>
+                            <FontIcon iconLiteral="bi-trash" />
+                        </graphic>
+                    </Button>
                 </VBox>
             </VBox>
         </right>
@@ -54,14 +76,24 @@
         <left>
             <VBox fx:id="vbxSidebar"
                   spacing="10"
-                  style="-fx-border-style: hidden solid hidden hidden; -fx-border-width: 1; -fx-border-color: #AAA">
+                  style="-fx-border-style: hidden solid hidden hidden; -fx-border-width: 1; -fx-border-color: #CCC">
 
                 <Button fx:id="btnSideMenu" onAction="#expandRectangle" />
                 <VBox fx:id="vaultControlsContainer" alignment="CENTER">
-                    <Button fx:id="btnFilmView" onAction="#switchToFilmVault"/>
-                    <Button fx:id="btnBookView" onAction="#switchToBookVault"/>
+                    <Button fx:id="btnFilmView" onAction="#chooseVault"/>
+                    <Button fx:id="btnBookView" onAction="#chooseVault"/>
+                    <Button fx:id="btnAddView" onAction="#onAddItemClick" />
+                    <Button fx:id="btnLogout" onAction="#onLogoutClick">
+                        <styleClass>
+                            <Styles fx:constant="LARGE" />
+                        </styleClass>
+                        <graphic>
+                            <FontIcon iconLiteral="bi-person" />
+                        </graphic>
+                    </Button>
                 </VBox>
             </VBox>
         </left>
     </BorderPane>
+    <Rectangle fx:id="topLayer" mouseTransparent="true" fill="black" opacity="0" width="10000" height="10000"/>
 </StackPane>

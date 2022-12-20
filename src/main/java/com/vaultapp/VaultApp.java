@@ -1,16 +1,16 @@
 package com.vaultapp;
 
-import com.vaultapp.controller.MainController;
-
-import com.vaultapp.model.entities.Film;
-import com.vaultapp.model.pojo.film.dao.FilmApiDao;
-import com.vaultapp.model.repository.FilmRepository;
-
-import java.util.List;
 import java.util.Locale;
 
+/**
+ * Launcher class of the application.
+ */
 public class VaultApp {
 
+    /**
+     * Launches the aplication in CLI or graphic mode.
+     * @param args mode to launch the application in (--cli for CLI or --gui for graphic)
+     */
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
 
@@ -20,19 +20,10 @@ public class VaultApp {
                 "--cli: aplicación en línea de comandos\n\t" +
                 "--gui: aplicación con cliente gráfico";
 
-        List<Film> f = FilmApiDao.getInstance().searchByTitle("star", 1);
-        for (Film film : f) {
-            FilmRepository.getInstance().add(film);
-        }
-        f = FilmApiDao.getInstance().searchByTitle("Fight", 1);
-        for (Film film : f) {
-            FilmRepository.getInstance().add(film);
-        }
-
         if (args.length == 0) {
-            new MainController();
+            //todo
         } else if (args.length == 1 && args[0].equals("--cli")) {
-            // MainCLI.startApp();
+            MainCLI.startApp();
         } else if (args.length == 1 && args[0].equals("--gui")) {
             MainGUI.startApp();
         } else {

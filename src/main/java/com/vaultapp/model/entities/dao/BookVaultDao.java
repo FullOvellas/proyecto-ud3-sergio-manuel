@@ -43,4 +43,5 @@ public class BookVaultDao implements Dao<BookVault> {
             em.remove(em.find(BookVault.class, id));
         }
     }
+
 }
